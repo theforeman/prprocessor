@@ -28,3 +28,9 @@ That's it, you can now checkout your application at:
 
     http://sinatra-$yournamespace.rhcloud.com
 
+License
+-------
+
+This code is dedicated to the public domain to the maximum extent
+permitted by applicable law, pursuant to CC0
+http://creativecommons.org/publicdomain/zero/1.0/
