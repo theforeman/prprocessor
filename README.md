@@ -43,10 +43,10 @@ Or you can use this command to run the Modular/Object based version located in a
 
 If you would like to run the Modular/Object based code on OpenShift just follow the below instructions:
 
-1.)  reanme app.rb to app.classic.rb
-2.)  rename config.ru to config.classic.ru
-3.)  rename app.modular.rb to app.rb
-4.)  rename config.modular.ru to config.ru
+1. reanme app.rb to app.classic.rb
+2. rename config.ru to config.classic.ru
+3. rename app.modular.rb to app.rb
+4. rename config.modular.ru to config.ru
 
 Then you just need to commit your changes and git push them to OpenShift
 
