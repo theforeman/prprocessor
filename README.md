@@ -1,4 +1,3 @@
-
 Sinatra on OpenShift
 ====================
 
@@ -32,7 +31,7 @@ You can also create a gear using this code as the base using the following comma
 
 		rhc create-app -a <appname> -t ruby-1.9 --from-code git://github.com/openshift/sinatra-example.git
 		
-Or by clicking the "Change" link next to Source Code when creating a new ruby-1.9 application and pasting the git repository url into the filed that appears
+Or by clicking the "Change" link next to Source Code when creating a new ruby-1.9 application and pasting the git repository url into the field that appears
 
 
 Configuring the Modular/Object or views code to run on OpenShift
