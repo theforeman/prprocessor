@@ -9,9 +9,9 @@ Running on OpenShift
 
 Create an account at http://openshift.redhat.com/
 
-Create a ruby-1.9 application
+Create a ruby application
 
-    rhc app create -a sinatra -t ruby-1.9 --from-code https://github.com/openshift/sinatra-example.git
+    rhc app create sinatra ruby-1.9 --from-code https://github.com/openshift/sinatra-example.git
 
 That's it, you can now checkout your application at
 
