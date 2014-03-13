@@ -7,7 +7,7 @@ This git repository will help you get up and running quickly with Sinatra on Ope
 Running on OpenShift
 ----------------------------
 
-Create an account at http://openshift.redhat.com/
+Create an account at https://www.openshift.com
 
 Create a ruby application
 
