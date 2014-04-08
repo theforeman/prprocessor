@@ -20,8 +20,8 @@ class App < Sinatra::Base
   end
   
   get '/partial' do
-      mustache :partial
-    end
+    mustache :partial
+  end
   
   get '/nolayout' do
     content_type 'text/plain'
