@@ -17,7 +17,6 @@ post '/pull_request' do
 
   pull_request = PullRequest.new(payload['pull_request'])
   pr_number = pull_request.raw_data['number']
-  project = payload['repo']['owner']['login']
 
   if pull_request.new?
     issue = Issue.new(pull_request.issue_number)
