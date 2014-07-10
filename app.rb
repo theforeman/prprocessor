@@ -12,7 +12,7 @@ post '/pull_request' do
   payload_body = request.body.read
   verify_signature(payload_body)
 
-  payload = JSON.parse(params[:payload])
+  payload = JSON.parse(payload_body)
   raise "unknown repo" unless payload['repository'] && (repo = payload['repository']['name'])
 
   pull_request = PullRequest.new(payload['pull_request'])
