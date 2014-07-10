@@ -1,6 +1,6 @@
 class PullRequest
 
-  attr_reader :raw_data, :title
+  attr_accessor :raw_data, :title
 
   def initialize(raw_data)
     self.raw_data = raw_data
