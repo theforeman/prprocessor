@@ -15,7 +15,7 @@ class Issue < RedmineResource
   end
 
   def set_version(version_id)
-    @raw_data['issue']['fixed_version_id'] = status
+    @raw_data['issue']['fixed_version_id'] = version_id
     put(@raw_data['issue']['id'], @raw_data)
   end
 
