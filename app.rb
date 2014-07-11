@@ -24,9 +24,10 @@ post '/pull_request' do
     project = Project.new(issue.project)
     current_version = project.current_version
 
-    issue.update_status(Issue::READY_FOR_TESTING)
-    issue.set_version(current_version['id'])
-    issue.update_pull_request(pull_request.raw_data['html_url'])
+    issue.update_status(Issue::READY_FOR_TESTING).
+          set_version(current_version['id']).
+          update_pull_request(pull_request.raw_data['html_url']).
+          save!
   end
 
   jenkins = Jenkins.new

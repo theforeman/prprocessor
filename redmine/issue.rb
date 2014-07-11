@@ -11,12 +11,12 @@ class Issue < RedmineResource
 
   def update_status(status)
     @raw_data['issue']['status_id'] = status
-    put(@raw_data['issue']['id'], @raw_data)
+    self
   end
 
   def set_version(version_id)
     @raw_data['issue']['fixed_version_id'] = version_id
-    put(@raw_data['issue']['id'], @raw_data)
+    self
   end
 
   def project
@@ -25,6 +25,10 @@ class Issue < RedmineResource
 
   def update_pull_request(url)
     @raw_data['issue']['custom_field_values'] = {'7' => url}
+    self
+  end
+
+  def save!
     put(@raw_data['issue']['id'], @raw_data)
   end
 
