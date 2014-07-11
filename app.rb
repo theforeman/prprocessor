@@ -3,6 +3,7 @@ require 'json'
 require 'openssl'
 
 require File.join(File.dirname(__FILE__), 'redmine/issue')
+require File.join(File.dirname(__FILE__), 'redmine/project')
 require File.join(File.dirname(__FILE__), 'github/pull_request')
 require File.join(File.dirname(__FILE__), 'jenkins')
 
