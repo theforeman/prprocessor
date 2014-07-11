@@ -8,7 +8,9 @@ class PullRequest
   end
 
   def issue_number
-    @title.match(/(((F|f)ixes)|((R|r)efs)) #\d+/)[0].split('#')[1]
+    number = @title.match(/(((F|f)ixes)|((R|r)efs)) #\d+/)
+    return false if number.nil?
+    number[0].split('#')[1]
   end
 
   def new?

@@ -18,8 +18,8 @@ post '/pull_request' do
   pull_request = PullRequest.new(payload['pull_request'])
   pr_number = pull_request.raw_data['number']
 
-  if pull_request.new?
-    issue = Issue.new(pull_request.issue_number)
+  if (issue_number = pull_request.issue_number)
+    issue = Issue.new(issue_number)
     project = Project.new(issue.project)
     current_version = project.current_version
 
