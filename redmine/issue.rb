@@ -14,7 +14,7 @@ class Issue < RedmineResource
   end
 
   def version
-    @raw_data['issue']['fixed_version']['id']
+    @raw_data['issue']['fixed_version']['id'] if @raw_data['issue']['fixed_version']
   end
 
   def set_version(version_id)
