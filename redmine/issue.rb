@@ -9,9 +9,12 @@ class Issue < RedmineResource
     '/issues'
   end
 
-  def update_status(status)
-    @raw_data['issue']['status_id'] = status
-    self
+  def project
+    @raw_data['issue']['project']['id']
+  end
+
+  def version
+    @raw_data['issue']['fixed_version']['id']
   end
 
   def set_version(version_id)
@@ -19,11 +22,22 @@ class Issue < RedmineResource
     self
   end
 
-  def project
-    @raw_data['issue']['project']['id']
+  def closed?
+    ['Closed', 'Resolved', 'Rejected', 'Duplicate'].include? @raw_data['issue']['status']['name']
   end
 
-  def update_pull_request(url)
+  def set_status(status)
+    @raw_data['issue']['status_id'] = status
+    self
+  end
+
+  def pull_request
+    field = @raw_data['issue']['custom_fields'].find { |f| f['id'] == 7 }
+    return nil if field.nil?
+    field['value']
+  end
+
+  def set_pull_request(url)
     @raw_data['issue']['custom_field_values'] = {'7' => url}
     self
   end
