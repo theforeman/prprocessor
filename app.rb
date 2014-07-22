@@ -25,7 +25,7 @@ post '/pull_request' do
     current_version = project.current_version
 
     issue.set_version(current_version['id']) if issue.version.nil?
-    issue.set_pull_request(pull_request.raw_data['html_url']) if issue.pull_request.empty?
+    issue.set_pull_request(pull_request.raw_data['html_url']) if issue.pull_request.nil? || issue.pull_request.empty?
     issue.set_status(Issue::READY_FOR_TESTING) unless issue.closed?
     issue.save!
   end
