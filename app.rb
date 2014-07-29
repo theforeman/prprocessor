@@ -30,6 +30,10 @@ post '/pull_request' do
     issue.save!
   end
 
+  if payload['action'] == 'opened'
+    pull_request.set_labels
+  end
+
   jenkins = Jenkins.new
   jenkins.build(repo, pr_number)
 
@@ -40,6 +44,7 @@ get '/status' do
   locals[:jenkins_token] = ENV['JENKINS_TOKEN'] ? true : false
   locals[:github_secret] = ENV['GITHUB_SECRET_TOKEN'] ? true : false
   locals[:redmine_key] = ENV['REDMINE_API_KEY'] ? true : false
+  locals[:github_oauth_token] = ENV['GITHUB_OAUTH_TOKEN'] ? true : false
 
   erb :status, :locals => locals
 end
