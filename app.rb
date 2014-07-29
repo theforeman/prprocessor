@@ -18,6 +18,9 @@ post '/pull_request' do
 
   pull_request = PullRequest.new(payload['pull_request'])
   pr_number = pull_request.raw_data['number']
+  pr_action = payload['action']
+
+  halt if ['labeled', 'unlabeled'].include?(pr_action)
 
   pull_request.issue_numbers.each do |issue_number|
     issue = Issue.new(issue_number)
