@@ -14,8 +14,10 @@ class Project < RedmineResource
 
   def current_version
     versions = get_versions['versions']
+    versions = versions.select { |version| version['due_date'] }
+    versions.sort! { |a,b| a['due_date'] <=> b['due_date'] }
     versions.find do |version|
-      version['due_date'] && version['status'] == 'open' && Date.parse(version['due_date']) >= Date.today
+      version['status'] == 'open' && Date.parse(version['due_date']) >= Date.today
     end
   end
 
