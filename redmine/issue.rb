@@ -26,6 +26,10 @@ class Issue < RedmineResource
     ['Closed', 'Resolved', 'Rejected', 'Duplicate'].include? @raw_data['issue']['status']['name']
   end
 
+  def rejected?
+    ['Rejected', 'Duplicate'].include? @raw_data['issue']['status']['name']
+  end
+
   def set_status(status)
     @raw_data['issue']['status_id'] = status
     self
