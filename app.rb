@@ -24,6 +24,8 @@ post '/pull_request' do
 
   halt if ['labeled', 'unlabeled'].include?(pr_action)
 
+  pull_request.check_commits_style if ENV['REDMINE_ISSUE_REQUIRED_REPOS'].to_s.split.include? pull_request.repo
+
   pull_request.issue_numbers.each do |issue_number|
     issue = Issue.new(issue_number)
     project = Project.new(issue.project)
