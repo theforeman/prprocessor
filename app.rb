@@ -24,7 +24,7 @@ post '/pull_request' do
 
   halt if ['labeled', 'unlabeled'].include?(pr_action)
 
-  pull_request.check_commits_style if ENV['REDMINE_ISSUE_REQUIRED_REPOS'].to_s.split.include? pull_request.repo
+  pull_request.check_commits_style if redmine_issue_repos.find { |r| pull_request.repo.match(r) }
 
   pull_request.issue_numbers.each do |issue_number|
     issue = Issue.new(issue_number)
@@ -61,4 +61,8 @@ end
 def verify_signature(payload_body)
   signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), ENV['GITHUB_SECRET_TOKEN'], payload_body)
   return halt 500, "Signatures didn't match!" unless Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
+end
+
+def redmine_issue_repos
+  ENV['REDMINE_ISSUE_REQUIRED_REPOS'].to_s.split.map { |r| Regexp.new("\\A#{r}\\z") }
 end
