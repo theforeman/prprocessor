@@ -33,7 +33,7 @@ class PullRequest
   def check_commits_style
     warnings = ''
     @commits.each do |commit|
-      if (commit.commit.message =~ /\A(fixes|refs) #\d+(, ?#\d+)*(:| -) .*\Z/i) != 0
+      if (commit.commit.message.lines.first =~ /\A(fixes|refs) #\d+(, ?#\d+)*(:| -) .*\Z/i) != 0
         warnings += "  * #{commit.sha} must be in the format ```Fixes/refs #redmine_number - brief description```.\n"
       end
     end
