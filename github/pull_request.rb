@@ -53,7 +53,7 @@ EOM
   end
 
   def waiting_for_contributor?
-    labels.map { |label| label[:name] }.include? 'Waiting for contributor'
+    labels.map { |label| label[:name] }.include? 'Waiting on contributor'
   end
 
   def replace_labels(remove_labels, add_labels)

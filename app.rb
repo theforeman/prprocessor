@@ -40,7 +40,7 @@ post '/pull_request' do
   end
 
   if pr_action == 'synchronize' && pull_request.waiting_for_contributor?
-    pull_request.replace_labels(['Waiting for contributor'], ['Needs testing', 'Needs re-review'])
+    pull_request.replace_labels(['Waiting on contributor'], ['Needs testing', 'Needs re-review'])
   end
 
   pull_request.labels = ["Needs testing", "Not yet reviewed"] if pr_action == 'opened'
