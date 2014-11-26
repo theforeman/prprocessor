@@ -43,7 +43,7 @@ post '/pull_request' do
     pull_request.replace_labels(['Waiting for contributor'], ['Needs testing', 'Needs re-review'])
   end
 
-  pull_request.labels(["Needs testing", "Not yet reviewed"] ) if pr_action == 'opened'
+  pull_request.labels = ["Needs testing", "Not yet reviewed"] if pr_action == 'opened'
 
   jenkins = Jenkins.new
   jenkins.build(repo, pr_number)
