@@ -23,8 +23,10 @@ post '/pull_request' do
   pr_action = payload['action']
 
   halt if ['labeled', 'unlabeled'].include?(pr_action)
+  # also trigger for new PullRequestReviewCommentEvent containing [test]
+  halt if pr_action == 'created' && (!payload['comment'] || !payload['comment']['body'].include?('[test]'))
 
-  pull_request.check_commits_style if redmine_issue_repos.find { |r| pull_request.repo.match(r) }
+  pull_request.check_commits_style if redmine_issue_repos.find { |r| pull_request.repo.match(r) } && pr_action != 'created'
 
   pull_request.issue_numbers.each do |issue_number|
     issue = Issue.new(issue_number)
