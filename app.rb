@@ -13,7 +13,7 @@ post '/pull_request' do
   payload_body = request.body.read
   verify_signature(payload_body)
 
-  halt unless request.env['HTTP_X_GITHUB_EVENT'] == 'pull_request'
+  halt unless ['pull_request', 'pull_request_review_comment'].include?(request.env['HTTP_X_GITHUB_EVENT'])
 
   payload = JSON.parse(payload_body)
   raise "unknown repo" unless payload['repository'] && (repo = payload['repository']['name'])
