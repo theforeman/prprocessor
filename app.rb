@@ -46,14 +46,14 @@ post '/pull_request' do
   end
 
   pull_request.labels = ["Needs testing", "Not yet reviewed"] if pr_action == 'opened'
-  unless pull_request.mergeable?
+  if pull_request.dirty?
     message = <<EOM
-@#{pull_request.author}, this pull request is currently not mergeable. Please rebase against the develop branch and push again.
+@#{pull_request.author}, this pull request is currently not mergeable. Please rebase against the #{pull_request.target_branch} branch and push again.
 
 If you have a remote called 'upstream' that points to this repository, you can do this by running:
 
 ```
-    $ git pull --rebase upstream develop
+    $ git pull --rebase upstream #{pull_request.target_branch}
 ```
 
 ---------------------------------------

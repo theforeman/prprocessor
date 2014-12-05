@@ -25,12 +25,16 @@ class PullRequest
     @raw_data['created_at'] == @raw_data['updated_at']
   end
 
-  def mergeable?
-    @raw_data['mergeable']
+  def dirty?
+    @raw_data['mergeable_state'] == 'dirty' && @raw_data['mergeable'] == false
   end
 
   def author
     @raw_data['user']['login']
+  end
+
+  def target_branch
+    @raw_data['base']['ref']
   end
 
   def labels=(pr_labels)
