@@ -22,7 +22,7 @@ post '/pull_request' do
   pr_number = pull_request.raw_data['number']
   pr_action = payload['action']
 
-  halt if ['labeled', 'unlabeled'].include?(pr_action)
+  halt if ['closed', 'labeled', 'unlabeled'].include?(pr_action)
   # also trigger for new PullRequestReviewCommentEvent containing [test]
   halt if pr_action == 'created' && (!payload['comment'] || !payload['comment']['body'].include?('[test]'))
 
