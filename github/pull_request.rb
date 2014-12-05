@@ -25,6 +25,14 @@ class PullRequest
     @raw_data['created_at'] == @raw_data['updated_at']
   end
 
+  def mergeable?
+    @raw_data['mergeable']
+  end
+
+  def author
+    @raw_data['user']['login']
+  end
+
   def labels=(pr_labels)
     @client.add_labels_to_an_issue(@repo, @number, pr_labels)
   end
@@ -61,10 +69,7 @@ EOM
     self.labels = add_labels
   end
 
-  private
-
   def add_comment(message)
     @client.add_comment(@repo, @number, message)
   end
-
 end
