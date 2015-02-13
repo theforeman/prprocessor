@@ -69,11 +69,17 @@ EOM
   end
 
   def replace_labels(remove_labels, add_labels)
-    remove_labels.each { |label| @client.remove_label(@repo, @number, label) }
+    remove_labels.each { |label| remove_label(@repo, @number, label) }
     self.labels = add_labels
   end
 
   def add_comment(message)
     @client.add_comment(@repo, @number, message)
+  end
+
+  private
+
+  def remove_label(repo, number, label)
+    @client.delete "#{Octokit::Repository.path repo}/issues/#{number}/labels/#{label}"
   end
 end
