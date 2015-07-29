@@ -27,8 +27,6 @@ post '/pull_request' do
   # also trigger for new PullRequestReviewCommentEvent containing [test]
   halt if pr_action == 'created' && (!payload['comment'] || !payload['comment']['body'].include?('[test]'))
 
-  pull_request.check_commits_style if redmine_issue_repos.find { |r| pull_request.repo.match(r) } && pr_action != 'created'
-
   pull_request.issue_numbers.each do |issue_number|
     issue = Issue.new(issue_number)
     project = Project.new(issue.project)
@@ -49,6 +47,8 @@ post '/pull_request' do
       pull_request.replace_labels(['Waiting on contributor'], ['Needs testing', 'Needs re-review'])
     end
   end
+
+  pull_request.check_commits_style if redmine_issue_repos.find { |r| pull_request.repo.match(r) } && pr_action != 'created'
 
   pull_request.labels = ["Needs testing", "Not yet reviewed"] if pr_action == 'opened'
   if pull_request.dirty?
