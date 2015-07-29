@@ -67,6 +67,10 @@ EOM
     end
   end
 
+  def not_yet_reviewed?
+    labels.map { |label| label[:name] }.include? 'Not yet reviewed'
+  end
+
   def waiting_for_contributor?
     labels.map { |label| label[:name] }.include? 'Waiting on contributor'
   end
