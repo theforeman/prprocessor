@@ -46,6 +46,11 @@ class Issue < RedmineResource
     self
   end
 
+  def set_assigned(user_id)
+    @raw_data['issue']['assigned_to_id'] = user_id
+    self
+  end
+
   def save!
     put(@raw_data['issue']['id'], @raw_data)
   end
