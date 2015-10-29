@@ -61,7 +61,7 @@ post '/pull_request' do
       end
     end
 
-    pull_request.check_commits_style if redmine_issue_repos.find { |r| pull_request.repo.match(r) } && pr_action != 'created'
+    pull_request.check_commits_style if redmine_issue_repos.include?(pull_request.repo) && pr_action != 'created'
 
     pull_request.labels = ["Needs testing", "Not yet reviewed"] if pr_action == 'opened'
     if pull_request.dirty?
@@ -111,5 +111,5 @@ def verify_signature(payload_body)
 end
 
 def redmine_issue_repos
-  ENV['REDMINE_ISSUE_REQUIRED_REPOS'].to_s.split.map { |r| Regexp.new("\\A#{r}\\z") }
+  YAML.load_file('config/redmine_issue_required_repos.yaml')
 end
