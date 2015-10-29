@@ -1,5 +1,9 @@
 # Pull Request Processor for Foreman
 
+prprocessor is a web service which receives GitHub webhooks/notifications and helps sync PRs to Redmine and Jenkins.
+
+Documentation available [on the Foreman wiki](http://projects.theforeman.org/projects/foreman/wiki/PrProcessor).
+
 ## Environment Variables
 
 * `ENV['GITHUB_OAUTH_TOKEN']`: An OAuth token with repos access to update PR labels
