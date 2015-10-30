@@ -42,7 +42,7 @@ post '/pull_request' do
 
       unless issue.rejected?
         issue.set_version(current_version['id']) if issue.version.nil? && current_version
-        issue.set_pull_request(pull_request.raw_data['html_url']) if issue.pull_request.nil? || issue.pull_request.empty?
+        issue.add_pull_request(pull_request.raw_data['html_url'])
         issue.set_status(Issue::READY_FOR_TESTING) unless issue.closed?
         issue.set_assigned(user_id) unless user_id.nil? || user_id.empty?
         issue.save!

@@ -35,15 +35,21 @@ class Issue < RedmineResource
     self
   end
 
-  def pull_request
+  def pull_requests
     field = @raw_data['issue']['custom_fields'].find { |f| f['id'] == 7 }
     return nil if field.nil?
     field['value']
   end
 
-  def set_pull_request(url)
+  def set_pull_requests(url)
     @raw_data['issue']['custom_field_values'] = {'7' => url}
     self
+  end
+
+  def add_pull_request(url)
+    current_pull_requests = pull_requests
+    current_pull_requests << url
+    set_pull_requests(current_pull_requests)
   end
 
   def set_assigned(user_id)
