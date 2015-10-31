@@ -44,7 +44,7 @@ post '/pull_request' do
         issue.set_version(current_version['id']) if issue.version.nil? && current_version
         issue.add_pull_request(pull_request.raw_data['html_url'])
         issue.set_status(Issue::READY_FOR_TESTING) unless issue.closed?
-        issue.set_assigned(user_id) unless user_id.nil? || user_id.empty?
+        issue.set_assigned(user_id) unless user_id.nil? || user_id.empty? || issue.assigned_to
         issue.save!
 
         actions['redmine'] = true

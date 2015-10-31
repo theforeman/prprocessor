@@ -17,6 +17,10 @@ class Issue < RedmineResource
     @raw_data['issue']['fixed_version']['id'] if @raw_data['issue']['fixed_version']
   end
 
+  def assigned_to
+    @raw_data['issue']['assigned_to']['name'] if @raw_data['issue']['assigned_to']
+  end
+
   def set_version(version_id)
     @raw_data['issue']['fixed_version_id'] = version_id
     self
