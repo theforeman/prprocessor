@@ -4,6 +4,7 @@ require File.join(File.dirname(__FILE__), 'redmine_resource')
 class Issue < RedmineResource
 
   READY_FOR_TESTING = 7
+  FIELD_PULL_REQUEST = 7
 
   def base_path
     '/issues'
@@ -40,13 +41,13 @@ class Issue < RedmineResource
   end
 
   def pull_requests
-    field = @raw_data['issue']['custom_fields'].find { |f| f['id'] == 7 }
+    field = @raw_data['issue']['custom_fields'].find { |f| f['id'] == FIELD_PULL_REQUEST }
     return nil if field.nil?
     field['value']
   end
 
   def set_pull_requests(url)
-    @raw_data['issue']['custom_field_values'] = {'7' => url}
+    @raw_data['issue']['custom_field_values'] = {FIELD_PULL_REQUEST.to_s => url}
     self
   end
 
