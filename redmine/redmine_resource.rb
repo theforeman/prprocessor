@@ -28,11 +28,11 @@ class RedmineResource
   end
 
   def post(path, payload)
-    @resource[format_path(path)].post(payload)
+    @resource[format_path(path)].post(payload.to_json, :content_type => :json)
   end
 
   def put(path, payload)
-    @resource[format_path(path)].put(payload)
+    @resource[format_path(path)].put(payload.to_json, :content_type => :json)
   end
 
   def delete(path)
