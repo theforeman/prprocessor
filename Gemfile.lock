@@ -13,6 +13,7 @@ GEM
       rack
     rest_client (1.7.3)
       netrc (~> 0.7.7)
+    retriable (1.4.1)
     sawyer (0.6.0)
       addressable (~> 2.3.5)
       faraday (~> 0.8, < 0.10)
@@ -29,4 +30,5 @@ DEPENDENCIES
   octokit (~> 3.0)
   rack (>= 1.5.2)
   rest_client
+  retriable (~> 1.0)
   sinatra

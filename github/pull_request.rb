@@ -1,5 +1,5 @@
 require 'octokit'
-
+require 'retriable'
 
 class PullRequest
 
@@ -11,7 +11,11 @@ class PullRequest
     self.repo     = raw_data['base']['repo']['full_name']
     self.number   = raw_data['number']
     self.client   = Octokit::Client.new(:access_token => ENV['GITHUB_OAUTH_TOKEN'])
-    self.commits  = client.pull_commits(repo, number)
+
+    # Sometimes the GitHub API returns a 404 immediately after PR creation
+    Retriable.retriable :on => Octokit::NotFound, :interval => 2, :tries => 10 do
+      self.commits = client.pull_commits(repo, number)
+    end
 
     self.issue_numbers = []
     title.scan(/([\s\(\[,-]|^)(fixes|refs)[\s:]+(#\d+([\s,;&]+#\d+)*)(?=[[:punct:]]|\s|<|$)/i) do |match|
