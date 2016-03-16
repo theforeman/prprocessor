@@ -53,7 +53,7 @@ class PullRequest
     warnings = ''
     @commits.each do |commit|
       if (commit.commit.message.lines.first =~ /\A(fixes|refs) #\d+(, ?#\d+)*(:| -) .*\Z/i) != 0
-        warnings += "  * #{commit.sha} must be in the format ```fixes #redmine_number - brief description```.\n"
+        warnings += "  * #{commit.sha} must be in the format ```fixes #redmine_number - brief description```\n"
       end
     end
     message = <<EOM
