@@ -1,0 +1,21 @@
+---
+# list of github repositories
+:repos: ["theforeman/foreman"]
+
+# months to keep
+:keep: 6
+
+# maximum number of PRs closed in one run
+:max_closed: 5
+
+# labels to apply when closing
+:labels: ["Inactive"]
+
+# add comment to compliant PRs
+:add_comment: true
+
+# add labels to compliant PRs
+:add_labels: true
+
+# close the PRs
+:close: true
