@@ -1,9 +1,11 @@
 ---
 - theforeman/foreman
 - theforeman/smart-proxy
+- theforeman/foreman_chef
 - theforeman/foreman-docker
 - theforeman/foreman-selinux
 - theforeman/foreman-tasks
+- theforeman/smart_proxy_chef
 - theforeman/smart_proxy_dynflow
 - theforeman/smart_proxy_remote_execution_ssh
 - theforeman/foreman_remote_execution
