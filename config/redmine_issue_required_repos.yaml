@@ -5,8 +5,10 @@
 - theforeman/foreman-docker
 - theforeman/foreman-selinux
 - theforeman/foreman-tasks
+- theforeman/foreman_openscap
 - theforeman/smart_proxy_chef
 - theforeman/smart_proxy_dynflow
+- theforeman/smart_proxy_openscap
 - theforeman/smart_proxy_remote_execution_ssh
 - theforeman/foreman_remote_execution
 - Katello/katello
