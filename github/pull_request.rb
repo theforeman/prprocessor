@@ -55,11 +55,11 @@ class PullRequest
       if (commit.commit.message.lines.first =~ /\A(fixes|refs) #\d+(, ?#\d+)*(:| -) .*\Z/i) != 0
         warnings += "  * #{commit.sha} must be in the format ```fixes #redmine_number - brief description```\n"
       end
-      if commit.commit.message.lines.first.size > 65
+      if commit.commit.message.lines.first.chomp.size > 65
         warnings += "  * length of the first commit message line for #{commit.sha} exceeds 65 characters\n"
       end
       commit.commit.message.lines.each do |line|
-        if line.size > 72 && line !~ /^\s{4,}/
+        if line.chomp.size > 72 && line !~ /^\s{4,}/
           warnings += "  * commit message for #{commit.sha} is not wrapped at 72nd column\n"
         end
       end
