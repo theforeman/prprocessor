@@ -4,7 +4,8 @@ require 'uri'
 
 class PullRequest
 
-  attr_accessor :raw_data, :title, :issue_numbers, :repo, :number, :client, :commits
+  attr_accessor :raw_data, :title, :issue_numbers, :repo,
+    :number, :client, :commits, :redmine_project
 
   def initialize(raw_data)
     self.raw_data = raw_data
@@ -69,7 +70,7 @@ class PullRequest
 There were the following issues with the commit message:
 #{warnings}
 
-If you don't have a ticket number, please [create an issue in Redmine](http://projects.theforeman.org/projects/foreman/issues/new), selecting the appropriate project.
+If you don't have a ticket number, please [create an issue in Redmine](#{redmine_url}), selecting the appropriate project.
 
 More guidelines are available in [Coding Standards](http://theforeman.org/handbook.html#Codingstandards) or on [the Foreman wiki](http://projects.theforeman.org/projects/foreman/wiki/Reviewing_patches-commit_message_format).
 
@@ -97,5 +98,11 @@ EOM
 
   def add_comment(message)
     @client.add_comment(@repo, @number, message)
+  end
+
+  private
+
+  def redmine_url
+    "http://projects.theforeman.org/projects/#{redmine_project}/issues/new"
   end
 end
