@@ -1,5 +1,6 @@
 require 'octokit'
 require 'retriable'
+require 'uri'
 
 class PullRequest
 
@@ -59,7 +60,7 @@ class PullRequest
         warnings += "  * length of the first commit message line for #{commit.sha} exceeds 65 characters\n"
       end
       commit.commit.message.lines.each do |line|
-        if line.chomp.size > 72 && line !~ /^\s{4,}/
+        if line.chomp.sub(URI.regexp, '').size > 72 && line !~ /^\s{4,}/
           warnings += "  * commit message for #{commit.sha} is not wrapped at 72nd column\n"
         end
       end
