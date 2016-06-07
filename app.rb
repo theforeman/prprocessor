@@ -84,7 +84,7 @@ EOM
     actions['github'] = true
   end
 
-  if ENV['JENKINS_TOKEN']
+  if ENV['JENKINS_TOKEN'] && !pull_request.labels.include?("Work In Progress")
     jenkins = Jenkins.new
     jenkins.build(repo, pr_number)
     actions['jenkins'] = true
