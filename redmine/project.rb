@@ -8,6 +8,10 @@ class Project < RedmineResource
     '/projects'
   end
 
+  def name
+    @raw_data['project']['name']
+  end
+
   def get_versions
     get("#{@raw_data['project']['id']}/versions")
   end

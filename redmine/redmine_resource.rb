@@ -8,9 +8,8 @@ class RedmineResource
   attr_reader :resource
   attr_accessor :base_path, :raw_data
 
-  def initialize(path = nil)
+  def initialize(path = nil, key = ENV['REDMINE_API_KEY'])
     site = 'http://projects.theforeman.org/'
-    key = ENV['REDMINE_API_KEY']
 
     options = {}
     options[:headers] = {'X-Redmine-API-Key' => key} if key
