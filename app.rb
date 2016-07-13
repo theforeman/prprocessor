@@ -112,6 +112,16 @@ get '/status' do
   erb :status, :locals => locals
 end
 
+get '/logs' do
+  locals = {}
+
+  if (log_dir = ENV['OPENSHIFT_LOG_DIR'])
+    locals[:logs] = File.read("#{log_dir}/ruby.log")
+  end
+
+  erb :logs, :locals => locals
+end
+
 def verify_signature(payload_body)
   signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), ENV['GITHUB_SECRET_TOKEN'], payload_body)
   return halt 500, "Signatures didn't match!" unless Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
