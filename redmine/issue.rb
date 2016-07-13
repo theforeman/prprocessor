@@ -23,7 +23,7 @@ class Issue < RedmineResource
   end
 
   def release
-    @raw_data['issue']['release']['release']['name']
+    @raw_data['issue']['release']['release']['name'] if @raw_data['issue']['release'] && @raw_data['issue']['release']['release']
   end
 
   def set_version(version_id)
