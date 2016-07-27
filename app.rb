@@ -35,7 +35,6 @@ post '/pull_request' do
     pull_request.issue_numbers.each do |issue_number|
       issue = Issue.new(issue_number)
       project = Project.new(issue.project)
-      current_version = project.current_version
 
       users = YAML.load_file('config/users.yaml')
       user_id = users[pull_request.author] if users.key?(pull_request.author)
@@ -43,10 +42,6 @@ post '/pull_request' do
       unless issue.rejected?
         if project.name == 'Katello' && issue.release == 'Backlog'
           issue.set_release(nil)
-        end
-
-        if issue.version.nil? && current_version
-          issue.set_version(current_version['id'])
         end
 
         issue.add_pull_request(pull_request.raw_data['html_url'])
