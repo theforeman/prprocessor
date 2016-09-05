@@ -2,6 +2,6 @@
   <li>Jenkins Token Set: <%= jenkins_token %></li>
   <li>Github Secret Set: <%= github_secret %></li>
   <li>Redmine Key Set: <%= redmine_key %></li>
-  <li>Redmine Required Issue Repos: <%= redmine_issue_repos.inspect %></li>
+  <li>Redmine Required Issue Repos: <%= required_repos.inspect %></li>
   <li>GitHub rate limit: <%= rate_limit.remaining %> remaining of <%= rate_limit.limit %> (resets in <%= rate_limit.resets_in %> seconds)</li>
 </ul>

@@ -23,6 +23,7 @@ post '/pull_request' do
   raise "unknown repo" unless payload['repository'] && (repo = payload['repository']['name'])
 
   pull_request = PullRequest.new(payload['pull_request'])
+  pull_request.redmine_project = redmine_project_for_repo(pull_request.repo)
   pr_number = pull_request.raw_data['number']
   pr_action = payload['action']
 
@@ -101,7 +102,7 @@ get '/status' do
   locals[:github_secret] = ENV['GITHUB_SECRET_TOKEN'] ? true : false
   locals[:redmine_key] = ENV['REDMINE_API_KEY'] ? true : false
   locals[:github_oauth_token] = ENV['GITHUB_OAUTH_TOKEN'] ? true : false
-  locals[:redmine_issue_repos] = redmine_issue_repos
+  locals[:required_repos] = required_repos
   locals[:rate_limit] = Status.new.rate_limit
 
   erb :status, :locals => locals
@@ -113,5 +114,13 @@ def verify_signature(payload_body)
 end
 
 def redmine_issue_repos
-  YAML.load_file('config/redmine_issue_required_repos.yaml')
+  @redmine_issue_repos ||= YAML.load_file('config/redmine_issue_required_repos.yaml')
+end
+
+def required_repos
+  redmine_issue_repos.keys
+end
+
+def redmine_project_for_repo(repo)
+  redmine_issue_repos[repo]
 end
