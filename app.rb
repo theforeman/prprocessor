@@ -8,6 +8,7 @@ require File.join(File.dirname(__FILE__), 'redmine/project')
 require File.join(File.dirname(__FILE__), 'github/pull_request')
 require File.join(File.dirname(__FILE__), 'github/status')
 require File.join(File.dirname(__FILE__), 'jenkins')
+require File.join(File.dirname(__FILE__), 'repository')
 
 
 post '/pull_request' do
@@ -20,10 +21,11 @@ post '/pull_request' do
   halt unless ['pull_request', 'pull_request_review_comment'].include?(request.env['HTTP_X_GITHUB_EVENT'])
 
   payload = JSON.parse(payload_body)
-  raise "unknown repo" unless payload['repository'] && (repo = payload['repository']['name'])
+  raise "unknown repo" unless payload['repository'] && (repo_name = payload['repository']['full_name'])
+  raise "repo not configured" if Repository[repo_name].nil?
+  repo = Repository[repo_name]
 
-  pull_request = PullRequest.new(payload['pull_request'])
-  pull_request.redmine_project = redmine_project_for_repo(pull_request.repo)
+  pull_request = PullRequest.new(repo, payload['pull_request'])
   pr_number = pull_request.raw_data['number']
   pr_action = payload['action']
 
@@ -64,7 +66,7 @@ post '/pull_request' do
       end
     end
 
-    pull_request.check_commits_style if redmine_issue_repos.include?(pull_request.repo) && pr_action != 'created'
+    pull_request.check_commits_style if repo.redmine_required? && pr_action != 'created'
 
     pull_request.labels = ["Needs testing", "Not yet reviewed"] if pr_action == 'opened'
     if pull_request.dirty?
@@ -87,9 +89,9 @@ EOM
     actions['github'] = true
   end
 
-  if ENV['JENKINS_TOKEN']
+  if ENV['JENKINS_TOKEN'] && repo.pr_scanner?
     jenkins = Jenkins.new
-    jenkins.build(repo, pr_number)
+    jenkins.build(repo.name, pr_number)
     actions['jenkins'] = true
   end
 
@@ -102,25 +104,22 @@ get '/status' do
   locals[:github_secret] = ENV['GITHUB_SECRET_TOKEN'] ? true : false
   locals[:redmine_key] = ENV['REDMINE_API_KEY'] ? true : false
   locals[:github_oauth_token] = ENV['GITHUB_OAUTH_TOKEN'] ? true : false
-  locals[:required_repos] = required_repos
+  locals[:configured_repos] = Repository.all.keys
   locals[:rate_limit] = Status.new.rate_limit
 
   erb :status, :locals => locals
 end
 
+# Hash of Redmine projects to linked GitHub repos
+get '/redmine_repos' do
+  Repository.all.select { |repo,config| !config.redmine_project.nil? }.inject({}) do |output,(repo,config)|
+    output[config.redmine_project] ||= {}
+    output[config.redmine_project][repo] = config.branches
+    output
+  end.to_json
+end
+
 def verify_signature(payload_body)
   signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), ENV['GITHUB_SECRET_TOKEN'], payload_body)
   return halt 500, "Signatures didn't match!" unless Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
-end
-
-def redmine_issue_repos
-  @redmine_issue_repos ||= YAML.load_file('config/redmine_issue_required_repos.yaml')
-end
-
-def required_repos
-  redmine_issue_repos.keys
-end
-
-def redmine_project_for_repo(repo)
-  redmine_issue_repos[repo]
 end

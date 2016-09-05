@@ -1,0 +1,113 @@
+# github_project:
+#   branches: list of primary development branches, else uses repo default
+#   close_inactive: close PRs that are inactive for some time (default: false)
+#   pr_scanner: trigger the Jenkins PR scanner on PR updates (default: true)
+#   redmine: identifier of the Redmine project
+#   redmine_required: enforce commit message format to include Redmine ticket number (default: false)
+---
+theforeman/foreman:
+  close_inactive: true
+  pr_scanner: false
+  redmine: foreman
+  redmine_required: true
+theforeman/foreman_ansible:
+  redmine: ansible
+  redmine_required: true
+theforeman/foreman_azure:
+  pr_scanner: false
+  redmine: azure
+  redmine_required: true
+theforeman/foreman_bootdisk:
+  redmine: bootdisk
+theforeman/foreman_chef:
+  pr_scanner: false
+  redmine: chef
+  redmine_required: true
+theforeman/foreman-digitalocean:
+  redmine: digitalocean
+  redmine_required: true
+theforeman/foreman_discovery:
+  redmine: discovery
+theforeman/foreman-docker:
+  redmine: docker
+  redmine_required: true
+theforeman/foreman_expire_hosts:
+theforeman/foreman_host_extra_validator:
+theforeman/foreman_host_rundeck:
+  redmine: rundeck
+theforeman/foreman-installer:
+  pr_scanner: false
+  redmine: puppet-foreman
+theforeman/foreman_openscap:
+  redmine: foreman_openscap
+  redmine_required: true
+theforeman/foreman-packaging:
+  branches:
+    - deb/develop
+    - rpm/develop
+  redmine: rpms
+theforeman/foreman_pipeline:
+  redmine: pipeline
+theforeman/foreman_remote_execution:
+  redmine: foreman_remote_execution
+  redmine_required: true
+theforeman/foreman_salt:
+  redmine: salt
+theforeman/foreman-selinux:
+  pr_scanner: false
+  redmine: selinux
+  redmine_required: true
+theforeman/foreman_setup:
+  redmine: foreman_setup
+theforeman/foreman-tasks:
+  redmine: foreman-tasks
+  redmine_required: true
+theforeman/foreman_templates:
+  redmine: templates
+theforeman/hammer-cli:
+  redmine: hammer-cli
+theforeman/hammer-cli-foreman:
+  redmine: hammer-cli
+theforeman/hammer-cli-foreman-discovery:
+  redmine: discovery
+theforeman/kafo:
+  redmine: kafo
+theforeman/kafo_parsers:
+  redmine: kafo
+theforeman/smart-proxy:
+  redmine: smart-proxy
+  redmine_required: true
+theforeman/smart_proxy_abrt:
+  redmine: abrt
+theforeman/smart_proxy_ansible:
+  redmine: ansible
+  redmine_required: true
+theforeman/smart_proxy_chef:
+  redmine: chef
+  redmine_required: true
+theforeman/smart_proxy_discovery:
+  redmine: discovery
+theforeman/smart_proxy_dynflow:
+  redmine: foreman_remote_execution
+  redmine_required: true
+theforeman/smart_proxy_openscap:
+  redmine: smart-proxy-openscap
+  redmine_required: true
+theforeman/smart_proxy_pulp:
+theforeman/smart_proxy_remote_execution_ssh:
+  redmine: foreman_remote_execution
+  redmine_required: true
+Katello/bastion:
+  redmine: bastion
+  redmine_required: true
+Katello/hammer-cli-katello:
+  redmine: katello
+  redmine_required: true
+Katello/katello:
+  redmine: katello
+  redmine_required: true
+Katello/katello-installer:
+  redmine: katello
+  redmine_required: true
+Katello/katello-packaging:
+  redmine: katello-packaging

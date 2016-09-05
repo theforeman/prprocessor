@@ -3,6 +3,7 @@ require 'octokit'
 require 'pp'
 require 'date'
 require 'yaml'
+require File.join(File.dirname(__FILE__), '..', 'repository')
 
 CONFIG = {}
 CONFIG.merge!(YAML.load_file('config/close_inactive.yaml'))
@@ -15,7 +16,7 @@ Feel free to reopen when you return to it. This is an automated process.
 EOC
 
 c = Octokit::Client.new(:access_token => ENV['GITHUB_OAUTH_TOKEN'])
-CONFIG[:repos].each do |repo|
+Repository.all.select { |repo,config| config.close_inactive? }.each do |repo,config|
   query = "repo:#{repo} type:pr state:open label:\"Waiting on contributor\" updated:\"<#{THRESHOLD}\""
   result = c.search_issues(query, :per_page => CONFIG[:max_closed], :sort => 'updated_at', :order => 'asc')
   puts "Pull requests older than #{THRESHOLD}: #{result[:total_count]}"

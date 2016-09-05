@@ -5,18 +5,18 @@ require 'uri'
 class PullRequest
 
   attr_accessor :raw_data, :title, :issue_numbers, :repo,
-    :number, :client, :commits, :redmine_project
+    :number, :client, :commits
 
-  def initialize(raw_data)
+  def initialize(repo, raw_data)
+    self.repo     = repo
     self.raw_data = raw_data
     self.title    = raw_data['title']
-    self.repo     = raw_data['base']['repo']['full_name']
     self.number   = raw_data['number']
     self.client   = Octokit::Client.new(:access_token => ENV['GITHUB_OAUTH_TOKEN'])
 
     # Sometimes the GitHub API returns a 404 immediately after PR creation
     Retriable.retriable :on => Octokit::NotFound, :interval => 2, :tries => 10 do
-      self.commits = client.pull_commits(repo, number)
+      self.commits = client.pull_commits(repo.full_name, number)
     end
 
     self.issue_numbers = []
@@ -44,11 +44,11 @@ class PullRequest
   end
 
   def labels=(pr_labels)
-    @client.add_labels_to_an_issue(@repo, @number, pr_labels)
+    @client.add_labels_to_an_issue(repo.full_name, @number, pr_labels)
   end
 
   def labels
-    @client.labels_for_issue(@repo, @number)
+    @client.labels_for_issue(repo.full_name, @number)
   end
 
   def check_commits_style
@@ -92,17 +92,17 @@ EOM
   end
 
   def replace_labels(remove_labels, add_labels)
-    remove_labels.each { |label| @client.remove_label(@repo, @number, label) }
+    remove_labels.each { |label| @client.remove_label(repo.full_name, @number, label) }
     self.labels = add_labels
   end
 
   def add_comment(message)
-    @client.add_comment(@repo, @number, message)
+    @client.add_comment(repo.full_name, @number, message)
   end
 
   private
 
   def redmine_url
-    "http://projects.theforeman.org/projects/#{redmine_project}/issues/new"
+    "http://projects.theforeman.org/projects/#{repo.redmine_project}/issues/new"
   end
 end

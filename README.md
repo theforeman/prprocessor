@@ -13,5 +13,5 @@ Documentation available [on the Foreman wiki](http://projects.theforeman.org/pro
 
 ## Configuration Files
 
-* config/redmine_issue_required_repos.yaml: List of Redmine projects and GitHub repositories where commit titles must adhere to a standard and include a Redmine issue number.
+* config/repos.yaml: List of GitHub repositories managed by this service
 * config/users.yaml: List of GitHub usernames against Redmine user IDs to automatically assign tickets to PR authors.
