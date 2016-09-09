@@ -1,140 +1,138 @@
 # github_project:
 #   branches: list of primary development branches, else uses repo default
 #   close_inactive: close PRs that are inactive for some time (default: false)
-#   pr_scanner: trigger the Jenkins PR scanner on PR updates (default: true)
+#   pr_scanner: trigger the Jenkins PR scanner on PR updates (default: false)
 #   redmine: identifier of the Redmine project
 #   redmine_required: enforce commit message format to include Redmine ticket number (default: false)
 ---
 theforeman/chef-handler-foreman:
-  pr_scanner: false
   redmine: chef
 theforeman/community-templates:
-  pr_scanner: false
   redmine: foreman
 theforeman/foreman:
   close_inactive: true
-  pr_scanner: false
   redmine: foreman
   redmine_required: true
 theforeman/foreman_abrt:
-  pr_scanner: false
   redmine: abrt
 theforeman/foreman_ansible:
+  pr_scanner: true
   redmine: ansible
   redmine_required: true
 theforeman/foreman_azure:
-  pr_scanner: false
   redmine: azure
   redmine_required: true
 theforeman/foreman_bootdisk:
+  pr_scanner: true
   redmine: bootdisk
 theforeman/foreman_chef:
-  pr_scanner: false
   redmine: chef
   redmine_required: true
 theforeman/foreman_deployments:
-  pr_scanner: false
   redmine: deployments
 theforeman/foreman-digitalocean:
+  pr_scanner: true
   redmine: digitalocean
   redmine_required: true
 theforeman/foreman_discovery:
+  pr_scanner: true
   redmine: discovery
 theforeman/foreman-discovery-image:
-  pr_scanner: false
   redmine: discovery
 theforeman/foreman-docker:
+  pr_scanner: true
   redmine: docker
   redmine_required: true
 theforeman/foreman_expire_hosts:
+  pr_scanner: true
 theforeman/foreman_host_extra_validator:
+  pr_scanner: true
 theforeman/foreman_host_rundeck:
+  pr_scanner: true
   redmine: rundeck
 theforeman/foreman-installer:
-  pr_scanner: false
   redmine: puppet-foreman
 theforeman/foreman-one:
-  pr_scanner: false
   redmine: opennebula
 theforeman/foreman_openscap:
+  pr_scanner: true
   redmine: foreman_openscap
   redmine_required: true
 theforeman/foreman-packaging:
   branches:
     - deb/develop
     - rpm/develop
+  pr_scanner: true
   redmine: rpms
 theforeman/foreman_pipeline:
+  pr_scanner: true
   redmine: pipeline
 theforeman/foreman_remote_execution:
+  pr_scanner: true
   redmine: foreman_remote_execution
   redmine_required: true
 theforeman/foreman_salt:
+  pr_scanner: true
   redmine: salt
 theforeman/foreman-selinux:
-  pr_scanner: false
   redmine: selinux
   redmine_required: true
 theforeman/foreman_setup:
+  pr_scanner: true
   redmine: foreman_setup
 theforeman/foreman_snapshot:
-  pr_scanner: false
   redmine: snaphost
 theforeman/foreman-tasks:
+  pr_scanner: true
   redmine: foreman-tasks
   redmine_required: true
 theforeman/foreman_templates:
+  pr_scanner: true
   redmine: templates
 theforeman/foreman-xen:
-  pr_scanner: false
   redmine: xen
 theforeman/hammer-cli:
+  pr_scanner: true
   redmine: hammer-cli
 theforeman/hammer-cli-foreman:
+  pr_scanner: true
   redmine: hammer-cli
 theforeman/hammer_cli_foreman_bootdisk:
-  pr_scanner: false
   redmine: bootdisk
 theforeman/hammer-cli-foreman-discovery:
+  pr_scanner: true
   redmine: discovery
 theforeman/hammer_cli_foreman_docker:
-  pr_scanner: false
   redmine: docker
 theforeman/hammer_cli_foreman_remote_execution:
-  pr_scanner: false
   redmine: foreman_remote_execution
 theforeman/hammer-cli-foreman-tasks:
-  pr_scanner: false
   redmine: foreman-tasks
 theforeman/kafo:
+  pr_scanner: true
   redmine: kafo
 theforeman/kafo_parsers:
+  pr_scanner: true
   redmine: kafo
 theforeman/puppet-dhcp:
-  pr_scanner: false
   redmine: puppet-foreman
 theforeman/puppet-dns:
-  pr_scanner: false
   redmine: puppet-foreman
 theforeman/puppet-foreman:
-  pr_scanner: false
   redmine: puppet-foreman
 theforeman/puppet-foreman_proxy:
-  pr_scanner: false
   redmine: puppet-foreman
 theforeman/puppet-git:
-  pr_scanner: false
   redmine: puppet-foreman
 theforeman/puppet-puppet:
-  pr_scanner: false
   redmine: puppet-foreman
 theforeman/puppet-tftp:
-  pr_scanner: false
   redmine: puppet-foreman
 theforeman/smart-proxy:
   redmine: smart-proxy
   redmine_required: true
 theforeman/smart_proxy_abrt:
+  pr_scanner: true
   redmine: abrt
 theforeman/smart_proxy_ansible:
   redmine: ansible
@@ -143,83 +141,72 @@ theforeman/smart_proxy_chef:
   redmine: chef
   redmine_required: true
 theforeman/smart_proxy_dhcp_infoblox:
-  pr_scanner: false
   redmine: infoblox
 theforeman/smart_proxy_discovery:
+  pr_scanner: true
   redmine: discovery
 theforeman/smart_proxy_discovery_image:
-  pr_scanner: false
   redmine: discovery
 theforeman/smart_proxy_dns_infoblox:
-  pr_scanner: false
   redmine: infoblox
 theforeman/smart_proxy_dynflow:
+  pr_scanner: true
   redmine: foreman_remote_execution
   redmine_required: true
 theforeman/smart_proxy_openscap:
   redmine: smart-proxy-openscap
   redmine_required: true
 theforeman/smart_proxy_pulp:
+  pr_scanner: true
   redmine: katello
 theforeman/smart_proxy_remote_execution_ssh:
+  pr_scanner: true
   redmine: foreman_remote_execution
   redmine_required: true
 theforeman/smart_proxy_salt:
-  pr_scanner: false
   redmine: salt
 theforeman/theforeman.org:
-  pr_scanner: false
   redmine: foreman-website
 Katello/bastion:
+  pr_scanner: true
   redmine: bastion
   redmine_required: true
 Katello/foreman-gutterball:
-  pr_scanner: false
   redmine: katello
 Katello/foreman_sam:
-  pr_scanner: false
   redmine: katello
 Katello/hammer-cli-csv:
-  pr_scanner: false
   redmine: hammer-cli-csv
 Katello/hammer-cli-gutterball:
-  pr_scanner: false
   redmine: gutterball
 Katello/hammer-cli-import:
-  pr_scanner: false
   redmine: hammer-cli-import
 Katello/hammer-cli-katello:
   redmine: katello
   redmine_required: true
 Katello/hammer-cli-sam:
-  pr_scanner: false
   redmine: katello
 Katello/katello:
+  pr_scanner: true
   redmine: katello
   redmine_required: true
 Katello/katello-agent:
-  pr_scanner: false
   redmine: katello
 Katello/katello-installer:
   redmine: katello
   redmine_required: true
 Katello/katello-packaging:
+  pr_scanner: true
   redmine: katello-packaging
 Katello/katello-selinux:
-  pr_scanner: false
   redmine: katello
 Katello/katello.org:
-  pr_scanner: false
   redmine: katello
 Katello/puppet-capsule:
-  pr_scanner: false
   redmine: katello
 Katello/puppet-certs:
-  pr_scanner: false
   redmine: katello
 Katello/puppet-katello:
-  pr_scanner: false
   redmine: katello
 ohadlevy/stacker:
-  pr_scanner: false
   redmine: stacker

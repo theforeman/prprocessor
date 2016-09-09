@@ -41,7 +41,7 @@ class Repository
   end
 
   def pr_scanner?
-    !!@config.fetch('pr_scanner', true)
+    !!@config.fetch('pr_scanner', false)
   end
 
   def redmine_project
