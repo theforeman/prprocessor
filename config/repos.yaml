@@ -6,8 +6,10 @@
 #   redmine_required: enforce commit message format to include Redmine ticket number (default: false)
 ---
 theforeman/chef-handler-foreman:
+  pr_scanner: false
   redmine: chef
 theforeman/community-templates:
+  pr_scanner: false
   redmine: foreman
 theforeman/foreman:
   close_inactive: true
@@ -15,6 +17,7 @@ theforeman/foreman:
   redmine: foreman
   redmine_required: true
 theforeman/foreman_abrt:
+  pr_scanner: false
   redmine: abrt
 theforeman/foreman_ansible:
   redmine: ansible
@@ -30,6 +33,7 @@ theforeman/foreman_chef:
   redmine: chef
   redmine_required: true
 theforeman/foreman_deployments:
+  pr_scanner: false
   redmine: deployments
 theforeman/foreman-digitalocean:
   redmine: digitalocean
@@ -37,6 +41,7 @@ theforeman/foreman-digitalocean:
 theforeman/foreman_discovery:
   redmine: discovery
 theforeman/foreman-discovery-image:
+  pr_scanner: false
   redmine: discovery
 theforeman/foreman-docker:
   redmine: docker
@@ -49,6 +54,7 @@ theforeman/foreman-installer:
   pr_scanner: false
   redmine: puppet-foreman
 theforeman/foreman-one:
+  pr_scanner: false
   redmine: opennebula
 theforeman/foreman_openscap:
   redmine: foreman_openscap
@@ -72,6 +78,7 @@ theforeman/foreman-selinux:
 theforeman/foreman_setup:
   redmine: foreman_setup
 theforeman/foreman_snapshot:
+  pr_scanner: false
   redmine: snaphost
 theforeman/foreman-tasks:
   redmine: foreman-tasks
@@ -79,38 +86,50 @@ theforeman/foreman-tasks:
 theforeman/foreman_templates:
   redmine: templates
 theforeman/foreman-xen:
+  pr_scanner: false
   redmine: xen
 theforeman/hammer-cli:
   redmine: hammer-cli
 theforeman/hammer-cli-foreman:
   redmine: hammer-cli
 theforeman/hammer_cli_foreman_bootdisk:
+  pr_scanner: false
   redmine: bootdisk
 theforeman/hammer-cli-foreman-discovery:
   redmine: discovery
 theforeman/hammer_cli_foreman_docker:
+  pr_scanner: false
   redmine: docker
 theforeman/hammer_cli_foreman_remote_execution:
+  pr_scanner: false
   redmine: foreman_remote_execution
 theforeman/hammer-cli-foreman-tasks:
+  pr_scanner: false
   redmine: foreman-tasks
 theforeman/kafo:
   redmine: kafo
 theforeman/kafo_parsers:
   redmine: kafo
 theforeman/puppet-dhcp:
+  pr_scanner: false
   redmine: puppet-foreman
 theforeman/puppet-dns:
+  pr_scanner: false
   redmine: puppet-foreman
 theforeman/puppet-foreman:
+  pr_scanner: false
   redmine: puppet-foreman
 theforeman/puppet-foreman_proxy:
+  pr_scanner: false
   redmine: puppet-foreman
 theforeman/puppet-git:
+  pr_scanner: false
   redmine: puppet-foreman
 theforeman/puppet-puppet:
+  pr_scanner: false
   redmine: puppet-foreman
 theforeman/puppet-tftp:
+  pr_scanner: false
   redmine: puppet-foreman
 theforeman/smart-proxy:
   redmine: smart-proxy
@@ -124,12 +143,15 @@ theforeman/smart_proxy_chef:
   redmine: chef
   redmine_required: true
 theforeman/smart_proxy_dhcp_infoblox:
+  pr_scanner: false
   redmine: infoblox
 theforeman/smart_proxy_discovery:
   redmine: discovery
 theforeman/smart_proxy_discovery_image:
+  pr_scanner: false
   redmine: discovery
 theforeman/smart_proxy_dns_infoblox:
+  pr_scanner: false
   redmine: infoblox
 theforeman/smart_proxy_dynflow:
   redmine: foreman_remote_execution
@@ -143,31 +165,40 @@ theforeman/smart_proxy_remote_execution_ssh:
   redmine: foreman_remote_execution
   redmine_required: true
 theforeman/smart_proxy_salt:
+  pr_scanner: false
   redmine: salt
 theforeman/theforeman.org:
+  pr_scanner: false
   redmine: foreman-website
 Katello/bastion:
   redmine: bastion
   redmine_required: true
 Katello/foreman-gutterball:
+  pr_scanner: false
   redmine: katello
 Katello/foreman_sam:
+  pr_scanner: false
   redmine: katello
 Katello/hammer-cli-csv:
+  pr_scanner: false
   redmine: hammer-cli-csv
 Katello/hammer-cli-gutterball:
+  pr_scanner: false
   redmine: gutterball
 Katello/hammer-cli-import:
+  pr_scanner: false
   redmine: hammer-cli-import
 Katello/hammer-cli-katello:
   redmine: katello
   redmine_required: true
 Katello/hammer-cli-sam:
+  pr_scanner: false
   redmine: katello
 Katello/katello:
   redmine: katello
   redmine_required: true
 Katello/katello-agent:
+  pr_scanner: false
   redmine: katello
 Katello/katello-installer:
   redmine: katello
@@ -175,14 +206,20 @@ Katello/katello-installer:
 Katello/katello-packaging:
   redmine: katello-packaging
 Katello/katello-selinux:
+  pr_scanner: false
   redmine: katello
 Katello/katello.org:
+  pr_scanner: false
   redmine: katello
 Katello/puppet-capsule:
+  pr_scanner: false
   redmine: katello
 Katello/puppet-certs:
+  pr_scanner: false
   redmine: katello
 Katello/puppet-katello:
+  pr_scanner: false
   redmine: katello
 ohadlevy/stacker:
+  pr_scanner: false
   redmine: stacker
