@@ -5,11 +5,17 @@
 #   redmine: identifier of the Redmine project
 #   redmine_required: enforce commit message format to include Redmine ticket number (default: false)
 ---
+theforeman/chef-handler-foreman:
+  redmine: chef
+theforeman/community-templates:
+  redmine: foreman
 theforeman/foreman:
   close_inactive: true
   pr_scanner: false
   redmine: foreman
   redmine_required: true
+theforeman/foreman_abrt:
+  redmine: abrt
 theforeman/foreman_ansible:
   redmine: ansible
   redmine_required: true
@@ -23,10 +29,14 @@ theforeman/foreman_chef:
   pr_scanner: false
   redmine: chef
   redmine_required: true
+theforeman/foreman_deployments:
+  redmine: deployments
 theforeman/foreman-digitalocean:
   redmine: digitalocean
   redmine_required: true
 theforeman/foreman_discovery:
+  redmine: discovery
+theforeman/foreman-discovery-image:
   redmine: discovery
 theforeman/foreman-docker:
   redmine: docker
@@ -38,6 +48,8 @@ theforeman/foreman_host_rundeck:
 theforeman/foreman-installer:
   pr_scanner: false
   redmine: puppet-foreman
+theforeman/foreman-one:
+  redmine: opennebula
 theforeman/foreman_openscap:
   redmine: foreman_openscap
   redmine_required: true
@@ -59,21 +71,47 @@ theforeman/foreman-selinux:
   redmine_required: true
 theforeman/foreman_setup:
   redmine: foreman_setup
+theforeman/foreman_snapshot:
+  redmine: snaphost
 theforeman/foreman-tasks:
   redmine: foreman-tasks
   redmine_required: true
 theforeman/foreman_templates:
   redmine: templates
+theforeman/foreman-xen:
+  redmine: xen
 theforeman/hammer-cli:
   redmine: hammer-cli
 theforeman/hammer-cli-foreman:
   redmine: hammer-cli
+theforeman/hammer_cli_foreman_bootdisk:
+  redmine: bootdisk
 theforeman/hammer-cli-foreman-discovery:
   redmine: discovery
+theforeman/hammer_cli_foreman_docker:
+  redmine: docker
+theforeman/hammer_cli_foreman_remote_execution:
+  redmine: foreman_remote_execution
+theforeman/hammer-cli-foreman-tasks:
+  redmine: foreman-tasks
 theforeman/kafo:
   redmine: kafo
 theforeman/kafo_parsers:
   redmine: kafo
+theforeman/puppet-dhcp:
+  redmine: puppet-foreman
+theforeman/puppet-dns:
+  redmine: puppet-foreman
+theforeman/puppet-foreman:
+  redmine: puppet-foreman
+theforeman/puppet-foreman_proxy:
+  redmine: puppet-foreman
+theforeman/puppet-git:
+  redmine: puppet-foreman
+theforeman/puppet-puppet:
+  redmine: puppet-foreman
+theforeman/puppet-tftp:
+  redmine: puppet-foreman
 theforeman/smart-proxy:
   redmine: smart-proxy
   redmine_required: true
@@ -85,8 +123,14 @@ theforeman/smart_proxy_ansible:
 theforeman/smart_proxy_chef:
   redmine: chef
   redmine_required: true
+theforeman/smart_proxy_dhcp_infoblox:
+  redmine: infoblox
 theforeman/smart_proxy_discovery:
   redmine: discovery
+theforeman/smart_proxy_discovery_image:
+  redmine: discovery
+theforeman/smart_proxy_dns_infoblox:
+  redmine: infoblox
 theforeman/smart_proxy_dynflow:
   redmine: foreman_remote_execution
   redmine_required: true
@@ -94,20 +138,51 @@ theforeman/smart_proxy_openscap:
   redmine: smart-proxy-openscap
   redmine_required: true
 theforeman/smart_proxy_pulp:
+  redmine: katello
 theforeman/smart_proxy_remote_execution_ssh:
   redmine: foreman_remote_execution
   redmine_required: true
+theforeman/smart_proxy_salt:
+  redmine: salt
+theforeman/theforeman.org:
+  redmine: foreman-website
 Katello/bastion:
   redmine: bastion
   redmine_required: true
+Katello/foreman-gutterball:
+  redmine: katello
+Katello/foreman_sam:
+  redmine: katello
+Katello/hammer-cli-csv:
+  redmine: hammer-cli-csv
+Katello/hammer-cli-gutterball:
+  redmine: gutterball
+Katello/hammer-cli-import:
+  redmine: hammer-cli-import
 Katello/hammer-cli-katello:
   redmine: katello
   redmine_required: true
+Katello/hammer-cli-sam:
+  redmine: katello
 Katello/katello:
   redmine: katello
   redmine_required: true
+Katello/katello-agent:
+  redmine: katello
 Katello/katello-installer:
   redmine: katello
   redmine_required: true
 Katello/katello-packaging:
   redmine: katello-packaging
+Katello/katello-selinux:
+  redmine: katello
+Katello/katello.org:
+  redmine: katello
+Katello/puppet-capsule:
+  redmine: katello
+Katello/puppet-certs:
+  redmine: katello
+Katello/puppet-katello:
+  redmine: katello
+ohadlevy/stacker:
+  redmine: stacker
