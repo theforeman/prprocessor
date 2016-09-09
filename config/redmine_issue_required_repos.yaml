@@ -10,6 +10,7 @@ theforeman/foreman-digitalocean: digitalocean
 theforeman/foreman-selinux: selinux
 theforeman/foreman-tasks: foreman-tasks
 theforeman/foreman_openscap: foreman_openscap
+theforeman/smart_proxy_ansible: ansible
 theforeman/smart_proxy_chef: chef
 theforeman/smart_proxy_dynflow: foreman_remote_execution
 theforeman/smart_proxy_openscap: smart-proxy-openscap
