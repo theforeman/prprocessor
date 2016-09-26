@@ -154,7 +154,7 @@ theforeman/smart_proxy_dynflow:
   redmine: foreman_remote_execution
   redmine_required: true
 theforeman/smart_proxy_openscap:
-  redmine: smart-proxy-openscap
+  redmine: foreman_openscap
   redmine_required: true
 theforeman/smart_proxy_pulp:
   pr_scanner: true
