@@ -3,7 +3,7 @@ require 'octokit'
 require 'pp'
 require 'date'
 require 'yaml'
-require File.join(File.dirname(__FILE__), '..', 'repository')
+require File.expand_path(File.join('..', '..', 'repository'), __FILE__)
 
 CONFIG = {}
 CONFIG.merge!(YAML.load_file('config/close_inactive.yaml'))
