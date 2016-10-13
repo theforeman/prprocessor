@@ -20,10 +20,11 @@ post '/pull_request' do
 
   event = request.env['HTTP_X_GITHUB_EVENT']
   halt unless ['pull_request', 'pull_request_review', 'pull_request_review_comment'].include?(event)
+
+  payload = JSON.parse(payload_body)
   action = payload['action']
   event_act = "#{event}/#{action}"
 
-  payload = JSON.parse(payload_body)
   raise "unknown repo" unless payload['repository'] && (repo_name = payload['repository']['full_name'])
   raise "repo not configured" if Repository[repo_name].nil?
   repo = Repository[repo_name]
