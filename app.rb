@@ -18,7 +18,10 @@ post '/pull_request' do
   payload_body = request.body.read
   verify_signature(payload_body)
 
-  halt unless ['pull_request', 'pull_request_review_comment'].include?(request.env['HTTP_X_GITHUB_EVENT'])
+  event = request.env['HTTP_X_GITHUB_EVENT']
+  halt unless ['pull_request', 'pull_request_review', 'pull_request_review_comment'].include?(event)
+  action = payload['action']
+  event_act = "#{event}/#{action}"
 
   payload = JSON.parse(payload_body)
   raise "unknown repo" unless payload['repository'] && (repo_name = payload['repository']['full_name'])
@@ -27,11 +30,10 @@ post '/pull_request' do
 
   pull_request = PullRequest.new(repo, payload['pull_request'])
   pr_number = pull_request.raw_data['number']
-  pr_action = payload['action']
 
-  halt if ['closed', 'labeled', 'unlabeled'].include?(pr_action)
+  halt if event == 'pull_request' && ['closed', 'labeled', 'unlabeled'].include?(action)
   # also trigger for new PullRequestReviewCommentEvent containing [test]
-  halt if pr_action == 'created' && (!payload['comment'] || !payload['comment']['body'].include?('[test]'))
+  halt if event_act == 'pull_request_review_comment/created' && (!payload['comment'] || !payload['comment']['body'].include?('[test]'))
 
   if ENV['REDMINE_API_KEY']
 
@@ -58,7 +60,7 @@ post '/pull_request' do
   end
 
   if ENV['GITHUB_OAUTH_TOKEN']
-    if pr_action == 'synchronize' && pull_request.waiting_for_contributor?
+    if event_act == 'pull_request/synchronize' && pull_request.waiting_for_contributor?
       if pull_request.not_yet_reviewed?
         pull_request.replace_labels(['Waiting on contributor'], ['Needs testing'])
       else
@@ -66,9 +68,14 @@ post '/pull_request' do
       end
     end
 
-    pull_request.check_commits_style if repo.redmine_required? && pr_action != 'created'
+    pull_request.check_commits_style if repo.redmine_required? && (event_act == 'pull_request/opened' || event_act == 'pull_request/synchronize')
 
-    pull_request.labels = ["Needs testing", "Not yet reviewed"] if pr_action == 'opened'
+    pull_request.labels = ["Needs testing", "Not yet reviewed"] if event_act == 'pull_request/opened'
+
+    if event_act == 'pull_request_review/submitted' && payload['review']['state'] == 'rejected'
+      pull_request.replace_labels(['Not yet reviewed', 'Needs re-review'], ['Waiting on contributor'])
+    end
+
     if pull_request.dirty?
       message = <<EOM
 @#{pull_request.author}, this pull request is currently not mergeable. Please rebase against the #{pull_request.target_branch} branch and push again.
