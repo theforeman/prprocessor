@@ -8,6 +8,10 @@ class Project < RedmineResource
     '/projects'
   end
 
+  def identifier
+    @raw_data['project']['identifier']
+  end
+
   def name
     @raw_data['project']['name']
   end

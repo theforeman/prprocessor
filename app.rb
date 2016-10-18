@@ -44,7 +44,7 @@ post '/pull_request' do
       users = YAML.load_file('config/users.yaml')
       user_id = users[pull_request.author] if users.key?(pull_request.author)
 
-      if project.name != repo.redmine_project
+      if project.identifier != repo.redmine_project
         if ENV['GITHUB_OAUTH_TOKEN']
           message = <<EOM
 @#{pull_request.author}, the Redmine ticket used is for a different project than the one associated with this GitHub repository. Please either:
