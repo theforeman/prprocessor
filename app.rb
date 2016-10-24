@@ -36,7 +36,7 @@ post '/pull_request' do
   # also trigger for new PullRequestReviewCommentEvent containing [test]
   halt if event_act == 'pull_request_review_comment/created' && (!payload['comment'] || !payload['comment']['body'].include?('[test]'))
 
-  if ENV['REDMINE_API_KEY']
+  if ENV['REDMINE_API_KEY'] && !repo.redmine_project.nil?
     pull_request.issue_numbers.each do |issue_number|
       issue = Issue.new(issue_number)
       project = Project.new(issue.project)
