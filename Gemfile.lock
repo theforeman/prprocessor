@@ -4,6 +4,9 @@ GEM
     addressable (2.3.7)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
+    jgrep (1.4.1)
+      json
+    json (1.8.3)
     multipart-post (2.0.0)
     netrc (0.7.7)
     octokit (3.7.1)
@@ -27,8 +30,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  jgrep
+  json (~> 1.0)
   octokit (~> 3.0)
   rack (>= 1.5.2)
   rest_client
   retriable (~> 1.0)
   sinatra
+
+BUNDLED WITH
+   1.13.0

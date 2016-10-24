@@ -4,3 +4,5 @@ gem 'sinatra'
 gem 'rest_client'
 gem "octokit", "~> 3.0"
 gem 'retriable', '~> 1.0'
+gem 'json', '~> 1.0'
+gem 'jgrep'
