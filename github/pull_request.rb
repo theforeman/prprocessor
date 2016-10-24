@@ -43,8 +43,12 @@ class PullRequest
     @raw_data['base']['ref']
   end
 
+  def known_labels
+    @known_labels ||= @client.labels(repo.full_name).map(&:name)
+  end
+
   def labels=(pr_labels)
-    @client.add_labels_to_an_issue(repo.full_name, @number, pr_labels)
+    @client.add_labels_to_an_issue(repo.full_name, @number, pr_labels & known_labels)
   end
 
   def labels
