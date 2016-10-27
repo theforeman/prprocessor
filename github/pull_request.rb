@@ -19,11 +19,15 @@ class PullRequest
       self.commits = client.pull_commits(repo.full_name, number)
     end
 
+    # Find issue numbers from the most recent commit containing them
     self.issue_numbers = []
-    title.scan(/([\s\(\[,-]|^)(fixes|refs)[\s:]+(#\d+([\s,;&]+#\d+)*)(?=[[:punct:]]|\s|<|$)/i) do |match|
-      action, refs = match[1].to_s.downcase, match[2]
-      next if action.empty?
-      refs.scan(/#(\d+)/).each { |m| self.issue_numbers << m[0].to_i }
+    commits.reverse_each do |commit|
+      commit.commit.message.scan(/([\s\(\[,-]|^)(fixes|refs)[\s:]+(#\d+([\s,;&]+#\d+)*)(?=[[:punct:]]|\s|<|$)/i) do |match|
+        action, refs = match[1].to_s.downcase, match[2]
+        next if action.empty?
+        refs.scan(/#(\d+)/).each { |m| self.issue_numbers << m[0].to_i }
+      end
+      break if !self.issue_numbers.empty?
     end
   end
 
