@@ -78,7 +78,7 @@ class PullRequest
 There were the following issues with the commit message:
 #{warnings}
 
-If you don't have a ticket number, please [create an issue in Redmine](#{redmine_url}), selecting the appropriate project.
+If you don't have a ticket number, please [create an issue in Redmine](#{redmine_url}).
 
 More guidelines are available in [Coding Standards](http://theforeman.org/handbook.html#Codingstandards) or on [the Foreman wiki](http://projects.theforeman.org/projects/foreman/wiki/Reviewing_patches-commit_message_format).
 
