@@ -40,6 +40,10 @@ class Repository
     full_name.split('/').first
   end
 
+  def permitted_refs
+    @config.fetch('refs', [])
+  end
+
   def pr_scanner?
     !!@config.fetch('pr_scanner', false)
   end

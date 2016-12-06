@@ -5,6 +5,7 @@
 #   redmine: identifier of the Redmine project, optional unless redmine_required=true
 #            assigns PRs to tickets, enforces ticket matches project when present
 #   redmine_required: enforce commit message format to include Redmine ticket number (default: false)
+#   refs: optional list of Redmine projects that commits here can "refs" (default: [])
 ---
 theforeman/chef-handler-foreman:
   redmine: chef
@@ -65,6 +66,10 @@ theforeman/foreman-packaging:
     - rpm/develop
   pr_scanner: true
   redmine: rpms
+  refs:
+    - foreman
+    - puppet-foreman
+    - selinux
 theforeman/foreman_pipeline:
   pr_scanner: true
   redmine: pipeline

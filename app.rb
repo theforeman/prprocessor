@@ -44,7 +44,7 @@ post '/pull_request' do
       users = YAML.load_file('config/users.yaml')
       user_id = users[pull_request.author] if users.key?(pull_request.author)
 
-      if project.identifier != repo.redmine_project
+      unless ([repo.redmine_project] + repo.permitted_refs).include?(project.identifier)
         if ENV['GITHUB_OAUTH_TOKEN']
           correct_project = Project.new(repo.redmine_project)
           message = <<EOM
