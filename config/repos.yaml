@@ -54,6 +54,8 @@ theforeman/foreman_host_rundeck:
   redmine: rundeck
 theforeman/foreman-installer:
   redmine: puppet-foreman
+theforeman/foreman_monitoring:
+  pr_scanner: true
 theforeman/foreman-one:
   redmine: opennebula
 theforeman/foreman_openscap:
@@ -160,6 +162,8 @@ theforeman/smart_proxy_dynflow:
   pr_scanner: true
   redmine: foreman_remote_execution
   redmine_required: true
+theforeman/smart_proxy_monitoring:
+  pr_scanner: true
 theforeman/smart_proxy_openscap:
   redmine: foreman_openscap
   redmine_required: true
