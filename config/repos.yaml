@@ -169,6 +169,7 @@ theforeman/smart_proxy_monitoring:
 theforeman/smart_proxy_omaha:
   pr_scanner: true
 theforeman/smart_proxy_openscap:
+  pr_scanner: true
   redmine: foreman_openscap
   redmine_required: true
 theforeman/smart_proxy_pulp:
