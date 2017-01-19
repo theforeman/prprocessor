@@ -163,6 +163,16 @@ EOM
     @client.create_status(repo.full_name, options[:sha], state, context: 'prprocessor', description: message, target_url: options[:url])
   end
 
+  def set_directory_labels(mapping)
+    files = client.pull_files(repo.full_name, number)
+    desired_labels = files.collect { |f| mapping[f.filename.split("/").first] }.compact.unique
+
+    to_remove = (labels & mapping.keys) - desired_labels
+    to_add = desired_labels - labels
+
+    replace_labels(to_remove, to_add)
+  end
+
   private
 
   def redmine_url

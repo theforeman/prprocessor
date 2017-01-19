@@ -11,6 +11,10 @@ theforeman/chef-handler-foreman:
   redmine: chef
 theforeman/community-templates:
   redmine: foreman
+  directory_labels:
+    job_templates: Remote execution
+    partition_tables_templates: Provisioning
+    provisioning_templates: Provisioning
 theforeman/foreman:
   close_inactive: true
   redmine: foreman

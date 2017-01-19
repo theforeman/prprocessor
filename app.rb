@@ -117,6 +117,8 @@ EOM
       pull_request.add_comment(message)
     end
 
+    pull_request.set_directory_labels(repo.directory_labels) if repo.directory_labels?
+
     actions['github'] = true
   end
 
