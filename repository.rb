@@ -59,4 +59,12 @@ class Repository
   def link_to_redmine?
     @config['link_to_redmine']
   end
+
+  def directory_labels
+    @config['directory_labels']
+  end
+
+  def directory_labels?
+    @config['directory_labels']
+  end
 end
