@@ -4,8 +4,7 @@ require 'uri'
 
 class PullRequest
 
-  attr_accessor :raw_data, :title, :issue_numbers, :repo,
-    :number, :client, :commits
+  attr_accessor :raw_data, :title, :repo, :number, :client
 
   def initialize(repo, raw_data, client)
     self.repo     = repo
@@ -13,22 +12,6 @@ class PullRequest
     self.title    = raw_data['title']
     self.number   = raw_data['number']
     self.client   = client
-
-    # Sometimes the GitHub API returns a 404 immediately after PR creation
-    Retriable.retriable :on => Octokit::NotFound, :interval => 2, :tries => 10 do
-      self.commits = client.pull_commits(repo.full_name, number)
-    end
-
-    # Find issue numbers from the most recent commit containing them
-    self.issue_numbers = []
-    commits.reverse_each do |commit|
-      commit.commit.message.scan(/([\s\(\[,-]|^)(fixes|refs)[\s:]+(#\d+([\s,;&]+#\d+)*)(?=[[:punct:]]|\s|<|$)/i) do |match|
-        action, refs = match[1].to_s.downcase, match[2]
-        next if action.empty?
-        refs.scan(/#(\d+)/).each { |m| self.issue_numbers << m[0].to_i }
-      end
-      break if !self.issue_numbers.empty?
-    end
   end
 
   def new?
@@ -67,6 +50,32 @@ class PullRequest
     @client.issue(repo.full_name, @number)
   end
 
+  def commits
+    if @commits.nil?
+      # Sometimes the GitHub API returns a 404 immediately after PR creation
+      Retriable.retriable :on => Octokit::NotFound, :interval => 2, :tries => 10 do
+        @commits = client.pull_commits(repo.full_name, number)
+      end
+    end
+    @commits
+  end
+
+  def issue_numbers
+    if @issue_numbers.nil?
+      # Find issue numbers from the most recent commit containing them
+      @issue_numbers = []
+      commits.reverse_each do |commit|
+        commit.commit.message.scan(/([\s\(\[,-]|^)(fixes|refs)[\s:]+(#\d+([\s,;&]+#\d+)*)(?=[[:punct:]]|\s|<|$)/i) do |match|
+          action, refs = match[1].to_s.downcase, match[2]
+          next if action.empty?
+          refs.scan(/#(\d+)/).each { |m| @issue_numbers << m[0].to_i }
+        end
+        break if !@issue_numbers.empty?
+      end
+    end
+    @issue_numbers
+  end
+
   def check_commits_style
     if wip?
       add_status('failure', "PR is Work in Progress; commit message style not checked")
@@ -75,7 +84,7 @@ class PullRequest
 
     warnings = ''
     short_warnings = Hash.new { |h, k| h[k] = [] }
-    @commits.each do |commit|
+    commits.each do |commit|
       if (commit.commit.message.lines.first =~ /\A(fixes|refs) #\d+(, ?#\d+)*(:| -) .*\Z/i) != 0
         warnings += "  * #{commit.sha} must be in the format ```fixes #redmine_number - brief description```\n"
         short_warnings[commit.sha] << 'issue number format'
