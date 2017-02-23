@@ -14,6 +14,10 @@ class Issue < RedmineResource
     @raw_data['issue']['project']['id']
   end
 
+  def subject
+    @raw_data['issue']['subject']
+  end
+
   def version
     @raw_data['issue']['fixed_version']['id'] if @raw_data['issue']['fixed_version']
   end
