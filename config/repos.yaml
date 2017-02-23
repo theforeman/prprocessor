@@ -213,7 +213,8 @@ Katello/katello-installer:
   redmine_required: true
 Katello/katello-packaging:
   pr_scanner: true
-  redmine: katello-packaging
+  redmine: katello
+  redmine_required: true
 Katello/katello-selinux:
   redmine: katello
 Katello/katello.org:
