@@ -114,6 +114,8 @@ theforeman/hammer-cli-foreman-discovery:
   redmine: discovery
 theforeman/hammer_cli_foreman_docker:
   redmine: docker
+theforeman/hammer_cli_foreman_openscap:
+  redmine: foreman_openscap
 theforeman/hammer_cli_foreman_remote_execution:
   redmine: foreman_remote_execution
 theforeman/hammer-cli-foreman-tasks:
