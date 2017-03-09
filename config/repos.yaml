@@ -99,6 +99,8 @@ theforeman/foreman-tasks:
 theforeman/foreman_templates:
   pr_scanner: true
   redmine: templates
+theforeman/foreman_virt_who_configure:
+  redmine: virt-who-configure
 theforeman/foreman-xen:
   redmine: xen
 theforeman/hammer-cli:
