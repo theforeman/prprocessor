@@ -196,6 +196,7 @@ Katello/foreman-gutterball:
 Katello/foreman_sam:
   redmine: katello
 Katello/hammer-cli-csv:
+  pr_scanner: true
   redmine: hammer-cli-csv
 Katello/hammer-cli-gutterball:
   redmine: gutterball
