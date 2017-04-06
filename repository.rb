@@ -55,4 +55,8 @@ class Repository
   def redmine_required?
     !!@config['redmine_required']
   end
+
+  def link_to_redmine?
+    @config['link_to_redmine']
+  end
 end

@@ -15,6 +15,7 @@ theforeman/foreman:
   close_inactive: true
   redmine: foreman
   redmine_required: true
+  link_to_redmine: true
 theforeman/foreman_abrt:
   redmine: abrt
 theforeman/foreman_ansible:
@@ -203,6 +204,7 @@ Katello/foreman_sam:
   redmine: katello
 Katello/hammer-cli-csv:
   redmine: hammer-cli-csv
+  link_to_redmine: true
 Katello/hammer-cli-gutterball:
   redmine: gutterball
 Katello/hammer-cli-import:
@@ -210,21 +212,25 @@ Katello/hammer-cli-import:
 Katello/hammer-cli-katello:
   redmine: katello
   redmine_required: true
+  link_to_redmine: true
 Katello/hammer-cli-sam:
   redmine: katello
 Katello/katello:
   pr_scanner: true
   redmine: katello
   redmine_required: true
+  link_to_redmine: true
 Katello/katello-agent:
   redmine: katello
 Katello/katello-installer:
   redmine: katello
   redmine_required: true
+  link_to_redmine: true
 Katello/katello-packaging:
   pr_scanner: true
   redmine: katello
   redmine_required: true
+  link_to_redmine: true
 Katello/katello-selinux:
   redmine: katello
 Katello/katello.org:
