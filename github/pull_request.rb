@@ -59,6 +59,10 @@ class PullRequest
     @client.labels_for_issue(repo.full_name, @number)
   end
 
+  def pull_request
+    @client.issue(repo.full_name, @number)
+  end
+
   def check_commits_style
     warnings = ''
     short_warnings = Hash.new { |h, k| h[k] = [] }
@@ -102,6 +106,15 @@ EOM
       end
     else
       add_status('success', "Commit message style is correct")
+    end
+  end
+
+  def add_issue_links
+    if new? && issue_numbers.any?
+      message = issue_numbers.inject("Issues:") do |msg, issue_number|
+        msg + " [##{issue_number}](http://projects.theforeman.org/issues/#{issue_number})"
+      end
+      add_comment(message)
     end
   end
 

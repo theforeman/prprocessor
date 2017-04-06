@@ -78,6 +78,10 @@ EOM
   end
 
   if ENV['GITHUB_OAUTH_TOKEN']
+    if repo.link_to_redmine?
+      pull_request.add_issue_links
+    end
+
     if event_act == 'pull_request/synchronize' && pull_request.waiting_for_contributor?
       if pull_request.not_yet_reviewed?
         pull_request.replace_labels(['Waiting on contributor'], ['Needs testing'])
