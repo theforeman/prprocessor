@@ -3,6 +3,7 @@ require File.join(File.dirname(__FILE__), 'redmine_resource')
 # Issue model on the client side
 class Issue < RedmineResource
 
+  NEW = 1
   READY_FOR_TESTING = 7
   FIELD_PULL_REQUEST = 7
 
@@ -68,6 +69,10 @@ class Issue < RedmineResource
     current_pull_requests = pull_requests
     current_pull_requests << url
     set_pull_requests(current_pull_requests)
+  end
+
+  def remove_pull_request(url)
+    set_pull_requests(pull_requests - [url])
   end
 
   def set_assigned(user_id)

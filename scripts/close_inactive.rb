@@ -4,6 +4,8 @@ require 'pp'
 require 'date'
 require 'yaml'
 require File.expand_path(File.join('..', '..', 'repository'), __FILE__)
+require File.expand_path(File.join('..', '..', 'github', 'pull_request'), __FILE__)
+require File.expand_path(File.join('..', '..', 'redmine', 'issue'), __FILE__)
 
 CONFIG = {}
 CONFIG.merge!(YAML.load_file('config/close_inactive.yaml'))
@@ -31,6 +33,14 @@ Repository.all.select { |repo,config| config.close_inactive? }.each do |repo,con
       c.add_comment(repo, number, COMMENT % user) if CONFIG[:add_comment]
       c.add_labels_to_an_issue(repo, number, CONFIG[:labels]) if CONFIG[:add_labels]
       c.close_pull_request(repo, number) if CONFIG[:close]
+
+      pr_obj = PullRequest.new(repo, pr)
+      pr_obj.issue_numbers.map { |issue| Issue.new(issue) }.each do |issue|
+        issue.set_assigned(nil)
+        issue.set_status(Issue::NEW)
+        issue.remove_pull_request(pr[:html_url])
+        issue.save!
+      end
     end
   end
 end
