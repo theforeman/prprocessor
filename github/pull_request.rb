@@ -61,16 +61,20 @@ class PullRequest
 
   def check_commits_style
     warnings = ''
+    short_warnings = Hash.new { |h, k| h[k] = [] }
     @commits.each do |commit|
       if (commit.commit.message.lines.first =~ /\A(fixes|refs) #\d+(, ?#\d+)*(:| -) .*\Z/i) != 0
         warnings += "  * #{commit.sha} must be in the format ```fixes #redmine_number - brief description```\n"
+        short_warnings[commit.sha] << 'issue number format'
       end
       if commit.commit.message.lines.first.chomp.size > 65
         warnings += "  * length of the first commit message line for #{commit.sha} exceeds 65 characters\n"
+        short_warnings[commit.sha] << 'summary line length exceeded'
       end
       commit.commit.message.lines.each do |line|
         if line.chomp.sub(URI.regexp, '').size > 72 && line !~ /^\s{4,}/
           warnings += "  * commit message for #{commit.sha} is not wrapped at 72nd column\n"
+          short_warnings[commit.sha] << 'line length exceeded'
         end
       end
     end
@@ -88,6 +92,16 @@ EOM
     unless warnings.empty?
       add_comment(message)
       self.labels = ['Waiting on contributor']
+
+      @commits.each do |commit|
+        if short_warnings[commit.sha].empty?
+          add_status('failure', "Some commit messages have an incorrect style", sha: commit.sha)
+        else
+          add_status('failure', "Commit message style: #{short_warnings[commit.sha].join(', ')}", sha: commit.sha)
+        end
+      end
+    else
+      add_status('success', "Commit message style is correct")
     end
   end
 
@@ -107,7 +121,15 @@ EOM
   end
 
   def add_comment(message)
-    @client.add_comment(repo.full_name, @number, message)
+    @last_comment = @client.add_comment(repo.full_name, @number, message)
+  end
+
+  def add_status(state, message, options = {})
+    options = {
+      url: @last_comment ? @last_comment.html_url : "https://theforeman.org/handbook.html",
+      sha: commits.last.sha
+    }.merge(options)
+    @client.create_status(repo.full_name, options[:sha], state, context: 'prprocessor', description: message, target_url: options[:url])
   end
 
   private
