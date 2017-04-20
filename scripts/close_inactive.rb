@@ -34,7 +34,7 @@ Repository.all.select { |repo,config| config.close_inactive? }.each do |repo,con
       c.add_labels_to_an_issue(repo, number, CONFIG[:labels]) if CONFIG[:add_labels]
       c.close_pull_request(repo, number) if CONFIG[:close]
 
-      pr_obj = PullRequest.new(repo, pr)
+      pr_obj = PullRequest.new(config, pr)
       pr_obj.issue_numbers.map { |issue| Issue.new(issue) }.each do |issue|
         issue.set_assigned(nil)
         issue.set_status(Issue::NEW)
