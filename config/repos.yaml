@@ -128,6 +128,8 @@ theforeman/kafo:
 theforeman/kafo_parsers:
   pr_scanner: true
   redmine: kafo
+theforeman/puppetdb_foreman:
+  pr_scanner: true
 theforeman/puppet-dhcp:
   redmine: puppet-foreman
 theforeman/puppet-dns:
