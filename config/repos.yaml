@@ -136,8 +136,12 @@ theforeman/puppet-dns:
   redmine: puppet-foreman
 theforeman/puppet-foreman:
   redmine: puppet-foreman
+  refs:
+    - foreman
 theforeman/puppet-foreman_proxy:
   redmine: puppet-foreman
+  refs:
+    - smart-proxy
 theforeman/puppet-git:
   redmine: puppet-foreman
 theforeman/puppet-puppet:
