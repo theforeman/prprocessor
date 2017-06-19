@@ -40,8 +40,10 @@ theforeman/foreman-digitalocean:
 theforeman/foreman_discovery:
   pr_scanner: true
   redmine: discovery
+  link_to_redmine: true
 theforeman/foreman-discovery-image:
   redmine: discovery
+  link_to_redmine: true
 theforeman/foreman-docker:
   pr_scanner: true
   redmine: docker
@@ -115,6 +117,7 @@ theforeman/hammer_cli_foreman_bootdisk:
 theforeman/hammer-cli-foreman-discovery:
   pr_scanner: true
   redmine: discovery
+  link_to_redmine: true
 theforeman/hammer_cli_foreman_docker:
   redmine: docker
 theforeman/hammer_cli_foreman_openscap:
@@ -167,8 +170,10 @@ theforeman/smart_proxy_dhcp_infoblox:
 theforeman/smart_proxy_discovery:
   pr_scanner: true
   redmine: discovery
+  link_to_redmine: true
 theforeman/smart_proxy_discovery_image:
   redmine: discovery
+  link_to_redmine: true
 theforeman/smart_proxy_dns_infoblox:
   redmine: infoblox
 theforeman/smart_proxy_dynflow:
