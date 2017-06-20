@@ -57,6 +57,10 @@ theforeman/foreman_host_rundeck:
   redmine: rundeck
 theforeman/foreman-installer:
   redmine: puppet-foreman
+theforeman/foreman_maintain:
+  pr_scanner: true
+  redmine: foreman-maintain
+  redmine_required: true
 theforeman/foreman_monitoring:
   pr_scanner: true
 theforeman/foreman-one:
