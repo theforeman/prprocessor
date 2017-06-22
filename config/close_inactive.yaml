@@ -2,8 +2,11 @@
 # list of github repositories
 :repos: ["theforeman/foreman"]
 
-# months to keep
+# months to keep inactive PRs
 :keep: 6
+
+# months to keep PRs that have reached an impasse with no new activity
+:impasse: 1
 
 # maximum number of PRs closed in one run
 :max_closed: 5
