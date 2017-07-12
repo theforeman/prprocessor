@@ -67,6 +67,7 @@ class PullRequest
     warnings = ''
     short_warnings = Hash.new { |h, k| h[k] = [] }
     @commits.each do |commit|
+      next if commit.commit.message.lines.first =~ /^_/
       if (commit.commit.message.lines.first =~ /\A(fixes|refs) #\d+(, ?#\d+)*(:| -) .*\Z/i) != 0
         warnings += "  * #{commit.sha} must be in the format ```fixes #redmine_number - brief description```\n"
         short_warnings[commit.sha] << 'issue number format'
@@ -87,6 +88,8 @@ There were the following issues with the commit message:
 #{warnings}
 
 If you don't have a ticket number, please [create an issue in Redmine](#{redmine_url}).
+
+For temporary commits (e.g. during review process), try to start the message with underscore character.
 
 More guidelines are available in [Coding Standards](http://theforeman.org/handbook.html#Codingstandards) or on [the Foreman wiki](http://projects.theforeman.org/projects/foreman/wiki/Reviewing_patches-commit_message_format).
 
