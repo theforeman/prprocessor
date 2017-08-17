@@ -16,19 +16,24 @@ if [ -z "${GITHUB_SECRET_TOKEN}" ]; then
   exit 1
 fi
 
+if [ -z "${GITHUB_AUTH_TOKEN}" ]; then
+  echo "GITHUB_AUTH_TOKEN is needed to access the GitHub API"
+  exit 1
+fi
+
 url=http://prprocessor-theforeman.rhcloud.com/pull_request
 
 t=$(mktemp)
 for repo in $*; do
-  echo "Checking ${repo}"
-  curl -n https://api.github.com/repos/${repo}/hooks > $t
+  echo "Checking ${repo} : https://api.github.com/repos/${repo}/hooks"
+  curl -H "Authorization: token ${GITHUB_AUTH_TOKEN}" -n https://api.github.com/repos/${repo}/hooks > $t
   id=$(jgrep -i $t "name=web and config.url=${url}" -s id || :)
   if [ -n "$id" ]; then
     echo "Existing hook found on ${repo}, skipping"
     continue
   fi
   echo "Updating ${repo}, adding hook"
-  curl -nd '
+  curl -H "Authorization: token ${GITHUB_AUTH_TOKEN}" -nd '
   {
     "name": "web",
     "active": true,
