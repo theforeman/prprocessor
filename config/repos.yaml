@@ -182,7 +182,7 @@ theforeman/smart_proxy_dns_infoblox:
   redmine: infoblox
 theforeman/smart_proxy_dynflow:
   pr_scanner: true
-  redmine: foreman_remote_execution
+  redmine: foreman-tasks
   redmine_required: true
 theforeman/smart_proxy_monitoring:
   pr_scanner: true
