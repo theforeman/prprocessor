@@ -244,11 +244,23 @@ Katello/katello-selinux:
   redmine: katello
 Katello/katello.org:
   redmine: katello
-Katello/puppet-capsule:
+Katello/puppet-candlepin:
   redmine: katello
 Katello/puppet-certs:
   redmine: katello
+Katello/puppet-common:
+  redmine: katello
+Katello/puppet-foreman_proxy_content:
+  redmine: katello
 Katello/puppet-katello:
+  redmine: katello
+Katello/puppet-katello_devel:
+  redmine: katello
+Katello/puppet-pulp:
+  redmine: katello
+Katello/puppet-qpid:
+  redmine: katello
+Katello/puppet-service_wait:
   redmine: katello
 ohadlevy/stacker:
   redmine: stacker
