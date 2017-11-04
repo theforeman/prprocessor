@@ -138,6 +138,12 @@ theforeman/kafo_parsers:
   redmine: kafo
 theforeman/puppetdb_foreman:
   pr_scanner: true
+theforeman/puppet-candlepin:
+  redmine: katello
+theforeman/puppet-certs:
+  redmine: katello
+theforeman/puppet-common:
+  redmine: katello
 theforeman/puppet-dhcp:
   redmine: puppet-foreman
 theforeman/puppet-dns:
@@ -150,10 +156,22 @@ theforeman/puppet-foreman_proxy:
   redmine: puppet-foreman
   refs:
     - smart-proxy
+theforeman/puppet-foreman_proxy_content:
+  redmine: katello
 theforeman/puppet-git:
   redmine: puppet-foreman
+theforeman/puppet-katello:
+  redmine: katello
+theforeman/puppet-katello_devel:
+  redmine: katello
+theforeman/puppet-pulp:
+  redmine: katello
 theforeman/puppet-puppet:
   redmine: puppet-foreman
+theforeman/puppet-qpid:
+  redmine: katello
+theforeman/puppet-service_wait:
+  redmine: katello
 theforeman/puppet-tftp:
   redmine: puppet-foreman
 theforeman/smart-proxy:
@@ -243,24 +261,6 @@ Katello/katello-packaging:
 Katello/katello-selinux:
   redmine: katello
 Katello/katello.org:
-  redmine: katello
-Katello/puppet-candlepin:
-  redmine: katello
-Katello/puppet-certs:
-  redmine: katello
-Katello/puppet-common:
-  redmine: katello
-Katello/puppet-foreman_proxy_content:
-  redmine: katello
-Katello/puppet-katello:
-  redmine: katello
-Katello/puppet-katello_devel:
-  redmine: katello
-Katello/puppet-pulp:
-  redmine: katello
-Katello/puppet-qpid:
-  redmine: katello
-Katello/puppet-service_wait:
   redmine: katello
 ohadlevy/stacker:
   redmine: stacker
