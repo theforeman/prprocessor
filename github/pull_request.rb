@@ -38,6 +38,10 @@ class PullRequest
     @raw_data['mergeable_state'] == 'dirty' && @raw_data['mergeable'] == false
   end
 
+  def wip?
+    @title.start_with?('WIP') || @title.start_with?('[WIP]')
+  end
+
   def author
     @raw_data['user']['login']
   end
@@ -63,6 +67,11 @@ class PullRequest
   end
 
   def check_commits_style
+    if wip?
+      add_status('failure', "PR is Work in Progress; commit message style not checked")
+      return
+    end
+
     warnings = ''
     short_warnings = Hash.new { |h, k| h[k] = [] }
     @commits.each do |commit|
