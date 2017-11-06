@@ -13,7 +13,7 @@ class Jenkins
       "pr_number=#{pr_number}"
     ]
 
-    RestClient.post("https://ci.theforeman.org/job/pull_request_scanner/buildWithParameters?#{params.join('&')}", '') do |response, request, result, &block|
+    RestClient.post("http://ci.theforeman.org/job/pull_request_scanner/buildWithParameters?#{params.join('&')}", '') do |response, request, result, &block|
       case response.code
       when 302
         "repo #{repo} scan triggered"

@@ -2,7 +2,7 @@
 
 prprocessor is a web service which receives GitHub webhooks/notifications and helps sync PRs to Redmine and Jenkins.
 
-Documentation available [on the Foreman wiki](https://projects.theforeman.org/projects/foreman/wiki/PrProcessor).
+Documentation available [on the Foreman wiki](http://projects.theforeman.org/projects/foreman/wiki/PrProcessor).
 
 ## Environment Variables
 
