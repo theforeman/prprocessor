@@ -7,12 +7,11 @@ class PullRequest
   attr_accessor :raw_data, :title, :issue_numbers, :repo,
     :number, :client, :commits
 
-  def initialize(repo, raw_data)
+  def initialize(repo, raw_data, client)
     self.repo     = repo
     self.raw_data = raw_data
     self.title    = raw_data['title']
     self.number   = raw_data['number']
-    self.client   = Octokit::Client.new(:access_token => ENV['GITHUB_OAUTH_TOKEN'])
 
     # Sometimes the GitHub API returns a 404 immediately after PR creation
     Retriable.retriable :on => Octokit::NotFound, :interval => 2, :tries => 10 do
