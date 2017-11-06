@@ -29,7 +29,8 @@ post '/pull_request' do
   raise "repo not configured" if Repository[repo_name].nil?
   repo = Repository[repo_name]
 
-  pull_request = PullRequest.new(repo, payload['pull_request'])
+  client = Octokit::Client.new(:access_token => ENV['GITHUB_OAUTH_TOKEN'])
+  pull_request = PullRequest.new(repo, payload['pull_request'], client)
   pr_number = pull_request.raw_data['number']
 
   halt if event == 'pull_request' && ['closed', 'labeled', 'unlabeled'].include?(action)
