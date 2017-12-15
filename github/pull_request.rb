@@ -12,6 +12,7 @@ class PullRequest
     self.raw_data = raw_data
     self.title    = raw_data['title']
     self.number   = raw_data['number']
+    self.client   = client
 
     # Sometimes the GitHub API returns a 404 immediately after PR creation
     Retriable.retriable :on => Octokit::NotFound, :interval => 2, :tries => 10 do
