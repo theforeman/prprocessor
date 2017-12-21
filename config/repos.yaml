@@ -227,23 +227,13 @@ Katello/bastion:
   pr_scanner: true
   redmine: bastion
   redmine_required: true
-Katello/foreman-gutterball:
-  redmine: katello
-Katello/foreman_sam:
-  redmine: katello
 Katello/hammer-cli-csv:
   redmine: hammer-cli-csv
   link_to_redmine: true
-Katello/hammer-cli-gutterball:
-  redmine: gutterball
-Katello/hammer-cli-import:
-  redmine: hammer-cli-import
 Katello/hammer-cli-katello:
   redmine: katello
   redmine_required: true
   link_to_redmine: true
-Katello/hammer-cli-sam:
-  redmine: katello
 Katello/katello:
   pr_scanner: true
   redmine: katello
@@ -262,7 +252,3 @@ Katello/katello-packaging:
   link_to_redmine: true
 Katello/katello-selinux:
   redmine: katello
-Katello/katello.org:
-  redmine: katello
-ohadlevy/stacker:
-  redmine: stacker
