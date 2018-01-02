@@ -165,7 +165,7 @@ EOM
 
   def set_directory_labels(mapping)
     files = client.pull_files(repo.full_name, number)
-    desired_labels = files.collect { |f| mapping[f.filename.split("/").first] }.compact.unique
+    desired_labels = files.collect { |f| mapping[f.filename.split("/").first] }.compact.uniq
 
     to_remove = (labels & mapping.keys) - desired_labels
     to_add = desired_labels - labels
