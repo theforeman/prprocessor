@@ -95,8 +95,12 @@ EOM
 
     pull_request.labels = ["Needs testing", "Not yet reviewed"] if event_act == 'pull_request/opened'
 
-    if event_act == 'pull_request_review/submitted' && ['rejected', 'changes_requested'].include?(payload['review']['state'])
-      pull_request.replace_labels(['Not yet reviewed', 'Needs re-review'], ['Waiting on contributor'])
+    if event_act == 'pull_request_review/submitted'
+      if ['rejected', 'changes_requested'].include?(payload['review']['state'])
+        pull_request.replace_labels(['Not yet reviewed', 'Needs re-review'], ['Waiting on contributor'])
+      elsif payload['review']['state'] == 'approved'
+        pull_request.replace_labels(['Not yet reviewed', 'Needs re-review'], [])
+      end
     end
 
     if pull_request.dirty?
