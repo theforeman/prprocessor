@@ -135,11 +135,11 @@ EOM
     labels.map { |label| label[:name] }.include? 'Waiting on contributor'
   end
 
-  def replace_labels(remove_labels, add_labels)
+  def replace_labels(remove_labels, add_labels = nil)
     remove_labels.each do |label|
       @client.remove_label(repo.full_name, @number, label) if labels.find { |existing| existing[:name] == label }
     end
-    self.labels = add_labels
+    self.labels = add_labels if add_labels
   end
 
   def add_comment(message)
