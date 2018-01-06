@@ -83,6 +83,7 @@ theforeman/foreman-packaging:
   redmine: rpms
   refs:
     - foreman
+    - katello
     - puppet-foreman
     - selinux
 theforeman/foreman_pipeline:
