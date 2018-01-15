@@ -67,12 +67,12 @@ class Issue < RedmineResource
 
   def add_pull_request(url)
     current_pull_requests = pull_requests
-    current_pull_requests << url
-    set_pull_requests(current_pull_requests)
+    set_pull_requests(current_pull_requests + [url]) unless current_pull_requests.nil?
   end
 
   def remove_pull_request(url)
-    set_pull_requests(pull_requests - [url])
+    current_pull_requests = pull_requests
+    set_pull_requests(current_pull_requests - [url]) unless current_pull_requests.nil?
   end
 
   def set_assigned(user_id)
