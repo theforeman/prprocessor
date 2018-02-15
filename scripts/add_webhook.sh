@@ -21,7 +21,7 @@ if [ -z "${GITHUB_AUTH_TOKEN}" ]; then
   exit 1
 fi
 
-url=http://prprocessor-theforeman.rhcloud.com/pull_request
+url=https://prprocessor.theforeman.org/pull_request
 
 t=$(mktemp)
 for repo in $*; do
