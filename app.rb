@@ -70,7 +70,7 @@ EOM
         end
 
         issue.add_pull_request(pull_request.raw_data['html_url'])
-        issue.set_status(Issue::READY_FOR_TESTING) unless issue.closed?
+        issue.set_status(Issue::READY_FOR_TESTING) unless issue.closed? || pull_request.wip?
         issue.set_assigned(user_id) unless user_id.nil? || user_id.empty? || issue.assigned_to
         issue.save!
 
