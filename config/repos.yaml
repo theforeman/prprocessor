@@ -79,7 +79,6 @@ theforeman/foreman-packaging:
   branches:
     - deb/develop
     - rpm/develop
-  pr_scanner: true
   redmine: rpms
   refs:
     - foreman
@@ -240,7 +239,6 @@ Katello/hammer-cli-katello:
   redmine_required: true
   link_to_redmine: true
 Katello/katello:
-  pr_scanner: true
   redmine: katello
   redmine_required: true
   link_to_redmine: true
