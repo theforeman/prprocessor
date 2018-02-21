@@ -65,7 +65,7 @@ EOM
           pull_request.add_comment(message)
         end
       elsif !issue.rejected?
-        if project.name == 'Katello' && issue.release == 'Backlog'
+        if project.name == 'Katello' && issue.release == 'Katello Backlog'
           issue.set_release(nil)
         end
 
