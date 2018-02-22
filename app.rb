@@ -122,6 +122,7 @@ EOM
     end
 
     pull_request.set_directory_labels(repo.directory_labels) if repo.directory_labels?
+    pull_request.set_branch_labels(repo.branch_labels) if repo.branch_labels?
 
     actions['github'] = true
   end

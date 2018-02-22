@@ -67,4 +67,12 @@ class Repository
   def directory_labels?
     @config['directory_labels']
   end
+
+  def branch_labels
+    @config['branch_labels']
+  end
+
+  def branch_labels?
+    @config['branch_labels']
+  end
 end

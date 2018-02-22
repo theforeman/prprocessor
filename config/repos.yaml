@@ -79,6 +79,9 @@ theforeman/foreman-packaging:
   branches:
     - deb/develop
     - rpm/develop
+  branch_labels:
+    deb/.+: DEB
+    rpm/.+: RPM
   redmine: rpms
   refs:
     - foreman

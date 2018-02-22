@@ -175,6 +175,15 @@ EOM
     replace_labels(to_remove, to_add)
   end
 
+  def get_branch_labels(mapping)
+    mapping.keep_if { |key, branch| target_branch =~ Regexp.new("^#{key}$") }.values
+  end
+
+  def set_branch_labels(mapping)
+    labels = get_branch_labels
+    self.labels = labels if labels.any?
+  end
+
   private
 
   def redmine_url

@@ -18,6 +18,19 @@ class TestPullRequest < Minitest::Test
     end
   end
 
+  def test_get_branch_labels
+    pr = pull_request
+
+    mapping = {
+      'master'    => 'full',
+      'ma.+'      => 'regex',
+      ''          => 'empty',
+      'unmatched' => 'non-matching',
+    }
+
+    assert_equal(pr.get_branch_labels(mapping), ['full', 'regex'])
+  end
+
   private
 
   def pull_request(repo=nil, raw_data=nil, client=nil)
@@ -26,6 +39,9 @@ class TestPullRequest < Minitest::Test
     data = {
       'title'  => 'The title',
       'number' => 1234,
+      'base'   => {
+        'ref' => 'master',
+      },
     }
     data.merge!(raw_data) if raw_data
 
