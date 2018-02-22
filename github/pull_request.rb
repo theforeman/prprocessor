@@ -145,6 +145,8 @@ EOM
   end
 
   def replace_labels(remove_labels, add_labels = nil)
+    remove_labels -= add_labels if add_labels
+
     remove_labels.each do |label|
       @client.remove_label(repo.full_name, @number, label) if labels.find { |existing| existing[:name] == label }
     end
