@@ -180,7 +180,7 @@ EOM
   end
 
   def set_branch_labels(mapping)
-    labels = get_branch_labels
+    labels = get_branch_labels(mapping)
     self.labels = labels if labels.any?
   end
 
