@@ -62,15 +62,14 @@ class PullRequest
 
   def issue_numbers
     if @issue_numbers.nil?
-      # Find issue numbers from the most recent commit containing them
-      @issue_numbers = []
+      # Find issue numbers from all commits containing them
+      @issue_numbers = Set.new()
       commits.reverse_each do |commit|
         commit.commit.message.scan(/([\s\(\[,-]|^)(fixes|refs)[\s:]+(#\d+([\s,;&]+#\d+)*)(?=[[:punct:]]|\s|<|$)/i) do |match|
           action, refs = match[1].to_s.downcase, match[2]
           next if action.empty?
           refs.scan(/#(\d+)/).each { |m| @issue_numbers << m[0].to_i }
         end
-        break if !@issue_numbers.empty?
       end
     end
     @issue_numbers
