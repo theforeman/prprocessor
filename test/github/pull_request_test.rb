@@ -17,6 +17,27 @@ class TestPullRequest < Minitest::Test
       assert pr.wip?, title
     end
   end
+  
+  def test_regular_title
+    ['The commit', 'The original commit'].each do |title|
+      pr = pull_request(nil, {'title' => title})
+      refute pr.cherry_pick?, title
+    end
+  end
+
+  def test_cherry_pick_is_cherry_pick
+    ['CP: This is a cherry-pick', '[CP] This was cherry-picked'].each do |title|
+      pr = pull_request(nil, {'title' => title})
+      assert pr.cherry_pick?, title
+    end
+  end
+
+  def test_cherry_pick_is_not_cherry_pick
+    ['This CP commit is not a CP', 'This is not a [CP] cherry-picked'].each do |title|
+      pr = pull_request(nil, {'title' => title})
+      refute pr.cherry_pick?, title
+    end
+  end
 
   def test_get_branch_labels
     pr = pull_request

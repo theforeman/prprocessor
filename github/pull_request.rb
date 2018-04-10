@@ -26,6 +26,10 @@ class PullRequest
     @title.start_with?('WIP') || @title.start_with?('[WIP]')
   end
 
+  def cherry_pick?
+    @title.start_with?('CP') || @title.start_with?('[CP]')
+  end
+
   def author
     @raw_data['user']['login']
   end
@@ -82,6 +86,11 @@ class PullRequest
       return
     end
 
+    if cherry_pick?
+      add_status('success', "PR is a Cherry-pick; commit message style not checked")
+      return
+    end
+
     warnings = ''
     short_warnings = Hash.new { |h, k| h[k] = [] }
     commits.each do |commit|
@@ -128,10 +137,11 @@ EOM
   end
 
   def add_issue_links
-    if new? && issue_numbers.any?
+    if new? && issue_numbers.any? && !cherry_pick?
       message = issue_numbers.inject("Issues:") do |msg, issue_number|
         msg + " [##{issue_number}](http://projects.theforeman.org/issues/#{issue_number})"
       end
+
       add_comment(message)
     end
   end
