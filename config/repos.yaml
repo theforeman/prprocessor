@@ -56,9 +56,6 @@ theforeman/foreman_expire_hosts:
   pr_scanner: true
 theforeman/foreman_host_extra_validator:
   pr_scanner: true
-theforeman/foreman_host_rundeck:
-  pr_scanner: true
-  redmine: rundeck
 theforeman/foreman-installer:
   redmine: puppet-foreman
 theforeman/foreman_maintain:
