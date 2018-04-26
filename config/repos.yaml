@@ -157,7 +157,6 @@ theforeman/puppet-service_wait:
 theforeman/puppet-tftp:
   redmine: puppet-foreman
 theforeman/smart-proxy:
-  pr_scanner: true
   redmine: smart-proxy
   redmine_required: true
 theforeman/smart_proxy_abrt:
