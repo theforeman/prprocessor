@@ -117,10 +117,8 @@ theforeman/foreman_virt_who_configure:
 theforeman/foreman-xen:
   redmine: xen
 theforeman/hammer-cli:
-  pr_scanner: true
   redmine: hammer-cli
 theforeman/hammer-cli-foreman:
-  pr_scanner: true
   redmine: hammer-cli
 theforeman/hammer_cli_foreman_bootdisk:
   redmine: bootdisk
@@ -137,10 +135,8 @@ theforeman/hammer_cli_foreman_remote_execution:
 theforeman/hammer-cli-foreman-tasks:
   redmine: foreman-tasks
 theforeman/kafo:
-  pr_scanner: true
   redmine: kafo
 theforeman/kafo_parsers:
-  pr_scanner: true
   redmine: kafo
 theforeman/puppetdb_foreman:
   pr_scanner: true
@@ -228,7 +224,6 @@ theforeman/smart_proxy_salt:
 theforeman/theforeman.org:
   redmine: foreman-website
 Katello/bastion:
-  pr_scanner: true
   redmine: bastion
   redmine_required: true
 Katello/hammer-cli-csv:
