@@ -26,7 +26,7 @@ post '/pull_request' do
   event_act = "#{event}/#{action}"
 
   raise "unknown repo" unless payload['repository'] && (repo_name = payload['repository']['full_name'])
-  raise "repo not configured" if Repository[repo_name].nil?
+  raise "repo #{repo_name} not configured" if Repository[repo_name].nil?
   repo = Repository[repo_name]
 
   client = Octokit::Client.new(:access_token => ENV['GITHUB_OAUTH_TOKEN'])
