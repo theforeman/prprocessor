@@ -23,14 +23,12 @@ theforeman/foreman:
 theforeman/foreman_abrt:
   redmine: abrt
 theforeman/foreman_ansible:
-  pr_scanner: true
   redmine: ansible
   redmine_required: true
 theforeman/foreman_azure:
   redmine: azure
   redmine_required: true
 theforeman/foreman_bootdisk:
-  pr_scanner: true
   redmine: bootdisk
 theforeman/foreman_chef:
   redmine: chef
@@ -38,38 +36,30 @@ theforeman/foreman_chef:
 theforeman/foreman_deployments:
   redmine: deployments
 theforeman/foreman-digitalocean:
-  pr_scanner: true
   redmine: digitalocean
   redmine_required: true
 theforeman/foreman_discovery:
-  pr_scanner: true
   redmine: discovery
   link_to_redmine: true
 theforeman/foreman-discovery-image:
   redmine: discovery
   link_to_redmine: true
 theforeman/foreman-docker:
-  pr_scanner: true
   redmine: docker
   redmine_required: true
-theforeman/foreman_expire_hosts:
-  pr_scanner: true
-theforeman/foreman_host_extra_validator:
-  pr_scanner: true
+theforeman/foreman_expire_hosts: {}
+theforeman/foreman_host_extra_validator: {}
 theforeman/foreman-installer:
   redmine: puppet-foreman
 theforeman/foreman_maintain:
   pr_scanner: true
   redmine: foreman-maintain
   redmine_required: true
-theforeman/foreman_monitoring:
-  pr_scanner: true
+theforeman/foreman_monitoring: {}
 theforeman/foreman-one:
   redmine: opennebula
-theforeman/foreman_omaha:
-  pr_scanner: true
+theforeman/foreman_omaha: {}
 theforeman/foreman_openscap:
-  pr_scanner: true
   redmine: foreman_openscap
   redmine_required: true
 theforeman/foreman-packaging:
@@ -86,32 +76,25 @@ theforeman/foreman-packaging:
     - puppet-foreman
     - selinux
 theforeman/foreman_pipeline:
-  pr_scanner: true
   redmine: pipeline
 theforeman/foreman_remote_execution:
-  pr_scanner: true
   redmine: foreman_remote_execution
   redmine_required: true
 theforeman/foreman_salt:
-  pr_scanner: true
   redmine: salt
 theforeman/foreman-selinux:
   redmine: selinux
   redmine_required: true
 theforeman/foreman_setup:
-  pr_scanner: true
   redmine: foreman_setup
 theforeman/foreman_snapshot:
   redmine: snaphost
 theforeman/foreman-tasks:
-  pr_scanner: true
   redmine: foreman-tasks
   redmine_required: true
 theforeman/foreman_templates:
-  pr_scanner: true
   redmine: templates
-theforeman/foreman_userdata:
-  pr_scanner: true
+theforeman/foreman_userdata: {}
 theforeman/foreman_virt_who_configure:
   redmine: virt-who-configure
 theforeman/foreman-xen:
@@ -138,8 +121,7 @@ theforeman/kafo:
   redmine: kafo
 theforeman/kafo_parsers:
   redmine: kafo
-theforeman/puppetdb_foreman:
-  pr_scanner: true
+theforeman/puppetdb_foreman: {}
 theforeman/puppet-candlepin:
   redmine: katello
 theforeman/puppet-certs:
