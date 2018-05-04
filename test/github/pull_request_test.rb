@@ -17,7 +17,7 @@ class TestPullRequest < Minitest::Test
       assert pr.wip?, title
     end
   end
-  
+
   def test_regular_title
     ['The commit', 'The original commit'].each do |title|
       pr = pull_request(nil, {'title' => title})
@@ -26,7 +26,7 @@ class TestPullRequest < Minitest::Test
   end
 
   def test_cherry_pick_is_cherry_pick
-    ['CP: This is a cherry-pick', '[CP] This was cherry-picked'].each do |title|
+    ['CP: This is a cherry-pick', '[CP] This was cherry-picked', 'Cherry picks for 3.7'].each do |title|
       pr = pull_request(nil, {'title' => title})
       assert pr.cherry_pick?, title
     end

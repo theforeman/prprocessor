@@ -27,7 +27,7 @@ class PullRequest
   end
 
   def cherry_pick?
-    @title.start_with?('CP') || @title.start_with?('[CP]')
+    @title.start_with?('CP') || @title.start_with?('[CP]') || @title.start_with?('Cherry picks for ')
   end
 
   def author
