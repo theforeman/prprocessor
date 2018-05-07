@@ -217,8 +217,10 @@ Katello/katello:
   redmine: katello
   redmine_required: true
   link_to_redmine: true
-Katello/katello-agent:
+Katello/katello-host-tools:
   redmine: katello
+  redmine_required: true
+  link_to_redmine: true
 Katello/katello-installer:
   redmine: katello
   redmine_required: true
