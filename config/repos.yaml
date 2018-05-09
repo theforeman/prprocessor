@@ -160,7 +160,6 @@ theforeman/smart-proxy:
   redmine: smart-proxy
   redmine_required: true
 theforeman/smart_proxy_abrt:
-  pr_scanner: true
   redmine: abrt
 theforeman/smart_proxy_ansible:
   redmine: ansible
@@ -171,7 +170,6 @@ theforeman/smart_proxy_chef:
 theforeman/smart_proxy_dhcp_infoblox:
   redmine: infoblox
 theforeman/smart_proxy_discovery:
-  pr_scanner: true
   redmine: discovery
   link_to_redmine: true
 theforeman/smart_proxy_discovery_image:
@@ -180,22 +178,14 @@ theforeman/smart_proxy_discovery_image:
 theforeman/smart_proxy_dns_infoblox:
   redmine: infoblox
 theforeman/smart_proxy_dynflow:
-  pr_scanner: true
   redmine: foreman-tasks
   redmine_required: true
-theforeman/smart_proxy_monitoring:
-  pr_scanner: true
-theforeman/smart_proxy_omaha:
-  pr_scanner: true
 theforeman/smart_proxy_openscap:
-  pr_scanner: true
   redmine: foreman_openscap
   redmine_required: true
 theforeman/smart_proxy_pulp:
-  pr_scanner: true
   redmine: katello
 theforeman/smart_proxy_remote_execution_ssh:
-  pr_scanner: true
   redmine: foreman_remote_execution
   redmine_required: true
 theforeman/smart_proxy_salt:
