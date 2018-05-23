@@ -44,10 +44,6 @@ class Repository
     @config.fetch('refs', [])
   end
 
-  def pr_scanner?
-    !!@config.fetch('pr_scanner', false)
-  end
-
   def redmine_project
     @config['redmine']
   end
