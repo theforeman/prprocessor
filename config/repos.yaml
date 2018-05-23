@@ -1,7 +1,6 @@
 # github_project:
 #   branches: list of primary development branches, else uses repo default
 #   close_inactive: close PRs that are inactive for some time (default: false)
-#   pr_scanner: trigger the Jenkins PR scanner on PR updates (default: false)
 #   redmine: identifier of the Redmine project, optional unless redmine_required=true
 #            assigns PRs to tickets, enforces ticket matches project when present
 #   redmine_required: enforce commit message format to include Redmine ticket number (default: false)
@@ -52,7 +51,6 @@ theforeman/foreman_host_extra_validator: {}
 theforeman/foreman-installer:
   redmine: puppet-foreman
 theforeman/foreman_maintain:
-  pr_scanner: true
   redmine: foreman-maintain
   redmine_required: true
 theforeman/foreman_monitoring: {}
@@ -104,7 +102,6 @@ theforeman/hammer-cli-foreman:
 theforeman/hammer_cli_foreman_bootdisk:
   redmine: bootdisk
 theforeman/hammer-cli-foreman-discovery:
-  pr_scanner: true
   redmine: discovery
   link_to_redmine: true
 theforeman/hammer_cli_foreman_docker:
@@ -215,7 +212,6 @@ Katello/katello-installer:
   redmine_required: true
   link_to_redmine: true
 Katello/katello-packaging:
-  pr_scanner: true
   redmine: katello
   redmine_required: true
   link_to_redmine: true
