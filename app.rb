@@ -7,7 +7,6 @@ require File.join(File.dirname(__FILE__), 'redmine/issue')
 require File.join(File.dirname(__FILE__), 'redmine/project')
 require File.join(File.dirname(__FILE__), 'github/pull_request')
 require File.join(File.dirname(__FILE__), 'github/status')
-require File.join(File.dirname(__FILE__), 'jenkins')
 require File.join(File.dirname(__FILE__), 'repository')
 
 
@@ -31,7 +30,6 @@ post '/pull_request' do
 
   client = Octokit::Client.new(:access_token => ENV['GITHUB_OAUTH_TOKEN'])
   pull_request = PullRequest.new(repo, payload['pull_request'], client)
-  pr_number = pull_request.raw_data['number']
 
   halt if event == 'pull_request' && ['closed', 'labeled', 'unlabeled'].include?(action)
   # also trigger for new PullRequestReviewCommentEvent containing [test]
@@ -127,18 +125,11 @@ EOM
     actions['github'] = true
   end
 
-  if ENV['JENKINS_TOKEN'] && repo.pr_scanner?
-    jenkins = Jenkins.new
-    jenkins.build(repo.name, pr_number)
-    actions['jenkins'] = true
-  end
-
   actions.to_json
 end
 
 get '/status' do
   locals = {}
-  locals[:jenkins_token] = ENV['JENKINS_TOKEN'] ? true : false
   locals[:github_secret] = ENV['GITHUB_SECRET_TOKEN'] ? true : false
   locals[:redmine_key] = ENV['REDMINE_API_KEY'] ? true : false
   locals[:github_oauth_token] = ENV['GITHUB_OAUTH_TOKEN'] ? true : false
