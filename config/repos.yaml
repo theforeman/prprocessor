@@ -5,6 +5,7 @@
 #            assigns PRs to tickets, enforces ticket matches project when present
 #   redmine_required: enforce commit message format to include Redmine ticket number (default: false)
 #   refs: optional list of Redmine projects that commits here can "refs" (default: [])
+#   link_to_redmine: Add comment with Issue number if present (default: false)
 ---
 theforeman/chef-handler-foreman:
   redmine: chef
@@ -53,6 +54,7 @@ theforeman/foreman-installer:
 theforeman/foreman_maintain:
   redmine: foreman-maintain
   redmine_required: true
+  link_to_redmine: true
 theforeman/foreman_monitoring: {}
 theforeman/foreman-one:
   redmine: opennebula
