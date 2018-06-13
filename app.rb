@@ -32,7 +32,27 @@ post '/pull_request' do
   client = Octokit::Client.new(:access_token => ENV['GITHUB_OAUTH_TOKEN'])
   pull_request = PullRequest.new(repo, payload['pull_request'], client)
 
-  halt if event == 'pull_request' && ['closed', 'labeled', 'unlabeled'].include?(action)
+  if event == 'pull_request' && ['closed', 'labeled', 'unlabeled'].include?(action)
+    if action == 'closed' && ENV['REDMINE_API_KEY'] && pull_request.merged?
+      # TODO: only select issues that will be closed (i.e. Fixed)
+      pull_request.issue_numbers.each do |issue_number|
+        issue = Issue.new(issue_number)
+        project = Project.new(issue.project)
+
+        if repo.project_allowed?(project.identifier) && issue.release.nil?
+          version = project.current_version
+          if version
+            # TODO: Only set release ID on develop/master, not on cherry picks
+            issue.set_release_id(version)
+            # TODO: Set fixed in
+          end
+        end
+      end
+    end
+
+    halt
+  end
+
   halt if event_act == 'pull_request_review_comment/created'
 
   if ENV['REDMINE_API_KEY'] && !repo.redmine_project.nil?

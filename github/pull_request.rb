@@ -30,6 +30,10 @@ class PullRequest
     @title.start_with?('CP') || @title.start_with?('[CP]') || @title.start_with?('Cherry picks for ')
   end
 
+  def merged?
+    @raw_data['merged']
+  end
+
   def author
     @raw_data['user']['login']
   end
