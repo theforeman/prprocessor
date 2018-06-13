@@ -32,8 +32,7 @@ post '/pull_request' do
   pull_request = PullRequest.new(repo, payload['pull_request'], client)
 
   halt if event == 'pull_request' && ['closed', 'labeled', 'unlabeled'].include?(action)
-  # also trigger for new PullRequestReviewCommentEvent containing [test]
-  halt if event_act == 'pull_request_review_comment/created' && (!payload['comment'] || !payload['comment']['body'].include?('[test]'))
+  halt if event_act == 'pull_request_review_comment/created'
 
   if ENV['REDMINE_API_KEY'] && !repo.redmine_project.nil?
     users = YAML.load_file('config/users.yaml')
