@@ -43,7 +43,7 @@ post '/pull_request' do
 
       user_id = users[pull_request.author] if users.key?(pull_request.author)
 
-      if !([repo.redmine_project] + repo.permitted_refs).include?(project.identifier)
+      if !repo.project_allowed?(project.identifier)
         if ENV['GITHUB_OAUTH_TOKEN']
           correct_project = Project.new(repo.redmine_project)
           message = <<EOM
