@@ -98,6 +98,10 @@ class PullRequest
         warnings += "  * #{commit.sha} must be in the format ```fixes #redmine_number - brief description```\n"
         short_warnings[commit.sha] << 'issue number format'
       end
+      if commit.commit.committer.email =~ /\A(vagrant@|root@)/
+        warnings += "  * #{commit.sha} must not be authored by vagrant or root user\n"
+        short_warnings[commit.sha] << 'vagrant or root in commit author email'
+      end
       if commit.commit.message.lines.first.chomp.size > 65
         warnings += "  * length of the first commit message line for #{commit.sha} exceeds 65 characters\n"
         short_warnings[commit.sha] << 'summary line length exceeded'
