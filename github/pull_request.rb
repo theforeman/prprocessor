@@ -98,7 +98,7 @@ class PullRequest
         warnings += "  * #{commit.sha} must be in the format ```fixes #redmine_number - brief description```\n"
         short_warnings[commit.sha] << 'issue number format'
       end
-      if commit.commit.committer.email =~ /\A(vagrant@|root@)/
+      if commit.commit.author.email =~ /\A(vagrant@|root@)/
         warnings += "  * #{commit.sha} must not be authored by vagrant or root user\n"
         short_warnings[commit.sha] << 'vagrant or root in commit author email'
       end
