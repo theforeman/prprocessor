@@ -73,7 +73,7 @@ EOM
           issue.save!
           actions['redmine'] = true
         rescue RestClient::UnprocessableEntity => e
-          puts "Failed to save issue #{issue.id} for PR #{pull_request}: #{e.message}"
+          puts "Failed to save issue #{issue} for PR #{pull_request}: #{e.message}"
           actions['redmine'] = false
         end
       end

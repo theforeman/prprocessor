@@ -84,4 +84,8 @@ class Issue < RedmineResource
     put(@raw_data['issue']['id'], @raw_data)
   end
 
+  def to_s
+    "#{project} ##{@raw_data['issue']['id']}"
+  end
+
 end
