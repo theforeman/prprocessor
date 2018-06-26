@@ -199,6 +199,10 @@ EOM
     self.labels = to_add if to_add.any?
   end
 
+  def to_s
+    "#{@repo}/#{@number}"
+  end
+
   private
 
   def redmine_url
