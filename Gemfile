@@ -5,6 +5,7 @@ group :test do
   gem 'rake'
 end
 
+gem 'sentry-raven'
 gem 'rack', '>= 1.5.2'
 gem 'sinatra', '~> 1.4'
 gem 'rest-client', '~> 1.7.0'

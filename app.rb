@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'raven'
 require 'json'
 require 'openssl'
 require 'yaml'
@@ -72,8 +73,9 @@ EOM
         begin
           issue.save!
           actions['redmine'] = true
-        rescue RestClient::UnprocessableEntity => e
-          puts "Failed to save issue #{issue} for PR #{pull_request}: #{e.message}"
+        rescue RestClient::UnprocessableEntity => exception
+          Raven.capture_exception(exception)
+          puts "Failed to save issue #{issue} for PR #{pull_request}: #{exception.message}"
           actions['redmine'] = false
         end
       end
