@@ -27,17 +27,8 @@ class Issue < RedmineResource
     @raw_data['issue']['assigned_to']['name'] if @raw_data['issue']['assigned_to']
   end
 
-  def release
-    @raw_data['issue']['release']['release']['name'] if @raw_data['issue']['release'] && @raw_data['issue']['release']['release']
-  end
-
   def set_version(version_id)
     @raw_data['issue']['fixed_version_id'] = version_id
-    self
-  end
-
-  def set_release(release_id)
-    @raw_data['issue']['release_id'] = release_id
     self
   end
 
