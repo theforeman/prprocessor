@@ -6,6 +6,7 @@ class Issue < RedmineResource
   NEW = 1
   READY_FOR_TESTING = 7
   FIELD_PULL_REQUEST = 7
+  FIELD_TRIAGED = 5
 
   def base_path
     '/issues'
@@ -17,6 +18,18 @@ class Issue < RedmineResource
 
   def subject
     @raw_data['issue']['subject']
+  end
+
+  def backlog?
+    version_name =~ /backlog/i
+  end
+
+  def recycle_bin?
+    version_name =~ /recycle bin/i
+  end
+
+  def version_name
+    @raw_data['issue']['fixed_version']['name'] if @raw_data['issue']['fixed_version']
   end
 
   def version
@@ -38,6 +51,16 @@ class Issue < RedmineResource
 
   def rejected?
     ['Rejected', 'Duplicate'].include? @raw_data['issue']['status']['name']
+  end
+
+  def triaged?
+    field = @raw_data['issue']['custom_fields'].find { |f| f['id'] == FIELD_TRIAGED }
+    field && field['value'] == "1"
+  end
+
+  def set_triaged(value = true)
+    @raw_data['issue']['custom_field_values'] = { FIELD_TRIAGED.to_s => value ? '1' : '0' }
+    self
   end
 
   def set_status(status)

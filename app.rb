@@ -63,6 +63,7 @@ EOM
           pull_request.add_comment(message)
         end
       elsif !issue.rejected?
+        issue.set_triaged(false) if issue.backlog? || issue.recycle_bin? || issue.version.nil?
         issue.add_pull_request(pull_request.raw_data['html_url']) unless pull_request.cherry_pick?
         issue.set_status(Issue::READY_FOR_TESTING) unless issue.closed? || pull_request.wip?
         issue.set_assigned(user_id) unless user_id.nil? || user_id.empty? || issue.assigned_to
