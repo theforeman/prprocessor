@@ -20,6 +20,8 @@ theforeman/foreman:
   redmine: foreman
   redmine_required: true
   link_to_redmine: true
+  directory_labels:
+    webpack: ui
 theforeman/foreman_abrt:
   redmine: abrt
 theforeman/foreman_ansible:
