@@ -11,7 +11,7 @@ theforeman/chef-handler-foreman:
   redmine: chef
 theforeman/community-templates:
   redmine: foreman
-  directory_labels:
+  path_labels:
     job_templates: Remote execution
     partition_tables_templates: Provisioning
     provisioning_templates: Provisioning
@@ -20,7 +20,7 @@ theforeman/foreman:
   redmine: foreman
   redmine_required: true
   link_to_redmine: true
-  directory_labels:
+  path_labels:
     .+-stable: Stable branch
     webpack: UI
 theforeman/foreman_abrt:

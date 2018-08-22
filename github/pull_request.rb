@@ -187,9 +187,17 @@ EOM
     @client.create_status(repo.full_name, options[:sha], state, context: 'prprocessor', description: message, target_url: options[:url])
   end
 
-  def set_directory_labels(mapping)
+  def get_labels(filename, mapping)
+    mapping.select { |k, v| filename == k || filename.start_with?(k+"/") }.values
+  end
+
+  def get_desired_labels(files, mapping)
+    files.collect { |f| get_labels(f.filename, mapping) }.flatten.compact.uniq
+  end
+
+  def set_path_labels(mapping)
     files = client.pull_files(repo.full_name, number)
-    desired_labels = files.collect { |f| mapping[f.filename.split("/").first] }.compact.uniq
+    desired_labels = get_desired_labels(files, mapping) 
 
     to_remove = mapping.keys - desired_labels
     to_add = desired_labels
