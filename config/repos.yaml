@@ -21,6 +21,7 @@ theforeman/foreman:
   redmine_required: true
   link_to_redmine: true
   directory_labels:
+    .+-stable: Stable branch
     webpack: UI
 theforeman/foreman_abrt:
   redmine: abrt
