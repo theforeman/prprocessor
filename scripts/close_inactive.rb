@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'raven'
 require 'octokit'
 require 'pp'
 require 'date'
