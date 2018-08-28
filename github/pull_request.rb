@@ -43,11 +43,16 @@ class PullRequest
   end
 
   def labels=(pr_labels)
-    @client.add_labels_to_an_issue(repo.full_name, @number, pr_labels & known_labels)
+    to_add = pr_labels & known_labels
+    @client.add_labels_to_an_issue(repo.full_name, @number, to_add) if to_add.any?
   end
 
   def labels
     @client.labels_for_issue(repo.full_name, @number)
+  end
+
+  def label_names
+    labels.map(&:name)
   end
 
   def pull_request
@@ -151,20 +156,23 @@ EOM
   end
 
   def not_yet_reviewed?
-    labels.map { |label| label[:name] }.include? 'Not yet reviewed'
+    label_names.include? 'Not yet reviewed'
   end
 
   def waiting_for_contributor?
-    labels.map { |label| label[:name] }.include? 'Waiting on contributor'
+    label_names.include? 'Waiting on contributor'
   end
 
-  def replace_labels(remove_labels, add_labels = nil)
-    remove_labels -= add_labels if add_labels
+  def replace_labels(remove_labels, add_labels)
+    existing = label_names
 
-    remove_labels.each do |label|
-      @client.remove_label(repo.full_name, @number, label) if labels.find { |existing| existing[:name] == label }
+    to_add = add_labels - existing
+    to_remove = (remove_labels & existing) - add_labels
+
+    to_remove.each do |label|
+      @client.remove_label(repo.full_name, @number, label)
     end
-    self.labels = add_labels if add_labels
+    self.labels = to_add
   end
 
   def add_comment(message)
@@ -183,8 +191,8 @@ EOM
     files = client.pull_files(repo.full_name, number)
     desired_labels = files.collect { |f| mapping[f.filename.split("/").first] }.compact.uniq
 
-    to_remove = (labels & mapping.keys) - desired_labels
-    to_add = desired_labels - labels
+    to_remove = mapping.keys - desired_labels
+    to_add = desired_labels
 
     replace_labels(to_remove, to_add)
   end
@@ -194,9 +202,7 @@ EOM
   end
 
   def set_branch_labels(mapping)
-    new_labels = get_branch_labels(mapping)
-    to_add = new_labels - labels
-    self.labels = to_add if to_add.any?
+    self.labels = get_branch_labels(mapping) - label_names
   end
 
   def to_s
