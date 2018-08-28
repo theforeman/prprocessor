@@ -10,6 +10,8 @@ require File.expand_path(File.join('..', '..', 'redmine', 'issue'), __FILE__)
 def close_prs(client, repo, config, label, time, message)
   query = "repo:#{repo} type:pr state:open label:\"#{label}\" updated:\"<#{time}\""
   result = client.search_issues(query, :per_page => CONFIG[:max_closed], :sort => 'updated_at', :order => 'asc')
+  return if result[:total_count] == 0
+
   puts "Pull requests older than #{time}: #{result[:total_count]}"
   result[:items].each do |pr|
     title = pr[:title]
