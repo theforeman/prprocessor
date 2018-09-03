@@ -20,8 +20,9 @@ theforeman/foreman:
   redmine: foreman
   redmine_required: true
   link_to_redmine: true
-  path_labels:
+  branch_labels:
     .+-stable: Stable branch
+  path_labels:
     webpack: UI
 theforeman/foreman_abrt:
   redmine: abrt
