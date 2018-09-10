@@ -223,3 +223,5 @@ Katello/katello-packaging:
   link_to_redmine: true
 Katello/katello-selinux:
   redmine: katello
+theforeman/stats-dashboard:
+  redmine: stats-dashboard
