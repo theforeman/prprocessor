@@ -124,11 +124,9 @@ theforeman/kafo_parsers:
   redmine: kafo
 theforeman/puppetdb_foreman: {}
 theforeman/puppet-candlepin:
-  redmine: katello
+  redmine: puppet-foreman
 theforeman/puppet-certs:
-  redmine: katello
-theforeman/puppet-common:
-  redmine: katello
+  redmine: puppet-foreman
 theforeman/puppet-dhcp:
   redmine: puppet-foreman
 theforeman/puppet-dns:
@@ -142,21 +140,19 @@ theforeman/puppet-foreman_proxy:
   refs:
     - smart-proxy
 theforeman/puppet-foreman_proxy_content:
-  redmine: katello
+  redmine: puppet-foreman
 theforeman/puppet-git:
   redmine: puppet-foreman
 theforeman/puppet-katello:
-  redmine: katello
+  redmine: puppet-foreman
 theforeman/puppet-katello_devel:
-  redmine: katello
+  redmine: puppet-foreman
 theforeman/puppet-pulp:
-  redmine: katello
+  redmine: puppet-foreman
 theforeman/puppet-puppet:
   redmine: puppet-foreman
 theforeman/puppet-qpid:
-  redmine: katello
-theforeman/puppet-service_wait:
-  redmine: katello
+  redmine: puppet-foreman
 theforeman/puppet-tftp:
   redmine: puppet-foreman
 theforeman/smart-proxy:
@@ -214,10 +210,6 @@ Katello/katello-host-tools:
   redmine_required: true
   link_to_redmine: true
 Katello/katello-installer:
-  redmine: katello
-  redmine_required: true
-  link_to_redmine: true
-Katello/katello-packaging:
   redmine: katello
   redmine_required: true
   link_to_redmine: true
