@@ -111,12 +111,6 @@ class PullRequest
         warnings += "  * length of the first commit message line for #{commit.sha} exceeds 65 characters\n"
         short_warnings[commit.sha] << 'summary line length exceeded'
       end
-      commit.commit.message.lines.each do |line|
-        if line.chomp.sub(URI.regexp, '').size > 72 && line !~ /^\s{4,}/
-          warnings += "  * commit message for #{commit.sha} is not wrapped at 72nd column\n"
-          short_warnings[commit.sha] << 'line length exceeded'
-        end
-      end
     end
     message = <<EOM
 There were the following issues with the commit message:
