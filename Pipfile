@@ -1,0 +1,21 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pylint = "*"
+pyflakes = "*"
+ipython = "*"
+ipdb = "*"
+
+[packages]
+octomachinery = "*"
+python-redmine = "*"
+pyyaml = "*"
+
+[requires]
+python_version = "3.7"
+
+[scripts]
+server = "python -m prprocessor"

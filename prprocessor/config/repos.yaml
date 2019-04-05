@@ -1,0 +1,194 @@
+# github_project:
+#   redmine: identifier of the Redmine project, optional unless redmine_required=true
+#            assigns PRs to tickets, enforces ticket matches project when present
+#   redmine_required: enforce commit message format to include Redmine ticket number (default: false)
+#   refs: optional list of Redmine projects that commits here can "refs" (default: [])
+---
+ekohl/gh-test-env:
+  redmine: foreman
+  redmine_required: true
+  refs:
+    - puppet-foreman
+theforeman/chef-handler-foreman:
+  redmine: chef
+theforeman/community-templates:
+  redmine: foreman
+theforeman/foreman:
+  redmine: foreman
+  redmine_required: true
+theforeman/foreman_abrt:
+  redmine: abrt
+theforeman/foreman_ansible:
+  redmine: ansible
+  redmine_required: true
+theforeman/foreman_azure:
+  redmine: azure
+  redmine_required: true
+theforeman/foreman_bootdisk:
+  redmine: bootdisk
+theforeman/foreman_chef:
+  redmine: chef
+  redmine_required: true
+theforeman/foreman_deployments:
+  redmine: deployments
+theforeman/foreman-digitalocean:
+  redmine: digitalocean
+  redmine_required: true
+theforeman/foreman_discovery:
+  redmine: discovery
+theforeman/foreman-discovery-image:
+  redmine: discovery
+theforeman/foreman_docker:
+  redmine: docker
+  redmine_required: true
+theforeman/foreman_expire_hosts: {}
+theforeman/foreman_host_extra_validator: {}
+theforeman/foreman-installer:
+  redmine: puppet-foreman
+theforeman/foreman_maintain:
+  redmine: foreman-maintain
+  redmine_required: true
+theforeman/foreman_monitoring: {}
+theforeman/foreman-one:
+  redmine: opennebula
+theforeman/foreman_omaha: {}
+theforeman/foreman_openscap:
+  redmine: foreman_openscap
+  redmine_required: true
+theforeman/foreman-packaging:
+  redmine: rpms
+  refs:
+    - foreman
+    - katello
+    - puppet-foreman
+    - selinux
+theforeman/foreman_remote_execution:
+  redmine: foreman_remote_execution
+  redmine_required: true
+theforeman/foreman_salt:
+  redmine: salt
+theforeman/foreman-selinux:
+  redmine: selinux
+  redmine_required: true
+theforeman/foreman_setup:
+  redmine: foreman_setup
+theforeman/foreman_snapshot:
+  redmine: snaphost
+theforeman/foreman-tasks:
+  redmine: foreman-tasks
+  redmine_required: true
+theforeman/foreman_templates:
+  redmine: templates
+theforeman/foreman_userdata: {}
+theforeman/foreman_virt_who_configure:
+  redmine: virt-who-configure
+theforeman/foreman-xen:
+  redmine: xen
+theforeman/hammer-cli:
+  redmine: hammer-cli
+theforeman/hammer-cli-foreman:
+  redmine: hammer-cli
+theforeman/hammer_cli_foreman_bootdisk:
+  redmine: bootdisk
+theforeman/hammer-cli-foreman-discovery:
+  redmine: discovery
+theforeman/hammer_cli_foreman_docker:
+  redmine: docker
+theforeman/hammer_cli_foreman_openscap:
+  redmine: foreman_openscap
+theforeman/hammer_cli_foreman_remote_execution:
+  redmine: foreman_remote_execution
+theforeman/hammer-cli-foreman-tasks:
+  redmine: foreman-tasks
+theforeman/kafo:
+  redmine: kafo
+theforeman/kafo_parsers:
+  redmine: kafo
+theforeman/puppetdb_foreman: {}
+theforeman/puppet-candlepin:
+  redmine: puppet-foreman
+theforeman/puppet-certs:
+  redmine: puppet-foreman
+theforeman/puppet-dhcp:
+  redmine: puppet-foreman
+theforeman/puppet-dns:
+  redmine: puppet-foreman
+theforeman/puppet-foreman:
+  redmine: puppet-foreman
+  refs:
+    - foreman
+theforeman/puppet-foreman_proxy:
+  redmine: puppet-foreman
+  refs:
+    - smart-proxy
+theforeman/puppet-foreman_proxy_content:
+  redmine: puppet-foreman
+theforeman/puppet-git:
+  redmine: puppet-foreman
+theforeman/puppet-katello:
+  redmine: puppet-foreman
+theforeman/puppet-katello_devel:
+  redmine: puppet-foreman
+theforeman/puppet-pulp:
+  redmine: puppet-foreman
+theforeman/puppet-puppet:
+  redmine: puppet-foreman
+theforeman/puppet-qpid:
+  redmine: puppet-foreman
+theforeman/puppet-tftp:
+  redmine: puppet-foreman
+theforeman/smart-proxy:
+  redmine: smart-proxy
+  redmine_required: true
+theforeman/smart_proxy_abrt:
+  redmine: abrt
+theforeman/smart_proxy_ansible:
+  redmine: ansible
+  redmine_required: true
+theforeman/smart_proxy_chef:
+  redmine: chef
+  redmine_required: true
+theforeman/smart_proxy_dhcp_infoblox:
+  redmine: infoblox
+theforeman/smart_proxy_discovery:
+  redmine: discovery
+theforeman/smart_proxy_discovery_image:
+  redmine: discovery
+theforeman/smart_proxy_dns_infoblox:
+  redmine: infoblox
+theforeman/smart_proxy_dynflow:
+  redmine: foreman-tasks
+  redmine_required: true
+theforeman/smart_proxy_openscap:
+  redmine: foreman_openscap
+  redmine_required: true
+theforeman/smart_proxy_pulp:
+  redmine: katello
+theforeman/smart_proxy_remote_execution_ssh:
+  redmine: foreman_remote_execution
+  redmine_required: true
+theforeman/smart_proxy_salt:
+  redmine: salt
+theforeman/theforeman.org:
+  redmine: foreman-website
+Katello/bastion:
+  redmine: bastion
+  redmine_required: true
+Katello/hammer-cli-csv:
+  redmine: hammer-cli-csv
+Katello/hammer-cli-katello:
+  redmine: katello
+  redmine_required: true
+Katello/katello:
+  redmine: katello
+  redmine_required: true
+Katello/katello-host-tools:
+  redmine: katello
+  redmine_required: true
+Katello/katello-installer:
+  redmine: katello
+  redmine_required: true
+Katello/katello-selinux:
+  redmine: katello
+theforeman/stats-dashboard:
+  redmine: stats-dashboard
