@@ -156,7 +156,7 @@ async def run_pull_request_check(pull_request, check_run=None):
     )
 
 
-@process_event_actions('pull_request', {'opened', 'ready_for_review', 'reopened'})
+@process_event_actions('pull_request', {'opened', 'ready_for_review', 'reopened', 'synchronize'})
 @process_webhook_payload
 async def on_pr_modified(*, action, pull_request, **other):  # pylint: disable=unused-argument
     await run_pull_request_check(pull_request)
