@@ -13,8 +13,8 @@ from prprocessor.redmine import verify_issues
 
 
 COMMIT_VALID_SUMMARY_REGEX = re.compile(
-        r'\A(fixes|refs) (?P<issues>#(\d+)(, ?#(\d+))*)(:| -) .*\Z',
-        re.IGNORECASE,
+    r'\A(fixes|refs) (?P<issues>#(\d+)(, ?#(\d+))*)(:| -) .*\Z',
+    re.IGNORECASE,
 )
 COMMIT_ISSUES_REGEX = re.compile(r'#(\d+)')
 CHECK_NAME = 'Redmine issues'
