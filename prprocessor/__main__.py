@@ -91,7 +91,16 @@ async def validate_commits(config, pull_request):
 
 
 async def verify_pull_request(pull_request):
-    config = CONFIG[pull_request['base']['repo']['full_name']]
+    repository = pull_request['base']['repo']['full_name']
+    try:
+        config = CONFIG[repository]
+    except KeyError:
+        config = {
+            'project': None,
+            'required': False,
+            'refs': set(),
+        }
+
     result = {}
 
     commit_results, issue_ids = await validate_commits(config, pull_request)
