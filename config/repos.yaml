@@ -73,6 +73,7 @@ theforeman/foreman-packaging:
   branch_labels:
     deb/.+: DEB
     rpm/.+: RPM
+    (rpm|deb)/\d+\.\d+: Stable branch
   redmine: rpms
   refs:
     - foreman
