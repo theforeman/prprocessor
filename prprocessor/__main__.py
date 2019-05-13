@@ -176,6 +176,9 @@ async def on_pr_modified(*, action, pull_request, **other):  # pylint: disable=u
 async def on_check_run(*, check_run, **other):  # pylint: disable=unused-argument
     github_api = RUNTIME_CONTEXT.app_installation_client
 
+    if not check_run['pull_requests']:
+        logger.warning('Received check_suite without PRs')
+
     for pr_summary in check_run['pull_requests']:
         pull_request = await github_api.getitem(pr_summary['url'])
         await run_pull_request_check(pull_request, check_run)
@@ -194,6 +197,9 @@ async def on_suite_run(*, check_suite, **other):  # pylint: disable=unused-argum
             break
     else:
         check_run = None
+
+    if not check_suite['pull_requests']:
+        logger.warning('Received check_suite without PRs')
 
     for pr_summary in check_suite['pull_requests']:
         pull_request = await github_api.getitem(pr_summary['url'])
