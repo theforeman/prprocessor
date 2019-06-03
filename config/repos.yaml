@@ -55,6 +55,8 @@ theforeman/foreman_expire_hosts: {}
 theforeman/foreman_host_extra_validator: {}
 theforeman/foreman-installer:
   redmine: puppet-foreman
+theforeman/foreman_kubevirt:
+  redmine: kubevirt
 theforeman/foreman_maintain:
   redmine: foreman-maintain
   redmine_required: true
