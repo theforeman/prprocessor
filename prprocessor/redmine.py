@@ -1,10 +1,18 @@
+import logging
 import os
 from dataclasses import dataclass
+from distutils.version import LooseVersion  # pylint: disable=no-name-in-module,import-error
 from typing import AbstractSet, MutableSet, Optional
 
 from redminelib import Redmine
 from redminelib.exceptions import ResourceNotFoundError
-from redminelib.resources import Issue, Project
+from redminelib.resources import CustomField, Issue, Project
+
+
+logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
+
+
+FIXED_IN_VERSIONS_FIELD_ID = 12  # TODO hardcoded ID
 
 
 @dataclass
@@ -61,3 +69,24 @@ def verify_issues(config, issue_ids: AbstractSet[int]) -> IssueValidation:
     return IssueValidation(project=correct_project, valid_issues=valid_issues,
                            invalid_project_issues=invalid_issues,
                            missing_issue_ids=missing_issue_ids)
+
+
+def set_fixed_in_version(issue: Issue, version: CustomField) -> None:
+    field = issue.custom_fields.get(FIXED_IN_VERSIONS_FIELD_ID)
+    # For some reason field values are strings
+    version_id = str(version.id)
+    if version_id not in field.value:
+        issue.save(custom_fields=[{'id': field.id, 'value': field.value + [version_id]}])
+
+
+def get_latest_open_version(project: Project) -> Optional[CustomField]:
+    versions = project.versions.filter(status='open')
+
+    try:
+        return sorted(versions, key=lambda version: LooseVersion(version.name))[-1]
+    except ValueError:
+        logger.exception('Failed to parse version for %s: %s', project.name, versions)
+        return None
+    except IndexError:
+        logger.warning('No versions found for %s', project.name)
+        return None

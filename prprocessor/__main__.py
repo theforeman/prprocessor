@@ -12,7 +12,8 @@ from octomachinery.app.server.runner import run as run_app
 from pkg_resources import resource_filename
 from redminelib.resources import Issue, Project
 
-from prprocessor.redmine import verify_issues
+from prprocessor.redmine import (get_issues, get_latest_open_version, get_redmine,
+                                 set_fixed_in_version, verify_issues)
 
 
 COMMIT_VALID_SUMMARY_REGEX = re.compile(
@@ -248,6 +249,56 @@ async def on_suite_run(*, check_suite: Mapping, **other) -> None:  # pylint: dis
     for pr_summary in check_suite['pull_requests']:
         pull_request = await github_api.getitem(pr_summary['url'])
         await run_pull_request_check(pull_request, check_run)
+
+
+@process_event_actions('pull_request', {'closed'})
+@process_webhook_payload
+async def on_pr_merge(*, pull_request: Mapping, **other) -> None:  # pylint: disable=unused-argument
+    """
+    Only acts on merged PRs to a master or develop branch. There is no handling for stable
+    branches.
+
+    If there's a configuration, all related issues that have a Fixes #xyz are gathered. All of
+    those that have a matching project according to the configuration are considered. With that
+    list, the Redmine project's latest version is determined. If there is one, all issues receive
+    the fixed_in_version.
+    """
+
+    if not pull_request['merged']:
+        logger.debug('Pull request %s was closed, not merged', pull_request['number'])
+        return
+
+    repository = pull_request['base']['repo']['full_name']
+    target_branch = pull_request['base']['ref']
+    if target_branch not in ('master', 'develop'):
+        logger.info('Unable to set fixed in version for %s branch %s in PR %s',
+                    repository, target_branch, pull_request['number'])
+        return
+
+    config = get_config(repository)
+    if not config.project:
+        logger.info('Repository for %s not found', repository)
+        return
+
+    issue_ids = set()
+    async for commit in get_commits_from_pull_request(pull_request):
+        issue_ids.update(commit.fixes)
+
+    if issue_ids:
+        redmine = get_redmine()
+        project = redmine.project.get(config.project)
+        fixed_in_version = get_latest_open_version(project)
+
+        if not fixed_in_version:
+            logger.info('Unable to determine latest version for %s', project.name)
+            return
+
+        for issue in get_issues(redmine, issue_ids):
+            if issue.project.id == project.id:
+                logger.info('Setting fixed in version for issue %s to %s', issue.id,
+                            fixed_in_version.name)
+                set_fixed_in_version(issue, fixed_in_version)
+
 
 
 if __name__ == "__main__":
