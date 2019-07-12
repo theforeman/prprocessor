@@ -1,6 +1,8 @@
 import logging
 import re
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
+from typing import AsyncGenerator, Collection, Iterable
 
 import yaml
 from octomachinery.app.routing import process_event_actions
@@ -13,11 +15,24 @@ from prprocessor.redmine import verify_issues
 
 
 COMMIT_VALID_SUMMARY_REGEX = re.compile(
-    r'\A(fixes|refs) (?P<issues>#(\d+)(, ?#(\d+))*)(:| -) .*\Z',
+    r'\A(?P<action>fixes|refs) (?P<issues>#(\d+)(, ?#(\d+))*)(:| -) .*\Z',
     re.IGNORECASE,
 )
 COMMIT_ISSUES_REGEX = re.compile(r'#(\d+)')
 CHECK_NAME = 'Redmine issues'
+
+
+@dataclass
+class Commit:
+    sha: str
+    message: str
+    fixes: set = field(default_factory=set)
+    refs: set = field(default_factory=set)
+
+    @property
+    def subject(self):
+        return self.message.splitlines()[0]
+
 
 # This should be handled cleaner
 with open(resource_filename(__name__, 'config/repos.yaml')) as config_fp:
@@ -43,6 +58,21 @@ def summarize(summary):
             yield f'* {line}'
 
 
+async def get_commits_from_pull_request(pull_request) -> AsyncGenerator[Commit, None]:
+    github_api = RUNTIME_CONTEXT.app_installation_client
+    items = await github_api.getitem(pull_request['commits_url'])
+    for item in items:
+        commit = Commit(item['sha'], item['commit']['message'])
+
+        match = COMMIT_VALID_SUMMARY_REGEX.match(commit.subject)
+        if match:
+            action = getattr(commit, match.group('action').lower())
+            for issue in COMMIT_ISSUES_REGEX.findall(match.group('issues')):
+                action.add(int(issue))
+
+        yield commit
+
+
 async def set_check_in_progress(pull_request, check_run=None):
     github_api = RUNTIME_CONTEXT.app_installation_client
 
@@ -64,29 +94,25 @@ async def set_check_in_progress(pull_request, check_run=None):
     return check_run
 
 
+def format_invalid_commit_messages(commits: Iterable[Commit]) -> Collection[str]:
+    return [f"{commit.sha} must be in the format `fixes #redmine - brief description`"
+            for commit in commits]
+
+
 async def validate_commits(config, pull_request):
-    github_api = RUNTIME_CONTEXT.app_installation_client
-
-    commits = await github_api.getitem(pull_request['commits_url'])
-
     issue_ids = set()
-    warnings = []
+    invalid_commits = []
 
-    for commit in commits:
-        message = commit['commit']['message']
-        subject = message.splitlines()[0]
-
-        match = COMMIT_VALID_SUMMARY_REGEX.match(subject)
-        if match:
-            for issue in COMMIT_ISSUES_REGEX.findall(match.group('issues')):
-                issue_ids.add(int(issue))
-        elif config['required']:
-            sha = commit['sha']
-            warnings.append(f"{sha} must be in the format `fixes #redmine - brief description`")
+    async for commit in get_commits_from_pull_request(pull_request):
+        issue_ids.update(commit.fixes)
+        issue_ids.update(commit.refs)
+        if config['required'] and not commit.fixes and not commit.refs:
+            invalid_commits.append(commit)
 
     result = {
-        'Invalid commits': warnings,
+        'Invalid commits': format_invalid_commit_messages(invalid_commits),
     }
+
     return result, issue_ids
 
 
