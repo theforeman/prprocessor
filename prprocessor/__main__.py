@@ -2,7 +2,7 @@ import logging
 import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import AsyncGenerator, Collection, Iterable, Mapping, Optional
+from typing import AsyncGenerator, Collection, Dict, Generator, Iterable, Mapping, Optional, Tuple
 
 import yaml
 from octomachinery.app.routing import process_event_actions
@@ -10,6 +10,7 @@ from octomachinery.app.routing.decorators import process_webhook_payload
 from octomachinery.app.runtime.context import RUNTIME_CONTEXT
 from octomachinery.app.server.runner import run as run_app
 from pkg_resources import resource_filename
+from redminelib.resources import Issue, Project
 
 from prprocessor.redmine import verify_issues
 
@@ -60,7 +61,7 @@ def get_config(repository: str) -> Config:
         return Config()
 
 
-def summarize(summary):
+def summarize(summary: Mapping[str, Iterable]) -> Generator[str, None, None]:
     show_headers = len(summary) > 1
     for header, lines in summary.items():
         if show_headers:
@@ -110,7 +111,28 @@ def format_invalid_commit_messages(commits: Iterable[Commit]) -> Collection[str]
             for commit in commits]
 
 
-async def validate_commits(config, pull_request):
+def format_redmine_issues(issues: Iterable[Issue]) -> Collection[str]:
+    return [f"[#{issue.id}: {issue.subject}]({issue.url})"
+            for issue in sorted(issues, key=lambda issue: issue.id)]
+
+
+def format_details(invalid_issues: Iterable[Issue], correct_project: Project) -> str:
+    text = []
+    for issue in invalid_issues:
+        # Would be nice to get the new issue URL via a property
+        text.append(f"""### [#{issue.id}: {issue.subject}]({issue.url})
+
+* check [#{issue.id}]({issue.url}) is the intended issue
+* move [ticket #{issue.id}]({issue.url}) from {issue.project.name} to the {correct_project.name} project
+* or file a new ticket in the [{correct_project.name} project]({correct_project.url}/issues/new)
+""")
+
+    return '\n'.join(text)
+
+
+async def verify_pull_request(pull_request) -> Tuple[Mapping[str, Collection], str]:
+    config = get_config(pull_request['base']['repo']['full_name'])
+
     issue_ids = set()
     invalid_commits = []
 
@@ -120,25 +142,18 @@ async def validate_commits(config, pull_request):
         if config.required and not commit.fixes and not commit.refs:
             invalid_commits.append(commit)
 
-    result = {
+    issue_results = verify_issues(config, issue_ids)
+
+    summary: Dict[str, Collection] = {
         'Invalid commits': format_invalid_commit_messages(invalid_commits),
+        'Invalid project': format_redmine_issues(issue_results.invalid_project_issues),
+        'Issues not found in redmine': issue_results.missing_issue_ids,
+        'Valid issues': format_redmine_issues(issue_results.valid_issues),
     }
 
-    return result, issue_ids
+    details = format_details(issue_results.invalid_project_issues, issue_results.project)
 
-
-async def verify_pull_request(pull_request):
-    config = get_config(pull_request['base']['repo']['full_name'])
-
-    result = {}
-
-    commit_results, issue_ids = await validate_commits(config, pull_request)
-    result.update(commit_results)
-
-    issue_results, text = verify_issues(config, issue_ids)
-    result.update(issue_results)
-
-    return result, text
+    return summary, details
 
 
 async def run_pull_request_check(pull_request, check_run=None) -> None:
