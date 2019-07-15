@@ -177,7 +177,7 @@ async def on_check_run(*, check_run, **other):  # pylint: disable=unused-argumen
     github_api = RUNTIME_CONTEXT.app_installation_client
 
     if not check_run['pull_requests']:
-        logger.warning('Received check_suite without PRs')
+        logger.warning('Received check_run without PRs')
 
     for pr_summary in check_run['pull_requests']:
         pull_request = await github_api.getitem(pr_summary['url'])
