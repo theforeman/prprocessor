@@ -18,7 +18,8 @@ class IssueValidation:
 def get_redmine() -> Redmine:
     # Handle the KeyError
     url = os.environ['REDMINE_URL']
-    return Redmine(url)
+    key = os.environ.get('REDMINE_KEY')
+    return Redmine(url, key=key)
 
 
 def get_issues(redmine: Redmine, issue_ids: AbstractSet[int]) -> AbstractSet[Issue]:

@@ -10,6 +10,7 @@ Follow the [octomachinery tutorial](https://tutorial.octomachinery.dev/en/latest
 * `GITHUB_PRIVATE_KEY` - The Github private key
 * `GITHUB_WEBHOOK_SECRET` - The Github secret, if any
 * `REDMINE_URL` - The Redmine URL
+* `REDMINE_KEY` - The Redmine API key
 
 * `HOST` - Defaults to `0.0.0.0`, can be set to `::` or any IP.
 * `DEBUG` - Set to `true` or `false
