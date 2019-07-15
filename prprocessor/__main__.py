@@ -2,7 +2,7 @@ import logging
 import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import AsyncGenerator, Collection, Iterable, Mapping
+from typing import AsyncGenerator, Collection, Iterable, Mapping, Optional
 
 import yaml
 from octomachinery.app.routing import process_event_actions
@@ -34,19 +34,30 @@ class Commit:
         return self.message.splitlines()[0]
 
 
+@dataclass
+class Config:
+    project: Optional[str] = None
+    required: bool = False
+    refs: set = field(default_factory=set)
+
+
 # This should be handled cleaner
 with open(resource_filename(__name__, 'config/repos.yaml')) as config_fp:
     CONFIG = {
-        repo: {
-            'project': config.get('redmine'),
-            'required': config.get('redmine_required'),
-            'refs': set(config.get('refs', [])),
-        }
+        repo: Config(project=config.get('redmine'), required=config.get('redmine_required', False),
+                     refs=set(config.get('refs', [])))
         for repo, config in yaml.safe_load(config_fp).items()
     }
 
 
 logger = logging.getLogger('prprocessor')  # pylint: disable=invalid-name
+
+
+def get_config(repository: str) -> Config:
+    try:
+        return CONFIG[repository]
+    except KeyError:
+        return Config()
 
 
 def summarize(summary):
@@ -106,7 +117,7 @@ async def validate_commits(config, pull_request):
     async for commit in get_commits_from_pull_request(pull_request):
         issue_ids.update(commit.fixes)
         issue_ids.update(commit.refs)
-        if config['required'] and not commit.fixes and not commit.refs:
+        if config.required and not commit.fixes and not commit.refs:
             invalid_commits.append(commit)
 
     result = {
@@ -117,15 +128,7 @@ async def validate_commits(config, pull_request):
 
 
 async def verify_pull_request(pull_request):
-    repository = pull_request['base']['repo']['full_name']
-    try:
-        config = CONFIG[repository]
-    except KeyError:
-        config = {
-            'project': None,
-            'required': False,
-            'refs': set(),
-        }
+    config = get_config(pull_request['base']['repo']['full_name'])
 
     result = {}
 

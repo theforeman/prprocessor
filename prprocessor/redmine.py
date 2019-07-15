@@ -44,13 +44,6 @@ def get_issues(redmine, issue_ids):
     return issues
 
 
-def get_projects(redmine, config):
-    project = redmine.project.get(config['project']) if config['project'] else None
-    refs = [redmine.project.get(ref) for ref in set(config['refs'])]
-
-    return project, refs
-
-
 def verify_issues(config, issue_ids):
     issues = set()
     invalid_issues = set()
@@ -64,9 +57,10 @@ def verify_issues(config, issue_ids):
         if issues:
             missing_issue_ids -= {issue.id for issue in issues}
 
-            if config['project']:
-                correct_project, refs = get_projects(redmine, config)
-                project_ids = {correct_project.id} | {project.id for project in refs}
+            if config.project:
+                correct_project = redmine.project.get(config.project)
+                refs = {redmine.project.get(ref).id for ref in config.refs}
+                project_ids = {correct_project.id} | refs
                 invalid_issues = {issue for issue in issues if issue.project.id not in project_ids}
                 text = format_details(invalid_issues, correct_project)
 
