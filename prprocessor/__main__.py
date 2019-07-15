@@ -2,7 +2,7 @@ import logging
 import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import AsyncGenerator, Collection, Iterable
+from typing import AsyncGenerator, Collection, Iterable, Mapping
 
 import yaml
 from octomachinery.app.routing import process_event_actions
@@ -138,7 +138,7 @@ async def verify_pull_request(pull_request):
     return result, text
 
 
-async def run_pull_request_check(pull_request, check_run=None):
+async def run_pull_request_check(pull_request, check_run=None) -> None:
     github_api = RUNTIME_CONTEXT.app_installation_client
 
     check_run = await set_check_in_progress(pull_request, check_run)
@@ -193,13 +193,13 @@ async def run_pull_request_check(pull_request, check_run=None):
 
 @process_event_actions('pull_request', {'opened', 'ready_for_review', 'reopened', 'synchronize'})
 @process_webhook_payload
-async def on_pr_modified(*, action, pull_request, **other):  # pylint: disable=unused-argument
+async def on_pr_modified(*, pull_request: Mapping, **other) -> None:  # pylint: disable=unused-argument
     await run_pull_request_check(pull_request)
 
 
 @process_event_actions('check_run', {'rerequested'})
 @process_webhook_payload
-async def on_check_run(*, check_run, **other):  # pylint: disable=unused-argument
+async def on_check_run(*, check_run: Mapping, **other) -> None:  # pylint: disable=unused-argument
     github_api = RUNTIME_CONTEXT.app_installation_client
 
     if not check_run['pull_requests']:
@@ -212,7 +212,7 @@ async def on_check_run(*, check_run, **other):  # pylint: disable=unused-argumen
 
 @process_event_actions('check_suite', {'requested', 'rerequested'})
 @process_webhook_payload
-async def on_suite_run(*, check_suite, **other):  # pylint: disable=unused-argument
+async def on_suite_run(*, check_suite: Mapping, **other) -> None:  # pylint: disable=unused-argument
     github_api = RUNTIME_CONTEXT.app_installation_client
 
     check_runs = await github_api.getitem(check_suite['check_runs_url'],
