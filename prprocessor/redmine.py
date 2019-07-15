@@ -1,10 +1,12 @@
 import os
+from typing import AbstractSet
 
 from redminelib import Redmine
 from redminelib.exceptions import ResourceNotFoundError
+from redminelib.resources import Issue
 
 
-def get_redmine():
+def get_redmine() -> Redmine:
     # Handle the KeyError
     url = os.environ['REDMINE_URL']
     return Redmine(url)
@@ -29,7 +31,7 @@ def format_details(invalid_issues, correct_project):
     return '\n'.join(text)
 
 
-def get_issues(redmine, issue_ids):
+def get_issues(redmine: Redmine, issue_ids: AbstractSet[int]) -> AbstractSet[Issue]:
     # You can search for a comma separated string and find multiple
     issue_id = ','.join(map(str, sorted(issue_ids)))
     issues = set(redmine.issue.filter(issue_id=issue_id))
