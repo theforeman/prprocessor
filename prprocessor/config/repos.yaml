@@ -5,7 +5,7 @@
 #   refs: optional list of Redmine projects that commits here can "refs" (default: [])
 ---
 ekohl/gh-test-env:
-  redmine: foreman
+  redmine: pr-processor-test
   redmine_required: true
   refs:
     - puppet-foreman
