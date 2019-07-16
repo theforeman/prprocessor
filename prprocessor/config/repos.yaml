@@ -11,6 +11,7 @@ ekohl/gh-test-env:
     - puppet-foreman
 theforeman/chef-handler-foreman:
   redmine: chef
+  redmine_version_prefix: "chef-handler-foreman "
 theforeman/community-templates:
   redmine: foreman
 theforeman/foreman:
@@ -21,6 +22,7 @@ theforeman/foreman_abrt:
 theforeman/foreman_ansible:
   redmine: ansible
   redmine_required: true
+  redmine_version_prefix: "foreman-ansible "
 theforeman/foreman_azure:
   redmine: azure
   redmine_required: true
@@ -29,6 +31,7 @@ theforeman/foreman_bootdisk:
 theforeman/foreman_chef:
   redmine: chef
   redmine_required: true
+  redmine_version_prefix: "foreman_chef "
 theforeman/foreman_deployments:
   redmine: deployments
 theforeman/foreman-digitalocean:
@@ -36,8 +39,10 @@ theforeman/foreman-digitalocean:
   redmine_required: true
 theforeman/foreman_discovery:
   redmine: discovery
+  redmine_version_prefix: "Discovery Plugin "
 theforeman/foreman-discovery-image:
   redmine: discovery
+  redmine_version_prefix: "Discovery Image "
 theforeman/foreman_docker:
   redmine: docker
   redmine_required: true
@@ -55,6 +60,7 @@ theforeman/foreman_omaha: {}
 theforeman/foreman_openscap:
   redmine: foreman_openscap
   redmine_required: true
+  redmine_version_prefix: "foreman_openscap "
 theforeman/foreman-packaging:
   redmine: rpms
   refs:
@@ -65,6 +71,7 @@ theforeman/foreman-packaging:
 theforeman/foreman_remote_execution:
   redmine: foreman_remote_execution
   redmine_required: true
+  redmine_version_prefix: "foreman_remote_execution "
 theforeman/foreman_salt:
   redmine: salt
 theforeman/foreman-selinux:
@@ -77,29 +84,44 @@ theforeman/foreman_snapshot:
 theforeman/foreman-tasks:
   redmine: foreman-tasks
   redmine_required: true
+  redmine_version_prefix: "foreman-tasks-"
 theforeman/foreman_templates:
   redmine: templates
+  redmine_version_prefix: "foreman_templates "
 theforeman/foreman_userdata: {}
 theforeman/foreman_virt_who_configure:
   redmine: virt-who-configure
+  redmine_version_prefix: "foreman-virt-who-configure-"
 theforeman/foreman-xen:
   redmine: xen
 theforeman/hammer-cli:
   redmine: hammer-cli
+  redmine_version_prefix: "hammer-cli-"
 theforeman/hammer-cli-foreman:
   redmine: hammer-cli
+  redmine_version_prefix: "hammer-cli-foreman-"
+theforeman/hammer-cli-foreman-ansible:
+  redmine: ansible
+  redmine_version_prefix: "hammer-cli-foreman-ansible "
 theforeman/hammer_cli_foreman_bootdisk:
   redmine: bootdisk
 theforeman/hammer-cli-foreman-discovery:
   redmine: discovery
+  redmine_version_prefix: "Hammer Plugin "
 theforeman/hammer_cli_foreman_docker:
   redmine: docker
 theforeman/hammer_cli_foreman_openscap:
   redmine: foreman_openscap
+  redmine_version_prefix: "hammer_cli_foreman_openscap "
 theforeman/hammer_cli_foreman_remote_execution:
   redmine: foreman_remote_execution
+  redmine_version_prefix: "hammer_cli_foreman_remote_execution "
 theforeman/hammer-cli-foreman-tasks:
   redmine: foreman-tasks
+  redmine_version_prefix: "hammer-cli-foreman-tasks-"
+theforeman/hammer-cli-foreman-virt-who-configure:
+  redmine: virt-who-configure
+  redmine_version_prefix: "hammer-cli-foreman-virt-who-configure-"
 theforeman/kafo:
   redmine: kafo
 theforeman/kafo_parsers:
@@ -145,9 +167,11 @@ theforeman/smart_proxy_abrt:
 theforeman/smart_proxy_ansible:
   redmine: ansible
   redmine_required: true
+  redmine_version_prefix: "smart_proxy_ansible "
 theforeman/smart_proxy_chef:
   redmine: chef
   redmine_required: true
+  redmine_version_prefix: "smart_proxy_chef "
 theforeman/smart_proxy_dhcp_infoblox:
   redmine: infoblox
 theforeman/smart_proxy_discovery:
@@ -159,14 +183,18 @@ theforeman/smart_proxy_dns_infoblox:
 theforeman/smart_proxy_dynflow:
   redmine: foreman-tasks
   redmine_required: true
+  redmine_version_prefix: "smart_proxy_dynflow-"
 theforeman/smart_proxy_openscap:
   redmine: foreman_openscap
   redmine_required: true
+  redmine_version_prefix: "smart_proxy_openscap "
 theforeman/smart_proxy_pulp:
   redmine: katello
+  redmine_version_prefix: "Smart Proxy Pulp "
 theforeman/smart_proxy_remote_execution_ssh:
   redmine: foreman_remote_execution
   redmine_required: true
+  redmine_version_prefix: "smart_proxy_remote_execution_ssh "
 theforeman/smart_proxy_salt:
   redmine: salt
 theforeman/theforeman.org:
@@ -176,19 +204,27 @@ Katello/bastion:
   redmine_required: true
 Katello/hammer-cli-csv:
   redmine: hammer-cli-csv
+  redmine_version_prefix: "hammer-cli-csv-"
 Katello/hammer-cli-katello:
   redmine: katello
   redmine_required: true
+  redmine_version_prefix: "Hammer CLI Katello "
 Katello/katello:
   redmine: katello
   redmine_required: true
+  redmine_version_prefix: "Katello "
 Katello/katello-host-tools:
   redmine: katello
   redmine_required: true
+  redmine_version_prefix: "Katello Host Tools "
 Katello/katello-installer:
   redmine: katello
   redmine_required: true
+  redmine_version_prefix: "Installer "
 Katello/katello-selinux:
   redmine: katello
+  redmine_version_prefix: "Katello "
+Katello/runcible:
+  redmine: runcible
 theforeman/stats-dashboard:
   redmine: stats-dashboard

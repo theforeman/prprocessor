@@ -41,13 +41,15 @@ class Config:
     project: Optional[str] = None
     required: bool = False
     refs: set = field(default_factory=set)
+    version_prefix: Optional[str] = None
 
 
 # This should be handled cleaner
 with open(resource_filename(__name__, 'config/repos.yaml')) as config_fp:
     CONFIG = {
         repo: Config(project=config.get('redmine'), required=config.get('redmine_required', False),
-                     refs=set(config.get('refs', [])))
+                     refs=set(config.get('refs', [])),
+                     version_prefix=config.get('redmine_version_prefix'))
         for repo, config in yaml.safe_load(config_fp).items()
     }
 
@@ -287,7 +289,7 @@ async def on_pr_merge(*, pull_request: Mapping, **other) -> None:  # pylint: dis
     if issue_ids:
         redmine = get_redmine()
         project = redmine.project.get(config.project)
-        fixed_in_version = get_latest_open_version(project)
+        fixed_in_version = get_latest_open_version(project, config.version_prefix)
 
         if not fixed_in_version:
             logger.info('Unable to determine latest version for %s', project.name)
