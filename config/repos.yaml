@@ -108,6 +108,8 @@ theforeman/hammer-cli:
   redmine: hammer-cli
 theforeman/hammer-cli-foreman:
   redmine: hammer-cli
+theforeman/hammer-cli-foreman-ansible:
+  redmine: ansible
 theforeman/hammer_cli_foreman_bootdisk:
   redmine: bootdisk
 theforeman/hammer-cli-foreman-discovery:
@@ -121,6 +123,8 @@ theforeman/hammer_cli_foreman_remote_execution:
   redmine: foreman_remote_execution
 theforeman/hammer-cli-foreman-tasks:
   redmine: foreman-tasks
+theforeman/hammer-cli-foreman-virt-who-configure:
+  redmine: virt-who-configure
 theforeman/kafo:
   redmine: kafo
 theforeman/kafo_parsers:
@@ -218,5 +222,7 @@ Katello/katello-installer:
   link_to_redmine: true
 Katello/katello-selinux:
   redmine: katello
+Katello/runcible:
+  redmine: runcible
 theforeman/stats-dashboard:
   redmine: stats-dashboard
