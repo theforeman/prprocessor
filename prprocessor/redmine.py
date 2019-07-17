@@ -94,7 +94,7 @@ def get_latest_open_version(project: Project, version_prefix: str) -> Optional[C
 
 def strip_prefix(value: str, prefix: Optional[str]) -> str:
     if prefix and value.startswith(prefix):
-        return value[:len(prefix)]
+        return value[len(prefix):]
     return value
 
 
