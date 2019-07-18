@@ -4,20 +4,6 @@ require 'ostruct'
 require 'github/pull_request'
 
 class TestPullRequest < Minitest::Test
-  def test_wip_regular_title
-    ['My change', 'Change WIP handling'].each do |title|
-      pr = pull_request(nil, {'title' => title})
-      refute pr.wip?, title
-    end
-  end
-
-  def test_wip_is_wip
-    ['WIP: This is in progress', '[WIP] still not done'].each do |title|
-      pr = pull_request(nil, {'title' => title})
-      assert pr.wip?, title
-    end
-  end
-
   def test_regular_title
     ['The commit', 'The original commit'].each do |title|
       pr = pull_request(nil, {'title' => title})

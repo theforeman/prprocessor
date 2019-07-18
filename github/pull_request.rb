@@ -22,10 +22,6 @@ class PullRequest
     @raw_data['mergeable_state'] == 'dirty' && @raw_data['mergeable'] == false
   end
 
-  def wip?
-    @title.start_with?('WIP') || @title.start_with?('[WIP]')
-  end
-
   def cherry_pick?
     @title.start_with?('CP') || @title.start_with?('[CP]') || @title.start_with?('Cherry picks for ')
   end
@@ -86,11 +82,6 @@ class PullRequest
   end
 
   def check_commits_style
-    if wip?
-      add_status('failure', "PR is Work in Progress; commit message style not checked")
-      return
-    end
-
     if cherry_pick?
       add_status('success', "PR is a Cherry-pick; commit message style not checked")
       return
