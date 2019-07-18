@@ -22,6 +22,11 @@ COMMIT_VALID_SUMMARY_REGEX = re.compile(
 )
 COMMIT_ISSUES_REGEX = re.compile(r'#(\d+)')
 CHECK_NAME = 'Redmine issues'
+WHITELISTED_ORGANIZATIONS = ('theforeman', 'Katello')
+
+
+class UnconfiguredRepository(Exception):
+    pass
 
 
 @dataclass
@@ -61,6 +66,11 @@ def get_config(repository: str) -> Config:
     try:
         return CONFIG[repository]
     except KeyError:
+        user, _ = repository.split('/', 1)
+        if user not in WHITELISTED_ORGANIZATIONS:
+            logger.info('The repository %s is unconfigured and user %s not whitelisted',
+                        repository, user)
+            raise UnconfiguredRepository(f'The repository {repository} is unconfigured')
         return Config()
 
 
@@ -134,7 +144,13 @@ def format_details(invalid_issues: Iterable[Issue], correct_project: Project) ->
 
 
 async def verify_pull_request(pull_request) -> Tuple[Mapping[str, Collection], str]:
-    config = get_config(pull_request['base']['repo']['full_name'])
+    try:
+        config = get_config(pull_request['base']['repo']['full_name'])
+    except UnconfiguredRepository:
+        details = {
+            'Unknown repository': f'Contact us via [Discourse)(https://community.theforeman.org]',
+        }
+        return details, None
 
     issue_ids = set()
     invalid_commits = []
@@ -277,10 +293,14 @@ async def on_pr_merge(*, pull_request: Mapping, **other) -> None:  # pylint: dis
                     repository, target_branch, pull_request['number'])
         return
 
-    config = get_config(repository)
-    if not config.project:
-        logger.info('Repository for %s not found', repository)
+    try:
+        config = get_config(repository)
+    except UnconfiguredRepository:
         return
+    else:
+        if not config.project:
+            logger.info('Repository for %s not found', repository)
+            return
 
     issue_ids = set()
     async for commit in get_commits_from_pull_request(pull_request):
