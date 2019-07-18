@@ -272,7 +272,7 @@ async def on_pr_merge(*, pull_request: Mapping, **other) -> None:  # pylint: dis
 
     repository = pull_request['base']['repo']['full_name']
     target_branch = pull_request['base']['ref']
-    if target_branch not in ('master', 'develop'):
+    if target_branch not in ('master', 'develop', 'deb/develop', 'rpm/develop'):
         logger.info('Unable to set fixed in version for %s branch %s in PR %s',
                     repository, target_branch, pull_request['number'])
         return
