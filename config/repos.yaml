@@ -125,6 +125,8 @@ theforeman/hammer-cli-foreman-tasks:
   redmine: foreman-tasks
 theforeman/hammer-cli-foreman-virt-who-configure:
   redmine: virt-who-configure
+theforeman/hammer-cli-foreman-kubevirt:
+  redmine: kubevirt
 theforeman/kafo:
   redmine: kafo
 theforeman/kafo_parsers:
