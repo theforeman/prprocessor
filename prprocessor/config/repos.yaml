@@ -50,6 +50,8 @@ theforeman/foreman_expire_hosts: {}
 theforeman/foreman_host_extra_validator: {}
 theforeman/foreman-installer:
   redmine: puppet-foreman
+theforeman/foreman_kubevirt:
+  redmine: kubevirt
 theforeman/foreman_maintain:
   redmine: foreman-maintain
   redmine_required: true
@@ -110,6 +112,8 @@ theforeman/hammer-cli-foreman-discovery:
   redmine_version_prefix: "Hammer Plugin "
 theforeman/hammer_cli_foreman_docker:
   redmine: docker
+theforeman/hammer-cli-foreman-kubevirt:
+  redmine: kubevirt
 theforeman/hammer_cli_foreman_openscap:
   redmine: foreman_openscap
   redmine_version_prefix: "hammer_cli_foreman_openscap "
