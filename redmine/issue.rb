@@ -102,4 +102,9 @@ class Issue < RedmineResource
     "#{project} ##{@raw_data['issue']['id']}"
   end
 
+  def set_target_version(version)
+    # use nil to unset version
+    @raw_data['issue']["fixed_version_id"] = version
+    self
+  end
 end
