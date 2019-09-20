@@ -87,23 +87,22 @@ class PullRequest
       return
     end
 
-    warnings = ''
     short_warnings = Hash.new { |h, k| h[k] = [] }
     commits.each do |commit|
       if (commit.commit.message.lines.first =~ /\A(fixes|refs) #\d+(, ?#\d+)*(:| -) .*\Z/i) != 0
-        warnings += "  * #{commit.sha} must be in the format ```fixes #redmine_number - brief description```\n"
         short_warnings[commit.sha] << 'issue number format'
       end
       if commit.commit.author.email =~ /\A(vagrant@|root@)/
-        warnings += "  * #{commit.sha} must not be authored by vagrant or root user\n"
         short_warnings[commit.sha] << 'vagrant or root in commit author email'
       end
       if commit.commit.message.lines.first.chomp.size > 65
-        warnings += "  * length of the first commit message line for #{commit.sha} exceeds 65 characters\n"
         short_warnings[commit.sha] << 'summary line length exceeded'
       end
     end
-    unless warnings.empty?
+
+    if short_warnings.values.all?(&:empty?)
+      add_status('success', "Commit message style is correct")
+    else
       self.labels = ['Waiting on contributor']
 
       @commits.each do |commit|
@@ -113,8 +112,6 @@ class PullRequest
           add_status('failure', "Commit message style: #{short_warnings[commit.sha].join(', ')}", sha: commit.sha)
         end
       end
-    else
-      add_status('success', "Commit message style is correct")
     end
   end
 
