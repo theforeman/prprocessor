@@ -54,7 +54,7 @@ post '/pull_request' do
           issue.set_target_version(nil)
         end
         issue.add_pull_request(pull_request.raw_data['html_url']) unless pull_request.cherry_pick?
-        issue.set_status(Issue::READY_FOR_TESTING) unless issue.closed? || pull_request.wip?
+        issue.set_status(Issue::READY_FOR_TESTING) unless issue.closed?
         issue.set_assigned(user_id) unless user_id.nil? || user_id.empty? || issue.assigned_to
         begin
           issue.save!
