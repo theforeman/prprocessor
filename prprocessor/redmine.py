@@ -79,7 +79,8 @@ def set_fixed_in_version(issue: Issue, version: CustomField) -> None:
         issue.save(custom_fields=[{'id': field.id, 'value': field.value + [version_id]}])
 
 
-def get_latest_open_version(project: Project, version_prefix: str) -> Optional[CustomField]:
+def get_latest_open_version(project: Project, version_prefix: Optional[str]) \
+        -> Optional[CustomField]:
     versions = _filter_versions(project.versions.filter(status='open'), version_prefix)
 
     try:
