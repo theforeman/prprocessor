@@ -1,6 +1,7 @@
 import logging
 import os
 from dataclasses import dataclass
+from enum import IntEnum, unique
 from distutils.version import LooseVersion  # pylint: disable=no-name-in-module,import-error
 from typing import AbstractSet, Generator, Iterable, MutableSet, Optional
 
@@ -12,7 +13,33 @@ from redminelib.resources import CustomField, Issue, Project
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
 
-FIXED_IN_VERSIONS_FIELD_ID = 12  # TODO hardcoded ID
+# These hardcoded IDs are not pretty, but it works for now
+@unique
+class Field(IntEnum):
+    TRIAGED = 5
+    PULL_REQUEST = 7
+    FIXED_IN_VERSIONS = 12
+
+
+@unique
+class Status(IntEnum):
+    NEW = 1
+    ASSIGNED = 2
+    RESOLVED = 3
+    FEEDBACK = 4
+    CLOSED = 5
+    REJECTED = 6
+    READY_FOR_TESTING = 7
+    PENDING = 8
+    NEEDS_MORE_INFORMATION = 9
+    DUPLICATE = 10
+    NEEDS_DESIGN = 11
+
+    def is_closed(self) -> bool:
+        return self.value in (Status.CLOSED, Status.RESOLVED, Status.REJECTED, Status.DUPLICATE)
+
+    def is_rejected(self) -> bool:
+        return self.value in (Status.REJECTED, Status.DUPLICATE)
 
 
 @dataclass
@@ -72,7 +99,7 @@ def verify_issues(config, issue_ids: AbstractSet[int]) -> IssueValidation:
 
 
 def set_fixed_in_version(issue: Issue, version: CustomField) -> None:
-    field = issue.custom_fields.get(FIXED_IN_VERSIONS_FIELD_ID)
+    field = issue.custom_fields.get(Field.FIXED_IN_VERSIONS.value)
     # For some reason field values are strings
     version_id = str(version.id)
     if version_id not in field.value:

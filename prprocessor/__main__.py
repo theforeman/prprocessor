@@ -13,7 +13,7 @@ from octomachinery.app.server.runner import run as run_app
 from pkg_resources import resource_filename
 from redminelib.resources import Issue, Project
 
-from prprocessor.redmine import (get_issues, get_latest_open_version, get_redmine,
+from prprocessor.redmine import (Field, Status, get_issues, get_latest_open_version, get_redmine,
                                  set_fixed_in_version, verify_issues, IssueValidation)
 
 
@@ -59,6 +59,9 @@ with open(resource_filename(__name__, 'config/repos.yaml')) as config_fp:
         for repo, config in yaml.safe_load(config_fp).items()
     }
 
+with open(resource_filename(__name__, 'config/users.yaml')) as users_fp:
+    USERS = yaml.safe_load(users_fp)
+
 
 logger = logging.getLogger('prprocessor')  # pylint: disable=invalid-name
 
@@ -73,6 +76,10 @@ def get_config(repository: str) -> Config:
                         repository, user)
             raise UnconfiguredRepository(f'The repository {repository} is unconfigured')
         return Config()
+
+
+def pr_is_cherry_pick(pull_request: Mapping) -> bool:
+    return pull_request['title'].startswith(('CP', '[CP]', 'Cherry picks for '))
 
 
 def summarize(summary: Mapping[str, Iterable], show_headers: bool) -> Generator[str, None, None]:
@@ -191,6 +198,11 @@ async def run_pull_request_check(pull_request: Mapping, check_run=None) -> None:
             'summary': 'Please retry later',
         }
     else:
+        try:
+            update_redmine_on_issues(pull_request, issue_results.valid_issues)
+        except:  # pylint: disable=bare-except
+            logger.exception('Failed to update Redmine issues')
+
         summary: Dict[str, Collection] = {
             'Invalid commits': format_invalid_commit_messages(invalid_commits),
             'Invalid project': format_redmine_issues(issue_results.invalid_project_issues),
@@ -227,6 +239,43 @@ async def run_pull_request_check(pull_request: Mapping, check_run=None) -> None:
             'output': output,
         },
     )
+
+
+async def update_redmine_on_issues(pull_request: Mapping, issues: Iterable[Issue]):
+    pr_url = pull_request['html_url']
+    assignee = USERS.get(pull_request['user']['login'])
+
+    for issue in issues:
+        status = Status(issue.status_id)
+
+        if not status.is_rejected():
+            updates = {}
+            # TODO: rewrite this
+            #if issue.backlog or issue.recycle_bin or not issue.fixed_version_id:
+            #    triaged_field = issue.custom_fields.get(Field.TRIAGED)
+            #    if triaged_field.value is True:  # TODO does the API return a boolean?
+            #        updates['custom_fields'] = [{'id': triaged_field.id, 'value': False}]
+
+            #    updates['fixed_version_id'] = None
+
+            if not pr_is_cherry_pick(pull_request):
+                pr_field = issue.custom_fields.get(Field.PULL_REQUEST)
+                if pr_url not in pr_field.value:
+                    if 'custom_fields' not in updates:
+                        updates['custom_fields'] = []
+                    new_value = pr_field.value + [pr_url]
+                    updates['custom_fields'].append({'id': pr_field.id, 'value': new_value})
+
+            if assignee and not issue.assigned_to_id and issue.assigned_to_id != assignee:
+                updates['assigned_to_id'] = assignee
+
+            if not (status.is_closed() or status == Status.READY_FOR_TESTING):
+                updates['status_id'] = Status.READY_FOR_TESTING.value
+
+            if updates:
+                logger.info('Updating issue %s: %s', issue.id, updates)
+                # This is noop for now to see if the general logic works
+                #issue.save(**updates)
 
 
 @process_event_actions('pull_request', {'opened', 'ready_for_review', 'reopened', 'synchronize'})
