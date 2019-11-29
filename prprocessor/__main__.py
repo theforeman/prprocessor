@@ -14,7 +14,7 @@ from pkg_resources import resource_filename
 from redminelib.resources import Issue, Project
 
 from prprocessor.redmine import (get_issues, get_latest_open_version, get_redmine,
-                                 set_fixed_in_version, verify_issues)
+                                 set_fixed_in_version, verify_issues, IssueValidation)
 
 
 COMMIT_VALID_SUMMARY_REGEX = re.compile(
@@ -75,13 +75,13 @@ def get_config(repository: str) -> Config:
         return Config()
 
 
-def summarize(summary: Mapping[str, Iterable]) -> Generator[str, None, None]:
-    show_headers = len(summary) > 1
+def summarize(summary: Mapping[str, Iterable], show_headers: bool) -> Generator[str, None, None]:
     for header, lines in summary.items():
-        if show_headers:
-            yield f'### {header}'
-        for line in lines:
-            yield f'* {line}'
+        if lines:
+            if show_headers:
+                yield f'### {header}'
+            for line in lines:
+                yield f'* {line}'
 
 
 async def get_commits_from_pull_request(pull_request) -> AsyncGenerator[Commit, None]:
@@ -144,14 +144,8 @@ def format_details(invalid_issues: Iterable[Issue], correct_project: Project) ->
     return '\n'.join(text)
 
 
-async def verify_pull_request(pull_request) -> Tuple[Mapping[str, Collection], str]:
-    try:
-        config = get_config(pull_request['base']['repo']['full_name'])
-    except UnconfiguredRepository:
-        details = {
-            'Unknown repository': f'Contact us via [Discourse)(https://community.theforeman.org]',
-        }
-        return details, None
+async def get_issues_from_pr(pull_request) -> Tuple[IssueValidation, Collection]:
+    config = get_config(pull_request['base']['repo']['full_name'])
 
     issue_ids = set()
     invalid_commits = []
@@ -162,18 +156,7 @@ async def verify_pull_request(pull_request) -> Tuple[Mapping[str, Collection], s
         if config.required and not commit.fixes and not commit.refs:
             invalid_commits.append(commit)
 
-    issue_results = verify_issues(config, issue_ids)
-
-    summary: Dict[str, Collection] = {
-        'Invalid commits': format_invalid_commit_messages(invalid_commits),
-        'Invalid project': format_redmine_issues(issue_results.invalid_project_issues),
-        'Issues not found in redmine': issue_results.missing_issue_ids,
-        'Valid issues': format_redmine_issues(issue_results.valid_issues),
-    }
-
-    details = format_details(issue_results.invalid_project_issues, issue_results.project)
-
-    return summary, details
+    return verify_issues(config, issue_ids), invalid_commits
 
 
 async def run_pull_request_check(pull_request, check_run=None) -> None:
@@ -189,13 +172,18 @@ async def run_pull_request_check(pull_request, check_run=None) -> None:
     try:
         for attempt in range(1, attempts + 1):
             try:
-                status, text = await verify_pull_request(pull_request)
+                issue_results, invalid_commits = await get_issues_from_pr(pull_request)
                 break
             except:  # pylint: disable=bare-except
                 if attempt == attempts:
                     raise
                 logger.exception('Failure during validation of PR (attempt %s)', attempt)
                 await asyncio.sleep(attempt)
+    except UnconfiguredRepository:
+        output = {
+            'title': 'Unknown repository',
+            'summary': 'Contact us via [Discourse](https://community.theforeman.org]',
+        }
     except:  # pylint: disable=bare-except
         logger.exception('Failure during validation of PR')
         output = {
@@ -203,20 +191,22 @@ async def run_pull_request_check(pull_request, check_run=None) -> None:
             'summary': 'Please retry later',
         }
     else:
-        summary = {header: lines for header, lines in status.items() if lines}
+        summary: Dict[str, Collection] = {
+            'Invalid commits': format_invalid_commit_messages(invalid_commits),
+            'Invalid project': format_redmine_issues(issue_results.invalid_project_issues),
+            'Issues not found in redmine': issue_results.missing_issue_ids,
+            'Valid issues': format_redmine_issues(issue_results.valid_issues),
+        }
 
-        if len(summary) == 1:
-            title = next(iter(summary.keys()))
-        else:
-            title = 'Redmine Issue Report'
-
-        if not any(lines for header, lines in summary.items() if header != 'Valid issues'):
+        non_empty = [title for title, lines in summary.items() if lines]
+        multiple_sections = len(non_empty) != 1
+        if not any(True for header in non_empty if header != 'Valid issues'):
             conclusion = 'success'
 
         output = {
-            'title': title,
-            'summary': '\n'.join(summarize(summary)),
-            'text': text,
+            'title': 'Redmine Issue Report' if multiple_sections else non_empty[0],
+            'summary': '\n'.join(summarize(summary, multiple_sections)),
+            'text': format_details(issue_results.invalid_project_issues, issue_results.project),
         }
 
         # > For 'properties/text', nil is not a string.
