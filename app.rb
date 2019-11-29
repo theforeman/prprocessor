@@ -81,7 +81,9 @@ post '/pull_request' do
       end
     end
 
-    pull_request.check_commits_style if repo.redmine_required? && (event_act == 'pull_request/opened' || event_act == 'pull_request/synchronize')
+    if repo.redmine_required? && (event_act == 'pull_request/opened' || event_act == 'pull_request/synchronize')
+      pull_request.labels = ['Waiting on contributor'] unless pull_request.valid_commits_style
+    end
 
     pull_request.labels = ["Needs testing", "Not yet reviewed"] if event_act == 'pull_request/opened'
 
