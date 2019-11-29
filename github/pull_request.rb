@@ -81,38 +81,14 @@ class PullRequest
     @issue_numbers
   end
 
-  def check_commits_style
-    if cherry_pick?
-      add_status('success', "PR is a Cherry-pick; commit message style not checked")
-      return
-    end
-
-    short_warnings = Hash.new { |h, k| h[k] = [] }
+  def valid_commits_style
     commits.each do |commit|
-      if (commit.commit.message.lines.first =~ /\A(fixes|refs) #\d+(, ?#\d+)*(:| -) .*\Z/i) != 0
-        short_warnings[commit.sha] << 'issue number format'
-      end
-      if commit.commit.author.email =~ /\A(vagrant@|root@)/
-        short_warnings[commit.sha] << 'vagrant or root in commit author email'
-      end
-      if commit.commit.message.lines.first.chomp.size > 65
-        short_warnings[commit.sha] << 'summary line length exceeded'
-      end
+      return false if (commit.commit.message.lines.first =~ /\A(fixes|refs) #\d+(, ?#\d+)*(:| -) .*\Z/i) != 0
+      return false if commit.commit.author.email =~ /\A(vagrant@|root@)/
+      return false if commit.commit.message.lines.first.chomp.size > 65
     end
 
-    if short_warnings.values.all?(&:empty?)
-      add_status('success', "Commit message style is correct")
-    else
-      self.labels = ['Waiting on contributor']
-
-      @commits.each do |commit|
-        if short_warnings[commit.sha].empty?
-          add_status('failure', "Some commit messages have an incorrect style", sha: commit.sha)
-        else
-          add_status('failure', "Commit message style: #{short_warnings[commit.sha].join(', ')}", sha: commit.sha)
-        end
-      end
-    end
+    true
   end
 
   def add_issue_links
@@ -147,14 +123,6 @@ class PullRequest
 
   def add_comment(message)
     @last_comment = @client.add_comment(repo.full_name, @number, message)
-  end
-
-  def add_status(state, message, options = {})
-    options = {
-      url: @last_comment ? @last_comment.html_url : "https://theforeman.org/handbook.html",
-      sha: commits.last.sha
-    }.merge(options)
-    @client.create_status(repo.full_name, options[:sha], state, context: 'prprocessor', description: message, target_url: options[:url])
   end
 
   def get_labels(filename, mapping)
