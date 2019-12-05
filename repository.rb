@@ -56,6 +56,14 @@ class Repository
     @config['link_to_redmine']
   end
 
+  def path_labels
+    @config['path_labels']
+  end
+
+  def path_labels?
+    @config['path_labels']
+  end
+
   def branch_labels
     @config['branch_labels']
   end
