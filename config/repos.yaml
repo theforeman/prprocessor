@@ -30,8 +30,8 @@ theforeman/foreman_abrt:
 theforeman/foreman_ansible:
   redmine: ansible
   redmine_required: true
-theforeman/foreman_azure:
-  redmine: azure
+theforeman/foreman_azure_rm:
+  redmine: azurerm
   redmine_required: true
 theforeman/foreman_bootdisk:
   redmine: bootdisk
@@ -111,6 +111,8 @@ theforeman/hammer-cli-foreman:
   redmine: hammer-cli
 theforeman/hammer-cli-foreman-ansible:
   redmine: ansible
+theforeman/hammer_cli_foreman_azure_rm:
+  redmine: azurerm
 theforeman/hammer_cli_foreman_bootdisk:
   redmine: bootdisk
 theforeman/hammer-cli-foreman-discovery:
