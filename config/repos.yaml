@@ -161,6 +161,8 @@ theforeman/puppet-katello_devel:
   redmine: puppet-foreman
 theforeman/puppet-pulp:
   redmine: puppet-foreman
+theforeman/puppet-pulpcore:
+  redmine: puppet-foreman
 theforeman/puppet-puppet:
   redmine: puppet-foreman
 theforeman/puppet-qpid:
