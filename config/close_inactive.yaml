@@ -3,7 +3,7 @@
 :repos: ["theforeman/foreman"]
 
 # months to keep inactive PRs
-:keep: 6
+:keep: 3
 
 # months to keep PRs that have reached an impasse with no new activity
 :impasse: 1
