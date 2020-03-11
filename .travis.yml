@@ -1,2 +1,2 @@
-# Production still runs on 1.9.3
-rvm: 1.9.3
+# Production still runs on 2.0.0
+rvm: 2.0.0
