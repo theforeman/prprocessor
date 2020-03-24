@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import re
 from dataclasses import dataclass, field
@@ -183,8 +184,18 @@ async def run_pull_request_check(pull_request, check_run=None) -> None:
     # We're very pessimistic
     conclusion = 'failure'
 
+    attempts = 3
+
     try:
-        status, text = await verify_pull_request(pull_request)
+        for attempt in range(1, attempts + 1):
+            try:
+                status, text = await verify_pull_request(pull_request)
+                break
+            except:  # pylint: disable=bare-except
+                if attempt == attempts:
+                    raise
+                logger.exception('Failure during validation of PR (attempt %s)', attempt)
+                await asyncio.sleep(attempt)
     except:  # pylint: disable=bare-except
         logger.exception('Failure during validation of PR')
         output = {
