@@ -93,8 +93,6 @@ theforeman/foreman-selinux:
   redmine_required: true
 theforeman/foreman_setup:
   redmine: foreman_setup
-theforeman/foreman_snapshot:
-  redmine: snaphost
 theforeman/foreman-tasks:
   redmine: foreman-tasks
   redmine_required: true
