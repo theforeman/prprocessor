@@ -26,7 +26,7 @@ url=https://prprocessor.theforeman.org/pull_request
 t=$(mktemp)
 for repo in $*; do
   echo "Checking ${repo} : https://api.github.com/repos/${repo}/hooks"
-  curl -H "Authorization: token ${GITHUB_AUTH_TOKEN}" -n https://api.github.com/repos/${repo}/hooks > $t
+  curl -s -H "Authorization: token ${GITHUB_AUTH_TOKEN}" -n https://api.github.com/repos/${repo}/hooks > $t
   id=$(jgrep -i $t "name=web and config.url=${url}" -s id || :)
   if [ -n "$id" ]; then
     echo "Existing hook found on ${repo}, skipping"
