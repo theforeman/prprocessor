@@ -206,6 +206,8 @@ theforeman/theforeman.org:
 Katello/bastion:
   redmine: bastion
   redmine_required: true
+Katello/katello-certs-tools:
+  redmine: katello
 Katello/hammer-cli-csv:
   redmine: hammer-cli-csv
   link_to_redmine: true
