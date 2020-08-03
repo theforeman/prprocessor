@@ -93,6 +93,13 @@ theforeman/foreman-selinux:
   redmine_required: true
 theforeman/foreman_setup:
   redmine: foreman_setup
+theforeman/foreman_statistics:
+  redmine: statistics
+  redmine_required: true
+  branch_labels:
+    .+-stable: Stable branch
+  path_labels:
+    webpack: UI
 theforeman/foreman-tasks:
   redmine: foreman-tasks
   redmine_required: true
