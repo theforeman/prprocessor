@@ -25,6 +25,9 @@ theforeman/foreman:
   path_labels:
     webpack: UI
     app/assets/javascripts: Legacy JS
+    app/graphql: GraphQL
+    app/views/unattended: Templates
+    developer_docs: Docs
 theforeman/foreman_abrt:
   redmine: abrt
 theforeman/foreman_ansible:
