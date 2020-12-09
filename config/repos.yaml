@@ -244,5 +244,9 @@ Katello/katello-selinux:
   redmine: katello
 Katello/runcible:
   redmine: runcible
+Katello/smart_proxy_container_gateway:
+  redmine: katello
+  redmine_required: true
+  link_to_redmine: true
 theforeman/stats-dashboard:
   redmine: stats-dashboard
