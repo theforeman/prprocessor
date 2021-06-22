@@ -199,7 +199,7 @@ async def run_pull_request_check(pull_request: Mapping, check_run=None) -> None:
         }
     else:
         try:
-            update_redmine_on_issues(pull_request, issue_results.valid_issues)
+            await update_redmine_on_issues(pull_request, issue_results.valid_issues)
         except:  # pylint: disable=bare-except
             logger.exception('Failed to update Redmine issues')
 
@@ -241,12 +241,12 @@ async def run_pull_request_check(pull_request: Mapping, check_run=None) -> None:
     )
 
 
-async def update_redmine_on_issues(pull_request: Mapping, issues: Iterable[Issue]):
+async def update_redmine_on_issues(pull_request: Mapping, issues: Iterable[Issue]) -> None:
     pr_url = pull_request['html_url']
     assignee = USERS.get(pull_request['user']['login'])
 
     for issue in issues:
-        status = Status(issue.status_id)
+        status = Status(issue.status.id)
 
         if not status.is_rejected():
             updates = {}
@@ -266,7 +266,7 @@ async def update_redmine_on_issues(pull_request: Mapping, issues: Iterable[Issue
                     new_value = pr_field.value + [pr_url]
                     updates['custom_fields'].append({'id': pr_field.id, 'value': new_value})
 
-            if assignee and not issue.assigned_to_id and issue.assigned_to_id != assignee:
+            if assignee and not hasattr(issue, 'assigned_to'):
                 updates['assigned_to_id'] = assignee
 
             if not (status.is_closed() or status == Status.READY_FOR_TESTING):
