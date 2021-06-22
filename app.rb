@@ -36,33 +36,13 @@ post '/pull_request' do
   halt if event_act == 'pull_request_review_comment/created'
 
   if ENV['REDMINE_API_KEY'] && !repo.redmine_project.nil?
-    users = YAML.load_file('config/users.yaml')
-
     pull_request.issue_numbers.each do |issue_number|
       issue = Issue.new(issue_number)
       project = Project.new(issue.project)
 
-      user_id = users[pull_request.author] if users.key?(pull_request.author)
-
       if !repo.project_allowed?(project.identifier)
         if ENV['GITHUB_OAUTH_TOKEN']
           pull_request.labels = ['Waiting on contributor']
-        end
-      elsif !issue.rejected?
-        if issue.backlog? || issue.recycle_bin? || issue.version.nil?
-          issue.set_triaged(false)
-          issue.set_target_version(nil)
-        end
-        issue.add_pull_request(pull_request.raw_data['html_url']) unless pull_request.cherry_pick?
-        issue.set_status(Issue::READY_FOR_TESTING) unless issue.closed?
-        issue.set_assigned(user_id) unless user_id.nil? || user_id.empty? || issue.assigned_to
-        begin
-          issue.save!
-          actions['redmine'] = true
-        rescue RestClient::UnprocessableEntity => exception
-          Raven.capture_exception(exception)
-          puts "Failed to save issue #{issue} for PR #{pull_request}: #{exception.message}"
-          actions['redmine'] = false
         end
       end
     end
