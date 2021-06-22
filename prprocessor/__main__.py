@@ -274,8 +274,9 @@ async def update_redmine_on_issues(pull_request: Mapping, issues: Iterable[Issue
 
             if updates:
                 logger.info('Updating issue %s: %s', issue.id, updates)
-                # This is noop for now to see if the general logic works
-                #issue.save(**updates)
+                issue.save(**updates)
+            else:
+                logger.debug('Redmine issue %s already in sync', issue.id)
 
 
 @process_event_actions('pull_request', {'opened', 'ready_for_review', 'reopened', 'synchronize'})
