@@ -13,5 +13,5 @@ Follow the [octomachinery tutorial](https://tutorial.octomachinery.dev/en/latest
 * `REDMINE_KEY` - The Redmine API key
 
 * `HOST` - Defaults to `0.0.0.0`, can be set to `::` or any IP.
-* `DEBUG` - Set to `true` or `false
+* `DEBUG` - Set to `true` or `false`
 * `ENV` - Set to `dev` or `prod`
