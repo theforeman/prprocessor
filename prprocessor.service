@@ -1,0 +1,32 @@
+[Unit]
+Description=Sync GitHub PRs to Redmine
+After=network.target
+Requires=network.target
+
+[Service]
+ExecStart=/home/prprocessor/venv/bin/python3 -m prprocessor
+Restart=on-failure
+User=prprocessor
+UMask=0027
+# Optional security settings
+PrivateTmp=true
+ProtectSystem=strict
+#ProtectHome=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+NoNewPrivileges=true
+ReadWritePaths=/home/prprocessor/.cache
+
+# Set these either here or in an override
+#Environment="GITHUB_PRIVATE_KEY=-----BEGIN RSA PRIVATE KEY-----\n..."
+#Environment=GITHUB_APP_IDENTIFIER=
+#Environment=GITHUB_WEBHOOK_SECRET=
+Environment=REDMINE_URL=https://projects.theforeman.org
+#Environment=REDMINE_KEY=
+Environment=DEBUG=false
+Environment=ENV=prod
+
+[Install]
+WantedBy=multi-user.target
