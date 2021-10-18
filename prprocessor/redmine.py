@@ -106,7 +106,7 @@ def set_fixed_in_version(issue: Issue, version: CustomField) -> None:
         issue.save(custom_fields=[{'id': field.id, 'value': field.value + [version_id]}])
 
 
-def get_latest_open_version(project: Project, version_prefix: Optional[str]) \
+def get_latest_open_version(project: Project, version_prefix: str) \
         -> Optional[CustomField]:
     versions = _filter_versions(project.versions.filter(status='open'), version_prefix)
 
@@ -120,15 +120,9 @@ def get_latest_open_version(project: Project, version_prefix: Optional[str]) \
         return None
 
 
-def strip_prefix(value: str, prefix: Optional[str]) -> str:
-    if prefix and value.startswith(prefix):
-        return value[len(prefix):]
-    return value
-
-
 def _filter_versions(versions: Iterable[CustomField],
-                     version_prefix: Optional[str]) -> Generator[CustomField, None, None]:
+                     version_prefix: str) -> Generator[CustomField, None, None]:
     for version in versions:
-        name = strip_prefix(version.name, version_prefix)
+        name = version.name.removeprefix(version_prefix)
         if name and name[0].isdigit():
             yield version
