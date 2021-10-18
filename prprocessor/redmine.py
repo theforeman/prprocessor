@@ -127,7 +127,7 @@ def strip_prefix(value: str, prefix: Optional[str]) -> str:
 
 
 def _filter_versions(versions: Iterable[CustomField],
-                     version_prefix: str) -> Generator[CustomField, None, None]:
+                     version_prefix: Optional[str]) -> Generator[CustomField, None, None]:
     for version in versions:
         name = strip_prefix(version.name, version_prefix)
         if name and name[0].isdigit():
