@@ -359,7 +359,8 @@ async def on_pr_merge(*, pull_request: Mapping, **other) -> None:  # pylint: dis
         if not config.project:
             logger.info('Repository for %s not found', repository)
             return
-        version_prefix = f'{config.version_prefix}{version_prefix}'
+        if config.version_prefix:
+            version_prefix = f'{config.version_prefix}{version_prefix}'
 
     issue_ids = set()
     async for commit in get_commits_from_pull_request(pull_request):
