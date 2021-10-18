@@ -123,6 +123,7 @@ def get_latest_open_version(project: Project, version_prefix: str) \
 def _filter_versions(versions: Iterable[CustomField],
                      version_prefix: str) -> Generator[CustomField, None, None]:
     for version in versions:
-        name = version.name.removeprefix(version_prefix)
-        if name and name[0].isdigit():
-            yield version
+        if version.name.startswith(version_prefix):
+            name = version.name.removeprefix(version_prefix)
+            if name and name[0].isdigit():
+                yield version
