@@ -339,7 +339,14 @@ async def on_pr_merge(*, pull_request: Mapping, **other) -> None:  # pylint: dis
 
     repository = pull_request['base']['repo']['full_name']
     target_branch = pull_request['base']['ref']
-    if target_branch not in ('master', 'develop', 'deb/develop', 'rpm/develop'):
+    if target_branch.endswith('-stable'):
+        # Handle a branch like 3.0-stable. This means we get an additional prefix of 3.0. which
+        # allows get_latest_open_version to find the right version
+        version_prefix = f'{target_branch.removesuffix("-stable")}.'
+    elif target_branch in ('main', 'master', 'develop', 'deb/develop', 'rpm/develop'):
+        # Development branches don't have a version prefix so they really use the latest
+        version_prefix = ''
+    else:
         logger.info('Unable to set fixed in version for %s branch %s in PR %s',
                     repository, target_branch, pull_request['number'])
         return
@@ -352,6 +359,7 @@ async def on_pr_merge(*, pull_request: Mapping, **other) -> None:  # pylint: dis
         if not config.project:
             logger.info('Repository for %s not found', repository)
             return
+        version_prefix = f'{config.version_prefix}{version_prefix}'
 
     issue_ids = set()
     async for commit in get_commits_from_pull_request(pull_request):
@@ -360,10 +368,11 @@ async def on_pr_merge(*, pull_request: Mapping, **other) -> None:  # pylint: dis
     if issue_ids:
         redmine = get_redmine()
         project = redmine.project.get(config.project)
-        fixed_in_version = get_latest_open_version(project, config.version_prefix)
+        fixed_in_version = get_latest_open_version(project, version_prefix)
 
         if not fixed_in_version:
-            logger.info('Unable to determine latest version for %s', project.name)
+            logger.info('Unable to determine latest version for %s; prefix=%s', project.name,
+                        version_prefix)
             return
 
         for issue in get_issues(redmine, issue_ids):
