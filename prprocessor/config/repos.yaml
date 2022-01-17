@@ -22,7 +22,7 @@ theforeman/foreman_abrt:
 theforeman/foreman_ansible:
   redmine: ansible
   redmine_required: true
-  redmine_version_prefix: "foreman-ansible "
+  redmine_version_prefix: "foreman_ansible-"
 theforeman/foreman_azure_rm:
   redmine: azurerm
   redmine_required: true
@@ -173,7 +173,7 @@ theforeman/smart_proxy_abrt:
 theforeman/smart_proxy_ansible:
   redmine: ansible
   redmine_required: true
-  redmine_version_prefix: "smart_proxy_ansible "
+  redmine_version_prefix: "smart_proxy_ansible-"
 theforeman/smart_proxy_chef:
   redmine: chef
   redmine_required: true
