@@ -73,7 +73,7 @@ theforeman/foreman-packaging:
 theforeman/foreman_remote_execution:
   redmine: foreman_remote_execution
   redmine_required: true
-  redmine_version_prefix: "foreman_remote_execution "
+  redmine_version_prefix: "foreman_remote_execution-"
 theforeman/katello-pull-transport-migrate:
   redmine: foreman_remote_execution
   redmine_required: true
