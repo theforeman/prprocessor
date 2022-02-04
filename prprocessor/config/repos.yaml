@@ -204,7 +204,7 @@ theforeman/smart_proxy_pulp:
 theforeman/smart_proxy_remote_execution_ssh:
   redmine: foreman_remote_execution
   redmine_required: true
-  redmine_version_prefix: "smart_proxy_remote_execution_ssh "
+  redmine_version_prefix: "smart_proxy_remote_execution_ssh-"
 theforeman/smart_proxy_salt:
   redmine: salt
 theforeman/theforeman.org:
