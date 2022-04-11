@@ -384,10 +384,13 @@ async def on_pr_merge(*, pull_request: Mapping, **other) -> None:  # pylint: dis
                 set_fixed_in_version(issue, fixed_in_version)
 
 
-
-if __name__ == "__main__":
+def run_prprocessor_app() -> None:
     run_app(
         name='prprocessor',
         version='0.1.0',
         url='https://github.com/apps/prprocessor',
     )
+
+
+if __name__ == "__main__":
+    run_prprocessor_app()
