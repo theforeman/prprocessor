@@ -9,6 +9,8 @@ from redminelib import Redmine
 from redminelib.exceptions import ResourceNotFoundError
 from redminelib.resources import CustomField, Issue, Project
 
+from prprocessor.compat import strip_prefix
+
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
 
@@ -124,6 +126,6 @@ def _filter_versions(versions: Iterable[CustomField],
                      version_prefix: str) -> Generator[CustomField, None, None]:
     for version in versions:
         if version.name.startswith(version_prefix):
-            name = version.name.removeprefix(version_prefix)
+            name = strip_prefix(version.name, version_prefix)
             if name and name[0].isdigit():
                 yield version

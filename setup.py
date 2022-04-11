@@ -15,5 +15,5 @@ setup(
         'python-redmine',
     ],
     package_data={'prprocessor': ['config/*.yaml']},
-    python_requires='>= 3.9',
+    python_requires='>= 3.7',
 )
