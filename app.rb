@@ -55,9 +55,9 @@ post '/pull_request' do
 
     if event_act == 'pull_request/synchronize' && pull_request.waiting_for_contributor?
       if pull_request.not_yet_reviewed?
-        pull_request.replace_labels(['Waiting on contributor'], ['Needs testing'])
+        pull_request.replace_labels(['Waiting on contributor'], [])
       else
-        pull_request.replace_labels(['Waiting on contributor'], ['Needs testing', 'Needs re-review'])
+        pull_request.replace_labels(['Waiting on contributor'], ['Needs re-review'])
       end
     end
 
@@ -65,7 +65,7 @@ post '/pull_request' do
       pull_request.labels = ['Waiting on contributor'] unless pull_request.valid_commits_style
     end
 
-    pull_request.labels = ["Needs testing", "Not yet reviewed"] if event_act == 'pull_request/opened'
+    pull_request.labels = ["Not yet reviewed"] if event_act == 'pull_request/opened'
 
     if event_act == 'pull_request_review/submitted'
       if ['rejected', 'changes_requested'].include?(payload['review']['state'])
