@@ -43,9 +43,6 @@ theforeman/foreman_discovery:
 theforeman/foreman-discovery-image:
   redmine: discovery
   redmine_version_prefix: "Discovery Image "
-theforeman/foreman_docker:
-  redmine: docker
-  redmine_required: true
 theforeman/foreman_expire_hosts: {}
 theforeman/foreman_host_extra_validator: {}
 theforeman/foreman-installer:
@@ -70,6 +67,8 @@ theforeman/foreman-packaging:
     - katello
     - puppet-foreman
     - selinux
+theforeman/foreman_puppet:
+  redmine: foreman_puppet
 theforeman/foreman_remote_execution:
   redmine: foreman_remote_execution
   redmine_required: true
@@ -85,8 +84,9 @@ theforeman/foreman-selinux:
   redmine_required: true
 theforeman/foreman_setup:
   redmine: foreman_setup
-theforeman/foreman_snapshot:
-  redmine: snaphost
+theforeman/foreman_statistics:
+  redmine: statistics
+  redmine_required: true
 theforeman/foreman-tasks:
   redmine: foreman-tasks
   redmine_required: true
@@ -98,6 +98,8 @@ theforeman/foreman_userdata: {}
 theforeman/foreman_virt_who_configure:
   redmine: virt-who-configure
   redmine_version_prefix: "foreman-virt-who-configure-"
+theforeman/foreman_webhooks:
+  redmine: webhooks
 theforeman/foreman-xen:
   redmine: xen
 theforeman/hammer-cli:
@@ -116,8 +118,6 @@ theforeman/hammer_cli_foreman_bootdisk:
 theforeman/hammer-cli-foreman-discovery:
   redmine: discovery
   redmine_version_prefix: "Hammer Plugin "
-theforeman/hammer_cli_foreman_docker:
-  redmine: docker
 theforeman/hammer-cli-foreman-kubevirt:
   redmine: kubevirt
 theforeman/hammer_cli_foreman_openscap:
@@ -162,6 +162,8 @@ theforeman/puppet-katello:
 theforeman/puppet-katello_devel:
   redmine: puppet-foreman
 theforeman/puppet-pulp:
+  redmine: puppet-foreman
+theforeman/puppet-pulpcore:
   redmine: puppet-foreman
 theforeman/puppet-puppet:
   redmine: puppet-foreman
@@ -212,6 +214,8 @@ theforeman/theforeman.org:
 Katello/bastion:
   redmine: bastion
   redmine_required: true
+Katello/katello-certs-tools:
+  redmine: katello
 Katello/hammer-cli-csv:
   redmine: hammer-cli-csv
   redmine_version_prefix: "hammer-cli-csv-"
@@ -236,5 +240,8 @@ Katello/katello-selinux:
   redmine_version_prefix: "Katello "
 Katello/runcible:
   redmine: runcible
+Katello/smart_proxy_container_gateway:
+  redmine: katello
+  redmine_required: true
 theforeman/stats-dashboard:
   redmine: stats-dashboard
