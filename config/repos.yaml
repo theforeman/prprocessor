@@ -49,15 +49,9 @@ theforeman/foreman-digitalocean:
 theforeman/foreman_discovery:
   redmine: discovery
   link_to_redmine: true
-theforeman/foreman_webhooks:
-  redmine: webhooks
-  link_to_redmine: true
 theforeman/foreman-discovery-image:
   redmine: discovery
   link_to_redmine: true
-theforeman/foreman_docker:
-  redmine: docker
-  redmine_required: true
 theforeman/foreman_expire_hosts: {}
 theforeman/foreman_host_extra_validator: {}
 theforeman/foreman-installer:
@@ -92,6 +86,9 @@ theforeman/foreman-packaging:
 theforeman/foreman_remote_execution:
   redmine: foreman_remote_execution
   redmine_required: true
+theforeman/katello-pull-transport-migrate:
+  redmine: foreman_remote_execution
+  redmine_required: true
 theforeman/foreman_salt:
   redmine: salt
 theforeman/foreman-selinux:
@@ -114,6 +111,9 @@ theforeman/foreman_templates:
 theforeman/foreman_userdata: {}
 theforeman/foreman_virt_who_configure:
   redmine: virt-who-configure
+theforeman/foreman_webhooks:
+  redmine: webhooks
+  link_to_redmine: true
 theforeman/foreman-xen:
   redmine: xen
 theforeman/hammer-cli:
@@ -129,8 +129,8 @@ theforeman/hammer_cli_foreman_bootdisk:
 theforeman/hammer-cli-foreman-discovery:
   redmine: discovery
   link_to_redmine: true
-theforeman/hammer_cli_foreman_docker:
-  redmine: docker
+theforeman/hammer-cli-foreman-kubevirt:
+  redmine: kubevirt
 theforeman/hammer_cli_foreman_openscap:
   redmine: foreman_openscap
 theforeman/hammer_cli_foreman_remote_execution:
@@ -139,8 +139,6 @@ theforeman/hammer-cli-foreman-tasks:
   redmine: foreman-tasks
 theforeman/hammer-cli-foreman-virt-who-configure:
   redmine: virt-who-configure
-theforeman/hammer-cli-foreman-kubevirt:
-  redmine: kubevirt
 theforeman/kafo:
   redmine: kafo
 theforeman/kafo_parsers:
