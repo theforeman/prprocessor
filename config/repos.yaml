@@ -83,6 +83,8 @@ theforeman/foreman-packaging:
     - katello
     - puppet-foreman
     - selinux
+theforeman/foreman_puppet:
+  redmine: foreman_puppet
 theforeman/foreman_remote_execution:
   redmine: foreman_remote_execution
   redmine_required: true
