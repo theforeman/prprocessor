@@ -99,6 +99,7 @@ EOM
   end
 
   status 500 if actions.has_value?(false)
+  content_type :json
   actions.to_json
 end
 
@@ -115,6 +116,7 @@ end
 
 # Hash of Redmine projects to linked GitHub repos
 get '/redmine_repos' do
+  content_type :json
   Repository.all.select { |repo,config| !config.redmine_project.nil? }.inject({}) do |output,(repo,config)|
     output[config.redmine_project] ||= {}
     output[config.redmine_project][repo] = config.branches
