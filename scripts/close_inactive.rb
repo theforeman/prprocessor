@@ -22,11 +22,18 @@ def close_prs(client, repo, config, label, time, message)
     labels = client.labels_for_issue(repo, number).collect{ |x| x[:name] }
     if updated_at < time && labels.include?(label)
       puts "Closing #{number} (#{title}) with latest update #{updated_at}"
-      client.add_comment(repo, number, message % user) if CONFIG[:add_comment]
+      pr_obj = PullRequest.new(config, pr, client)
+
+      final_message = message
+      if pr_obj.dirty?
+        final_message += "\nP.S. Make sure you reopen the PR before the rebase." \
+                         "You won't be able to reopen the PR after force-pushing the rebase."
+      end
+
+      client.add_comment(repo, number, final_message % user) if CONFIG[:add_comment]
       client.add_labels_to_an_issue(repo, number, CONFIG[:labels]) if CONFIG[:add_labels]
       client.close_pull_request(repo, number) if CONFIG[:close]
 
-      pr_obj = PullRequest.new(config, pr, client)
       pr_obj.issue_numbers.map { |issue| Issue.new(issue) }.each do |issue|
         issue.set_assigned(nil)
         issue.set_status(Issue::NEW)
