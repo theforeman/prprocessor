@@ -7,8 +7,6 @@
 #   refs: optional list of Redmine projects that commits here can "refs" (default: [])
 #   link_to_redmine: Add comment with Issue number if present (default: false)
 ---
-theforeman/chef-handler-foreman:
-  redmine: chef
 theforeman/community-templates:
   redmine: foreman
   path_labels:
@@ -38,9 +36,6 @@ theforeman/foreman_azure_rm:
   redmine_required: true
 theforeman/foreman_bootdisk:
   redmine: bootdisk
-theforeman/foreman_chef:
-  redmine: chef
-  redmine_required: true
 theforeman/foreman_deployments:
   redmine: deployments
 theforeman/foreman-digitalocean:
@@ -189,9 +184,6 @@ theforeman/smart_proxy_abrt:
   redmine: abrt
 theforeman/smart_proxy_ansible:
   redmine: ansible
-  redmine_required: true
-theforeman/smart_proxy_chef:
-  redmine: chef
   redmine_required: true
 theforeman/smart_proxy_dhcp_infoblox:
   redmine: infoblox
