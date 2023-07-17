@@ -35,20 +35,23 @@ post '/pull_request' do
   halt if event == 'pull_request' && ['closed', 'labeled', 'unlabeled'].include?(action)
   halt if event_act == 'pull_request_review_comment/created'
 
-  if ENV['REDMINE_API_KEY'] && !repo.redmine_project.nil?
-    pull_request.issue_numbers.each do |issue_number|
-      issue = Issue.new(issue_number)
-      project = Project.new(issue.project)
-
-      if !repo.project_allowed?(project.identifier)
-        if ENV['GITHUB_OAUTH_TOKEN']
-          pull_request.labels = ['Waiting on contributor']
+  if ENV['GITHUB_OAUTH_TOKEN']
+    if ENV['REDMINE_API_KEY'] && !repo.redmine_project.nil?
+      issues_valid = pull_request.issue_numbers.all? do |issue_number|
+        begin
+          issue = Issue.new(issue_number)
+          project = Project.new(issue.project)
+          repo.project_allowed?(project.identifier)
+        rescue RestClient::ResourceNotFound
+          false
         end
       end
-    end
-  end
 
-  if ENV['GITHUB_OAUTH_TOKEN']
+      if !issues_valid
+        pull_request.labels = ['Waiting on contributor']
+      end
+    end
+
     if repo.link_to_redmine?
       pull_request.add_issue_links
     end
