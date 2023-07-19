@@ -13,7 +13,7 @@ from octomachinery.app.server.runner import run as run_app
 from pkg_resources import resource_filename
 from redminelib.resources import Issue, Project
 
-from prprocessor.compat import strip_suffix
+from prprocessor.compat import strip_prefix, strip_suffix
 from prprocessor.redmine import (Field, Status, get_issues, get_latest_open_version, get_redmine,
                                  set_fixed_in_version, verify_issues, IssueValidation)
 
@@ -344,6 +344,10 @@ async def on_pr_merge(*, pull_request: Mapping, **other) -> None:  # pylint: dis
         # Handle a branch like 3.0-stable. This means we get an additional prefix of 3.0. which
         # allows get_latest_open_version to find the right version
         version_prefix = f'{strip_suffix(target_branch, "-stable")}.'
+    elif target_branch.startswith('KATELLO-'):
+        # Handle a branch like KATELLO-4.9. This means we get an additional prefix of 4.9. which
+        # allows get_latest_open_version to find the right version
+        version_prefix = f'{strip_prefix(target_branch, "KATELLO-")}.'
     elif target_branch in ('main', 'master', 'develop', 'deb/develop', 'rpm/develop'):
         # Development branches don't have a version prefix so they really use the latest
         version_prefix = ''
