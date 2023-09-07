@@ -282,13 +282,13 @@ async def update_redmine_on_issues(pull_request: Mapping, issues: Iterable[Issue
 
 @process_event_actions('pull_request', {'opened', 'ready_for_review', 'reopened', 'synchronize'})
 @process_webhook_payload
-async def on_pr_modified(*, pull_request: Mapping, **other) -> None:  # pylint: disable=unused-argument
+async def on_pr_modified(*, pull_request: Mapping, **_kw) -> None:
     await run_pull_request_check(pull_request)
 
 
 @process_event_actions('check_run', {'rerequested'})
 @process_webhook_payload
-async def on_check_run(*, check_run: Mapping, **other) -> None:  # pylint: disable=unused-argument
+async def on_check_run(*, check_run: Mapping, **_kw) -> None:
     github_api = RUNTIME_CONTEXT.app_installation_client
 
     if not check_run['pull_requests']:
@@ -301,7 +301,7 @@ async def on_check_run(*, check_run: Mapping, **other) -> None:  # pylint: disab
 
 @process_event_actions('check_suite', {'requested', 'rerequested'})
 @process_webhook_payload
-async def on_suite_run(*, check_suite: Mapping, **other) -> None:  # pylint: disable=unused-argument
+async def on_suite_run(*, check_suite: Mapping, **_kw) -> None:
     github_api = RUNTIME_CONTEXT.app_installation_client
 
     check_runs = await github_api.getitem(check_suite['check_runs_url'],
@@ -323,7 +323,7 @@ async def on_suite_run(*, check_suite: Mapping, **other) -> None:  # pylint: dis
 
 @process_event_actions('pull_request', {'closed'})
 @process_webhook_payload
-async def on_pr_merge(*, pull_request: Mapping, **other) -> None:  # pylint: disable=unused-argument
+async def on_pr_merge(*, pull_request: Mapping, **_kw) -> None:
     """
     Only acts on merged PRs to a master or develop branch. There is no handling for stable
     branches.
