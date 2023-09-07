@@ -3,6 +3,7 @@ import logging
 import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
+from enum import Enum
 from typing import AsyncGenerator, Collection, Generator, Iterable, Mapping
 
 import yaml
@@ -25,6 +26,24 @@ COMMIT_VALID_SUMMARY_REGEX = re.compile(
 COMMIT_ISSUES_REGEX = re.compile(r'#(\d+)')
 CHECK_NAME = 'Redmine issues'
 WHITELISTED_ORGANIZATIONS = ('theforeman', 'Katello')
+
+
+class Label(Enum):
+    WAITING_ON_CONTRIBUTOR = 'Waiting on contributor'
+    NEEDS_RE_REVIEW = 'Needs re-review'
+    NOT_YET_REVIEWED = 'Not yet reviewed'
+
+    @staticmethod
+    def load_labels(labels: Iterable[str]) -> set['Label']:
+        result: set[Label] = set()
+
+        for label in labels:
+            try:
+                result.add(Label(label))
+            except ValueError:
+                pass
+
+        return result
 
 
 class UnconfiguredRepository(Exception):
@@ -90,6 +109,23 @@ def summarize(summary: Mapping[str, Iterable], show_headers: bool) -> Generator[
                 yield f'### {header}'
             for line in lines:
                 yield f'* {line}'
+
+
+async def update_pr_labels(pull_request: Mapping, labels_to_add: Iterable[Label],
+                           labels_to_remove: Iterable[Label]) -> None:
+    github_api = RUNTIME_CONTEXT.app_installation_client
+
+    tasks = []
+
+    if labels_to_add:
+        data = [label.value for label in labels_to_add]
+        tasks.append(github_api.post(pull_request['labels_url'], data=data))
+
+    for label in labels_to_remove:
+        tasks.append(github_api.delete(pull_request['labels_url'], url_vars={'name': label.value}))
+
+    if tasks:
+        await asyncio.gather(*tasks)
 
 
 async def get_commits_from_pull_request(pull_request: Mapping) -> AsyncGenerator[Commit, None]:
@@ -167,7 +203,7 @@ async def get_issues_from_pr(pull_request: Mapping) -> tuple[IssueValidation, Co
     return verify_issues(config, issue_ids), invalid_commits
 
 
-async def run_pull_request_check(pull_request: Mapping, check_run=None) -> None:
+async def run_pull_request_check(pull_request: Mapping, check_run=None) -> bool:
     github_api = RUNTIME_CONTEXT.app_installation_client
 
     check_run = await set_check_in_progress(pull_request, check_run)
@@ -241,6 +277,8 @@ async def run_pull_request_check(pull_request: Mapping, check_run=None) -> None:
         },
     )
 
+    return conclusion == 'success'
+
 
 async def update_redmine_on_issues(pull_request: Mapping, issues: Iterable[Issue]) -> None:
     pr_url = pull_request['html_url']
@@ -282,8 +320,60 @@ async def update_redmine_on_issues(pull_request: Mapping, issues: Iterable[Issue
 
 @process_event_actions('pull_request', {'opened', 'ready_for_review', 'reopened', 'synchronize'})
 @process_webhook_payload
-async def on_pr_modified(*, pull_request: Mapping, **_kw) -> None:
-    await run_pull_request_check(pull_request)
+async def on_pr_modified(*, action: str, pull_request: Mapping, **_kw) -> None:
+    commits_valid_style = await run_pull_request_check(pull_request)
+
+    original_labels: set[str] = {label['name'] for label in pull_request['labels']}
+    labels_before = Label.load_labels(original_labels)
+    labels = labels_before.copy()
+
+    if action == 'opened':
+        labels.add(Label.NOT_YET_REVIEWED)
+
+    if action == 'synchronize' and Label.WAITING_ON_CONTRIBUTOR in labels:
+        labels.remove(Label.WAITING_ON_CONTRIBUTOR)
+        if pull_request['review_comments'] > 0:
+            labels.add(Label.NEEDS_RE_REVIEW)
+
+    if not commits_valid_style:
+        labels.add(Label.WAITING_ON_CONTRIBUTOR)
+
+    # TODO: handle None value (result is being calculated by GH) and resubmit later?
+    if pull_request['mergeable'] is False:
+        # TODO: post message the PR has a conflict?
+        labels.remove(Label.NEEDS_RE_REVIEW)
+        labels.remove(Label.NOT_YET_REVIEWED)
+        labels.add(Label.WAITING_ON_CONTRIBUTOR)
+
+    labels_to_add = labels - labels_before
+    labels_to_remove = labels_before - labels
+
+    # TODO: branch labels
+
+    await update_pr_labels(pull_request, labels_to_add, labels_to_remove)
+
+
+@process_event_actions('pull_request_review', {'submitted'})
+@process_webhook_payload
+async def on_pr_review_assign_labels(*, pull_request: Mapping, review: Mapping, **_kw) -> None:
+    labels_before = Label.load_labels(label['name'] for label in pull_request['labels'])
+    labels = labels_before.copy()
+
+    # TODO: look at review['author_association'] to see if the review has permissions?
+
+    state = review['state']
+    if state in ('rejected', 'changes_requested'):
+        labels.remove(Label.NOT_YET_REVIEWED)
+        labels.remove(Label.NEEDS_RE_REVIEW)
+        labels.add(Label.WAITING_ON_CONTRIBUTOR)
+    elif state == 'approved':
+        labels.remove(Label.NOT_YET_REVIEWED)
+        labels.remove(Label.NEEDS_RE_REVIEW)
+
+    labels_to_add = labels - labels_before
+    labels_to_remove = labels_before - labels
+
+    await update_pr_labels(pull_request, labels_to_add, labels_to_remove)
 
 
 @process_event_actions('check_run', {'rerequested'})
