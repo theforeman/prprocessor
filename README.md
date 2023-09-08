@@ -22,7 +22,7 @@ Follow the [octomachinery tutorial](https://tutorial.octomachinery.dev/en/latest
   * Click `Add` in the menu
   * Choose `From Git`
   * Enter Git Repo URL (https://github.com/theforeman/prprocessor)
-  * Change the Builder Image version to `3.8-ubi8`
+  * Change the Builder Image version to `3.9-ubi8`
   * Expand Deployment
     * Add `ENV` with the value `prod`
   * Click `Create`

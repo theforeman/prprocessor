@@ -3,7 +3,7 @@ import logging
 import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import AsyncGenerator, Collection, Dict, Generator, Iterable, Mapping, Optional, Tuple
+from typing import AsyncGenerator, Collection, Generator, Iterable, Mapping
 
 import yaml
 from octomachinery.app.routing import process_event_actions
@@ -45,10 +45,10 @@ class Commit:
 
 @dataclass
 class Config:
-    project: Optional[str] = None
+    project: str | None = None
     required: bool = False
     refs: set = field(default_factory=set)
-    version_prefix: Optional[str] = None
+    version_prefix: str | None = None
 
 
 # This should be handled cleaner
@@ -152,7 +152,7 @@ def format_details(invalid_issues: Iterable[Issue], correct_project: Project) ->
     return '\n'.join(text)
 
 
-async def get_issues_from_pr(pull_request: Mapping) -> Tuple[IssueValidation, Collection]:
+async def get_issues_from_pr(pull_request: Mapping) -> tuple[IssueValidation, Collection]:
     config = get_config(pull_request['base']['repo']['full_name'])
 
     issue_ids = set()
@@ -204,7 +204,7 @@ async def run_pull_request_check(pull_request: Mapping, check_run=None) -> None:
         except:  # pylint: disable=bare-except
             logger.exception('Failed to update Redmine issues')
 
-        summary: Dict[str, Collection] = {
+        summary: dict[str, Collection] = {
             'Invalid commits': format_invalid_commit_messages(invalid_commits),
             'Invalid project': format_redmine_issues(issue_results.invalid_project_issues),
             'Issues not found in redmine': issue_results.missing_issue_ids,

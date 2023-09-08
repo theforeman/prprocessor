@@ -3,7 +3,7 @@ import os
 from dataclasses import dataclass
 from enum import IntEnum, unique
 from distutils.version import LooseVersion  # pylint: disable=no-name-in-module,import-error
-from typing import AbstractSet, Generator, Iterable, MutableSet, Optional
+from typing import AbstractSet, Generator, Iterable
 
 from redminelib import Redmine
 from redminelib.exceptions import ResourceNotFoundError
@@ -46,7 +46,7 @@ class Status(IntEnum):
 
 @dataclass
 class IssueValidation:
-    project: Optional[Project]
+    project: Project | None
     valid_issues: AbstractSet[Issue]
     invalid_project_issues: AbstractSet[Issue]
     missing_issue_ids: AbstractSet[int]
@@ -78,7 +78,7 @@ def verify_issues(config, issue_ids: AbstractSet[int]) -> IssueValidation:
     correct_project = None
     issues: AbstractSet[Issue] = set()
     invalid_issues: AbstractSet[Issue] = set()
-    missing_issue_ids: MutableSet[int] = set(issue_ids)
+    missing_issue_ids: set[int] = set(issue_ids)
 
     if issue_ids:
         redmine = get_redmine()
@@ -109,7 +109,7 @@ def set_fixed_in_version(issue: Issue, version: CustomField) -> None:
 
 
 def get_latest_open_version(project: Project, version_prefix: str) \
-        -> Optional[CustomField]:
+        -> CustomField | None:
     versions = _filter_versions(project.versions.filter(status='open'), version_prefix)
 
     try:
