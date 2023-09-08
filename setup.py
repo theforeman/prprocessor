@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='prprocessor',
-    version='0.1.0',
+    version='0.2.0',
     description='Handles GitHub PRs and syncing to Redmine and Jenkins',
     url='https://github.com/theforeman/prprocessor/tree/app',
     author='Ewoud Kohl van Wijngaarden',
