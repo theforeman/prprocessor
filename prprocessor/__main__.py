@@ -3,7 +3,7 @@ import logging
 import re
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import AsyncGenerator, Collection, Dict, Generator, Iterable, Mapping, Optional, Tuple
+from typing import AsyncGenerator, Collection, Generator, Iterable, Mapping, Optional
 
 import yaml
 from octomachinery.app.routing import process_event_actions
@@ -13,7 +13,6 @@ from octomachinery.app.server.runner import run as run_app
 from pkg_resources import resource_filename
 from redminelib.resources import Issue, Project
 
-from prprocessor.compat import strip_prefix, strip_suffix
 from prprocessor.redmine import (Field, Status, get_issues, get_latest_open_version, get_redmine,
                                  set_fixed_in_version, verify_issues, IssueValidation)
 
@@ -152,7 +151,7 @@ def format_details(invalid_issues: Iterable[Issue], correct_project: Project) ->
     return '\n'.join(text)
 
 
-async def get_issues_from_pr(pull_request: Mapping) -> Tuple[IssueValidation, Collection]:
+async def get_issues_from_pr(pull_request: Mapping) -> tuple[IssueValidation, Collection]:
     config = get_config(pull_request['base']['repo']['full_name'])
 
     issue_ids = set()
@@ -204,7 +203,7 @@ async def run_pull_request_check(pull_request: Mapping, check_run=None) -> None:
         except:  # pylint: disable=bare-except
             logger.exception('Failed to update Redmine issues')
 
-        summary: Dict[str, Collection] = {
+        summary: dict[str, Collection] = {
             'Invalid commits': format_invalid_commit_messages(invalid_commits),
             'Invalid project': format_redmine_issues(issue_results.invalid_project_issues),
             'Issues not found in redmine': issue_results.missing_issue_ids,
@@ -343,11 +342,11 @@ async def on_pr_merge(*, pull_request: Mapping, **_kw) -> None:
     if target_branch.endswith('-stable'):
         # Handle a branch like 3.0-stable. This means we get an additional prefix of 3.0. which
         # allows get_latest_open_version to find the right version
-        version_prefix = f'{strip_suffix(target_branch, "-stable")}.'
+        version_prefix = f'{target_branch.removesuffix("-stable")}.'
     elif target_branch.startswith('KATELLO-'):
         # Handle a branch like KATELLO-4.9. This means we get an additional prefix of 4.9. which
         # allows get_latest_open_version to find the right version
-        version_prefix = f'{strip_prefix(target_branch, "KATELLO-")}.'
+        version_prefix = f'{target_branch.removeprefix("KATELLO-")}.'
     elif target_branch in ('main', 'master', 'develop', 'deb/develop', 'rpm/develop'):
         # Development branches don't have a version prefix so they really use the latest
         version_prefix = ''
