@@ -3,13 +3,11 @@ import os
 from dataclasses import dataclass
 from enum import IntEnum, unique
 from distutils.version import LooseVersion  # pylint: disable=no-name-in-module,import-error
-from typing import AbstractSet, Generator, Iterable, MutableSet, Optional
+from typing import AbstractSet, Generator, Iterable, Optional
 
 from redminelib import Redmine
 from redminelib.exceptions import ResourceNotFoundError
 from redminelib.resources import CustomField, Issue, Project
-
-from prprocessor.compat import strip_prefix
 
 
 logger = logging.getLogger(__name__)  # pylint: disable=invalid-name
@@ -78,7 +76,7 @@ def verify_issues(config, issue_ids: AbstractSet[int]) -> IssueValidation:
     correct_project = None
     issues: AbstractSet[Issue] = set()
     invalid_issues: AbstractSet[Issue] = set()
-    missing_issue_ids: MutableSet[int] = set(issue_ids)
+    missing_issue_ids: set[int] = set(issue_ids)
 
     if issue_ids:
         redmine = get_redmine()
@@ -126,6 +124,6 @@ def _filter_versions(versions: Iterable[CustomField],
                      version_prefix: str) -> Generator[CustomField, None, None]:
     for version in versions:
         if version.name.startswith(version_prefix):
-            name = strip_prefix(version.name, version_prefix)
+            name = version.name.removeprefix(version_prefix)
             if name and name[0].isdigit():
                 yield version
