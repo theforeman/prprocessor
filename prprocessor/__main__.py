@@ -391,6 +391,18 @@ async def on_pr_merge(*, pull_request: Mapping, **_kw) -> None:
                     logger.info('Setting fixed in version for issue %s to %s', issue.id,
                                 fixed_in_version.name)
                     set_fixed_in_version(issue, fixed_in_version)
+        else:
+            pr_url = pull_request['html_url']
+
+            for issue in get_issues(redmine, issue_ids):
+                pr_field = issue.custom_fields.get(Field.PULL_REQUEST)
+                try:
+                    new_value = pr_field.value.remove(pr_url)
+                except ValueError:
+                    logger.debug('Issue %s not linked to PR %s', issue.id, pr_url)
+                else:
+                    logger.info('Removing PR %s from issue %s', pr_url, issue.id)
+                    issue.save(custom_fields=[{'id': pr_field.id, 'value': new_value}])
 
 
 def run_prprocessor_app() -> None:
