@@ -133,16 +133,6 @@ class PullRequest
     files.collect { |f| get_labels(f.filename, mapping) }.flatten.compact.uniq
   end
 
-  def set_path_labels(mapping)
-    files = client.pull_files(repo.full_name, number)
-    desired_labels = get_desired_labels(files, mapping) 
-
-    to_remove = mapping.keys - desired_labels
-    to_add = desired_labels
-
-    replace_labels(to_remove, to_add)
-  end
-
   def get_branch_labels(mapping)
     mapping.keep_if { |key, branch| target_branch =~ Regexp.new("^#{key}$") }.values
   end

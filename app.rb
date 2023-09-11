@@ -95,7 +95,6 @@ EOM
       pull_request.add_comment(message)
     end
 
-    pull_request.set_path_labels(repo.path_labels) if repo.path_labels?
     pull_request.set_branch_labels(repo.branch_labels) if repo.branch_labels?
 
     actions['github'] = true
