@@ -9,16 +9,9 @@ ekohl/gh-test-env:
   redmine_required: true
   refs:
     - puppet-foreman
-theforeman/chef-handler-foreman:
-  redmine: chef
-  redmine_version_prefix: "chef-handler-foreman "
-theforeman/community-templates:
-  redmine: foreman
 theforeman/foreman:
   redmine: foreman
   redmine_required: true
-theforeman/foreman_abrt:
-  redmine: abrt
 theforeman/foreman_ansible:
   redmine: ansible
   redmine_required: true
@@ -28,15 +21,6 @@ theforeman/foreman_azure_rm:
   redmine_required: true
 theforeman/foreman_bootdisk:
   redmine: bootdisk
-theforeman/foreman_chef:
-  redmine: chef
-  redmine_required: true
-  redmine_version_prefix: "foreman_chef "
-theforeman/foreman_deployments:
-  redmine: deployments
-theforeman/foreman-digitalocean:
-  redmine: digitalocean
-  redmine_required: true
 theforeman/foreman_discovery:
   redmine: discovery
   redmine_version_prefix: "Discovery Plugin "
@@ -53,8 +37,6 @@ theforeman/foreman_maintain:
   redmine: foreman-maintain
   redmine_required: true
 theforeman/foreman_monitoring: {}
-theforeman/foreman-one:
-  redmine: opennebula
 theforeman/foreman_omaha: {}
 theforeman/foreman_openscap:
   redmine: foreman_openscap
@@ -100,8 +82,6 @@ theforeman/foreman_virt_who_configure:
   redmine_version_prefix: "foreman-virt-who-configure-"
 theforeman/foreman_webhooks:
   redmine: webhooks
-theforeman/foreman-xen:
-  redmine: xen
 theforeman/hammer-cli:
   redmine: hammer-cli
   redmine_version_prefix: "hammer-cli-"
@@ -161,8 +141,6 @@ theforeman/puppet-katello:
   redmine: puppet-foreman
 theforeman/puppet-katello_devel:
   redmine: puppet-foreman
-theforeman/puppet-pulp:
-  redmine: puppet-foreman
 theforeman/puppet-pulpcore:
   redmine: puppet-foreman
 theforeman/puppet-puppet:
@@ -174,16 +152,10 @@ theforeman/puppet-tftp:
 theforeman/smart-proxy:
   redmine: smart-proxy
   redmine_required: true
-theforeman/smart_proxy_abrt:
-  redmine: abrt
 theforeman/smart_proxy_ansible:
   redmine: ansible
   redmine_required: true
   redmine_version_prefix: "smart_proxy_ansible-"
-theforeman/smart_proxy_chef:
-  redmine: chef
-  redmine_required: true
-  redmine_version_prefix: "smart_proxy_chef "
 theforeman/smart_proxy_dhcp_infoblox:
   redmine: infoblox
 theforeman/smart_proxy_discovery:
@@ -216,9 +188,6 @@ Katello/bastion:
   redmine_required: true
 Katello/katello-certs-tools:
   redmine: katello
-Katello/hammer-cli-csv:
-  redmine: hammer-cli-csv
-  redmine_version_prefix: "hammer-cli-csv-"
 Katello/hammer-cli-katello:
   redmine: katello
   redmine_required: true
@@ -231,17 +200,9 @@ Katello/katello-host-tools:
   redmine: katello
   redmine_required: true
   redmine_version_prefix: "Katello Host Tools "
-Katello/katello-installer:
-  redmine: katello
-  redmine_required: true
-  redmine_version_prefix: "Installer "
 Katello/katello-selinux:
   redmine: katello
   redmine_version_prefix: "Katello "
-Katello/runcible:
-  redmine: runcible
 Katello/smart_proxy_container_gateway:
   redmine: katello
   redmine_required: true
-theforeman/stats-dashboard:
-  redmine: stats-dashboard
