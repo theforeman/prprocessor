@@ -350,28 +350,15 @@ async def on_pr_merge(*, pull_request: Mapping, **_kw) -> None:
     the fixed_in_version.
     """
 
-    if not pull_request['merged']:
-        logger.debug('Pull request %s was closed, not merged', pull_request['number'])
-        return
-
     repository = pull_request['base']['repo']['full_name']
-    target_branch = pull_request['base']['ref']
-    version_prefix = get_version_prefix_from_branch(target_branch)
-    if version_prefix is None:
-        logger.info('Unable to set fixed in version for %s branch %s in PR %s',
-                    repository, target_branch, pull_request['number'])
-        return
-
     try:
         config = get_config(repository)
     except UnconfiguredRepository:
         return
-    else:
-        if not config.project:
-            logger.info('Repository for %s not found', repository)
-            return
-        if config.version_prefix:
-            version_prefix = f'{config.version_prefix}{version_prefix}'
+
+    if not config.project:
+        logger.info('Repository for %s not found', repository)
+        return
 
     issue_ids = set()
     async for commit in get_commits_from_pull_request(pull_request):
@@ -380,18 +367,30 @@ async def on_pr_merge(*, pull_request: Mapping, **_kw) -> None:
     if issue_ids:
         redmine = get_redmine()
         project = redmine.project.get(config.project)
-        fixed_in_version = get_latest_open_version(project, version_prefix)
 
-        if not fixed_in_version:
-            logger.info('Unable to determine latest version for %s; prefix=%s', project.name,
-                        version_prefix)
-            return
+        if pull_request['merged']:
+            target_branch = pull_request['base']['ref']
+            version_prefix = get_version_prefix_from_branch(target_branch)
+            if version_prefix is None:
+                logger.info('Unable to set fixed in version for %s branch %s in PR %s',
+                            repository, target_branch, pull_request['number'])
+                return
 
-        for issue in get_issues(redmine, issue_ids):
-            if issue.project.id == project.id:
-                logger.info('Setting fixed in version for issue %s to %s', issue.id,
-                            fixed_in_version.name)
-                set_fixed_in_version(issue, fixed_in_version)
+            if config.version_prefix:
+                version_prefix = f'{config.version_prefix}{version_prefix}'
+
+            fixed_in_version = get_latest_open_version(project, version_prefix)
+
+            if not fixed_in_version:
+                logger.info('Unable to determine latest version for %s; prefix=%s', project.name,
+                            version_prefix)
+                return
+
+            for issue in get_issues(redmine, issue_ids):
+                if issue.project.id == project.id:
+                    logger.info('Setting fixed in version for issue %s to %s', issue.id,
+                                fixed_in_version.name)
+                    set_fixed_in_version(issue, fixed_in_version)
 
 
 def run_prprocessor_app() -> None:
