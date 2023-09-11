@@ -28,10 +28,6 @@ class Repository
     @config['branches']
   end
 
-  def close_inactive?
-    !!@config['close_inactive']
-  end
-
   def name
     full_name.split('/').last
   end

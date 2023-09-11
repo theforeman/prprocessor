@@ -1,3 +1,0 @@
-#!/bin/bash
-cd ${OPENSHIFT_REPO_DIR}
-bundle exec ruby scripts/close_inactive.rb >> $OPENSHIFT_RUBY_LOG_DIR/close_inactive
