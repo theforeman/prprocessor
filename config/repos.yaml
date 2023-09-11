@@ -1,6 +1,5 @@
 # github_project:
 #   branches: list of primary development branches, else uses repo default
-#   close_inactive: close PRs that are inactive for some time (default: false)
 #   redmine: identifier of the Redmine project, optional unless redmine_required=true
 #            assigns PRs to tickets, enforces ticket matches project when present
 #   redmine_required: enforce commit message format to include Redmine ticket number (default: false)
@@ -8,7 +7,6 @@
 #   link_to_redmine: Add comment with Issue number if present (default: false)
 ---
 theforeman/foreman:
-  close_inactive: true
   redmine: foreman
   redmine_required: true
   link_to_redmine: true
