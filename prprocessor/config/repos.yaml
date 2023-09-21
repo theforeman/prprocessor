@@ -27,6 +27,7 @@ theforeman/foreman_discovery:
 theforeman/foreman-discovery-image:
   redmine: discovery
   redmine_version_prefix: "Discovery Image "
+theforeman/foreman-documentation: {}
 theforeman/foreman_expire_hosts: {}
 theforeman/foreman_host_extra_validator: {}
 theforeman/foreman-installer:
