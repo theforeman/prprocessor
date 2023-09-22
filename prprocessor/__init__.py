@@ -1,4 +1,7 @@
+import re
 from typing import Optional
+
+PACKAGING_STABLE_BRANCH_REGEX = re.compile(r'(?:rpm|deb)/(?P<version>\d+\.\d+)')
 
 def get_version_prefix_from_branch(target_branch: str) -> Optional[str]:
     """
@@ -17,6 +20,8 @@ def get_version_prefix_from_branch(target_branch: str) -> Optional[str]:
     ''
     >>> get_version_prefix_from_branch('rpm/develop')
     ''
+    >>> get_version_prefix_from_branch('rpm/3.9')
+    '3.9'
     >>> get_version_prefix_from_branch('unknown') is None
     True
     """
@@ -32,6 +37,10 @@ def get_version_prefix_from_branch(target_branch: str) -> Optional[str]:
         # Development branches don't have a version prefix so they really use the latest
         version_prefix = ''
     else:
-        return None
+        match = PACKAGING_STABLE_BRANCH_REGEX.match(target_branch)
+        if match:
+            version_prefix = match.group('version')
+        else:
+            version_prefix = None
 
     return version_prefix
