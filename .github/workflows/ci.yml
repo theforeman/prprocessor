@@ -1,0 +1,31 @@
+---
+name: CI
+
+on:
+  pull_request:
+  push:
+    branch: app
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python:
+          - '3.9'
+          - '3.10'
+          - '3.11'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python }}
+          cache: 'pip'
+      - name: Install dependencies
+        run: pip install -e .
+      - name: Validate syntax
+        run: python -m py_compile prprocessor/*.py
+      - name: Run tests
+        run: python -m doctest prprocessor/__init__.py
