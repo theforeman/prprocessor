@@ -25,19 +25,6 @@ class TestPullRequest < Minitest::Test
     end
   end
 
-  def test_get_branch_labels
-    pr = pull_request
-
-    mapping = {
-      'master'    => 'full',
-      'ma.+'      => 'regex',
-      ''          => 'empty',
-      'unmatched' => 'non-matching',
-    }
-
-    assert_equal(pr.get_branch_labels(mapping), ['full', 'regex'])
-  end
-
   def test_get_desired_labels
     pr = pull_request
 
