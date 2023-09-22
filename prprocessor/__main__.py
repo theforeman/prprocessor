@@ -16,7 +16,7 @@ from octomachinery.app.server.runner import run as run_app
 from pkg_resources import resource_filename
 from redminelib.resources import Issue, Project
 
-from prprocessor import get_version_prefix_from_branch
+from prprocessor import get_version_prefix_from_branch, is_stable_branch
 from prprocessor.redmine import (Field, Status, get_issues, get_latest_open_version, get_redmine,
                                  set_fixed_in_version, verify_issues, IssueValidation)
 
@@ -372,7 +372,7 @@ async def on_pr_modified(*, action: str, pull_request: Mapping, **_kw) -> None:
     labels_to_remove = labels_before - labels
 
     target_branch = pull_request['base']['ref']
-    if target_branch.endswith('-stable') or target_branch.startswith('KATELLO-'):
+    if is_stable_branch(target_branch):
         labels.add(Label.STABLE_BRANCH)
 
     if target_branch.startswith('deb/'):

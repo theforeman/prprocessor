@@ -44,3 +44,16 @@ def get_version_prefix_from_branch(target_branch: str) -> Optional[str]:
             version_prefix = None
 
     return version_prefix
+
+
+def is_stable_branch(branch_name: str) -> bool:
+    """
+    >>> is_stable_branch('develop')
+    False
+    >>> is_stable_branch('3.9-stable')
+    True
+    >>> is_stable_branch('unknown')
+    False
+    """
+    version_prefix = get_version_prefix_from_branch(branch_name)
+    return version_prefix is not None and version_prefix != ''
