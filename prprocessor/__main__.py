@@ -27,6 +27,7 @@ COMMIT_VALID_SUMMARY_REGEX = re.compile(
 COMMIT_ISSUES_REGEX = re.compile(r'#(\d+)')
 CHECK_NAME = 'Redmine issues'
 WHITELISTED_ORGANIZATIONS = ('theforeman', 'Katello')
+STABLE_PACKAGING_BRANCH_REGEX = re.compile(r'(rpm|deb)/\d+\.\d+')
 
 
 class Label(Enum):
@@ -395,6 +396,8 @@ async def on_pr_modified(*, action: str, pull_request: Mapping, **_kw) -> None:
         labels.add(Label.DEB)
     elif target_branch.startswith('rpm/'):
         labels.add(Label.RPM)
+    if STABLE_PACKAGING_BRANCH_REGEX.match(target_branch):
+        labels.add(Label.STABLE_BRANCH)
 
     await update_pr_labels(pull_request, labels_to_add, labels_to_remove)
 
