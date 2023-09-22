@@ -19,11 +19,10 @@ post '/pull_request' do
   verify_signature(payload_body)
 
   event = request.env['HTTP_X_GITHUB_EVENT']
-  halt unless ['pull_request', 'pull_request_review', 'pull_request_review_comment'].include?(event)
+  halt unless event == 'pull_request'
 
   payload = JSON.parse(payload_body)
-  action = payload['action']
-  event_act = "#{event}/#{action}"
+  halt unless payload['action'] == 'opened'
 
   raise "unknown repo" unless payload['repository'] && (repo_name = payload['repository']['full_name'])
   raise "repo #{repo_name} not configured" if Repository[repo_name].nil?
@@ -31,9 +30,6 @@ post '/pull_request' do
 
   client = Octokit::Client.new(:access_token => ENV['GITHUB_OAUTH_TOKEN'])
   pull_request = PullRequest.new(repo, payload['pull_request'], client)
-
-  halt if event == 'pull_request' && ['closed', 'labeled', 'unlabeled'].include?(action)
-  halt if event_act == 'pull_request_review_comment/created'
 
   if ENV['GITHUB_OAUTH_TOKEN']
     if repo.link_to_redmine?
@@ -43,7 +39,6 @@ post '/pull_request' do
     actions['github'] = true
   end
 
-  status 500 if actions.has_value?(false)
   content_type :json
   actions.to_json
 end
