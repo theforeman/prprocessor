@@ -10,8 +10,6 @@ theforeman/foreman:
   redmine: foreman
   redmine_required: true
   link_to_redmine: true
-  branch_labels:
-    .+-stable: Stable branch
 theforeman/foreman_abrt:
   redmine: abrt
 theforeman/foreman_ansible:
@@ -54,10 +52,6 @@ theforeman/foreman-packaging:
   branches:
     - deb/develop
     - rpm/develop
-  branch_labels:
-    deb/.+: DEB
-    rpm/.+: RPM
-    (rpm|deb)/\d+\.\d+: Stable branch
   redmine: rpms
   refs:
     - foreman
@@ -82,8 +76,6 @@ theforeman/foreman_setup:
 theforeman/foreman_statistics:
   redmine: statistics
   redmine_required: true
-  branch_labels:
-    .+-stable: Stable branch
 theforeman/foreman-tasks:
   redmine: foreman-tasks
   redmine_required: true

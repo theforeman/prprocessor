@@ -52,14 +52,6 @@ class Repository
     @config['link_to_redmine']
   end
 
-  def branch_labels
-    @config['branch_labels']
-  end
-
-  def branch_labels?
-    @config['branch_labels']
-  end
-
   def project_allowed?(identifier)
     ([redmine_project] + permitted_refs).include?(identifier)
   end
