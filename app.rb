@@ -28,11 +28,10 @@ post '/pull_request' do
   raise "repo #{repo_name} not configured" if Repository[repo_name].nil?
   repo = Repository[repo_name]
 
-  client = Octokit::Client.new(:access_token => ENV['GITHUB_OAUTH_TOKEN'])
-  pull_request = PullRequest.new(repo, payload['pull_request'], client)
-
   if ENV['GITHUB_OAUTH_TOKEN']
     if repo.link_to_redmine?
+      client = Octokit::Client.new(:access_token => ENV['GITHUB_OAUTH_TOKEN'])
+      pull_request = PullRequest.new(repo, payload['pull_request'], client)
       pull_request.add_issue_links
     end
 
