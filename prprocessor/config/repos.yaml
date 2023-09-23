@@ -184,9 +184,6 @@ theforeman/smart_proxy_salt:
   redmine: salt
 theforeman/theforeman.org:
   redmine: foreman-website
-Katello/bastion:
-  redmine: bastion
-  redmine_required: true
 Katello/katello-certs-tools:
   redmine: katello
 Katello/hammer-cli-katello:
