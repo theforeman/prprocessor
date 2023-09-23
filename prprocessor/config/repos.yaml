@@ -3,6 +3,7 @@
 #            assigns PRs to tickets, enforces ticket matches project when present
 #   redmine_required: enforce commit message format to include Redmine ticket number (default: false)
 #   refs: optional list of Redmine projects that commits here can "refs" (default: [])
+#   branches: list of primary development branches, else uses repo default
 ---
 ekohl/gh-test-env:
   redmine: pr-processor-test
@@ -50,6 +51,9 @@ theforeman/foreman-packaging:
     - katello
     - puppet-foreman
     - selinux
+  branches:
+    - deb/develop
+    - rpm/develop
 theforeman/foreman_puppet:
   redmine: foreman_puppet
 theforeman/foreman_remote_execution:
