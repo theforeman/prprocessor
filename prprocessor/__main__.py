@@ -368,9 +368,6 @@ async def on_pr_modified(*, action: str, pull_request: Mapping, **_kw) -> None:
         labels.discard(Label.NOT_YET_REVIEWED)
         labels.add(Label.WAITING_ON_CONTRIBUTOR)
 
-    labels_to_add = labels - labels_before
-    labels_to_remove = labels_before - labels
-
     target_branch = pull_request['base']['ref']
     if is_stable_branch(target_branch):
         labels.add(Label.STABLE_BRANCH)
@@ -379,6 +376,9 @@ async def on_pr_modified(*, action: str, pull_request: Mapping, **_kw) -> None:
         labels.add(Label.DEB)
     elif target_branch.startswith('rpm/'):
         labels.add(Label.RPM)
+
+    labels_to_add = labels - labels_before
+    labels_to_remove = labels_before - labels
 
     await update_pr_labels(pull_request, labels_to_add, labels_to_remove)
 
