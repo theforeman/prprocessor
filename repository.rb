@@ -24,10 +24,6 @@ class Repository
     end
   end
 
-  def branches
-    @config['branches']
-  end
-
   def name
     full_name.split('/').last
   end

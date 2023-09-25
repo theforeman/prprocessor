@@ -53,16 +53,6 @@ get '/status' do
   erb :status, :locals => locals
 end
 
-# Hash of Redmine projects to linked GitHub repos
-get '/redmine_repos' do
-  content_type :json
-  Repository.all.select { |repo,config| !config.redmine_project.nil? }.inject({}) do |output,(repo,config)|
-    output[config.redmine_project] ||= {}
-    output[config.redmine_project][repo] = config.branches
-    output
-  end.to_json
-end
-
 def verify_signature(payload_body)
   signature = 'sha1=' + OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha1'), ENV['GITHUB_SECRET_TOKEN'], payload_body)
   return halt 500, "Signatures didn't match!" unless Rack::Utils.secure_compare(signature, request.env['HTTP_X_HUB_SIGNATURE'])
