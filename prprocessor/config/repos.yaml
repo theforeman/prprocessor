@@ -4,6 +4,7 @@
 #   redmine_required: enforce commit message format to include Redmine ticket number (default: false)
 #   refs: optional list of Redmine projects that commits here can "refs" (default: [])
 #   branches: list of primary development branches, else uses repo default
+#   link_to_redmine: Add comment with Issue number if present (default: false)
 ---
 ekohl/gh-test-env:
   redmine: pr-processor-test
@@ -13,6 +14,7 @@ ekohl/gh-test-env:
 theforeman/foreman:
   redmine: foreman
   redmine_required: true
+  link_to_redmine: true
 theforeman/foreman_ansible:
   redmine: ansible
   redmine_required: true
@@ -25,9 +27,11 @@ theforeman/foreman_bootdisk:
 theforeman/foreman_discovery:
   redmine: discovery
   redmine_version_prefix: "Discovery Plugin "
+  link_to_redmine: true
 theforeman/foreman-discovery-image:
   redmine: discovery
   redmine_version_prefix: "Discovery Image "
+  link_to_redmine: true
 theforeman/foreman-documentation: {}
 theforeman/foreman_expire_hosts: {}
 theforeman/foreman_host_extra_validator: {}
@@ -38,6 +42,7 @@ theforeman/foreman_kubevirt:
 theforeman/foreman_maintain:
   redmine: foreman-maintain
   redmine_required: true
+  link_to_redmine: true
 theforeman/foreman_monitoring: {}
 theforeman/foreman_omaha: {}
 theforeman/foreman_openscap:
@@ -87,6 +92,7 @@ theforeman/foreman_virt_who_configure:
   redmine_version_prefix: "foreman-virt-who-configure-"
 theforeman/foreman_webhooks:
   redmine: webhooks
+  link_to_redmine: true
 theforeman/hammer-cli:
   redmine: hammer-cli
   redmine_version_prefix: "hammer-cli-"
@@ -103,6 +109,7 @@ theforeman/hammer_cli_foreman_bootdisk:
 theforeman/hammer-cli-foreman-discovery:
   redmine: discovery
   redmine_version_prefix: "Hammer Plugin "
+  link_to_redmine: true
 theforeman/hammer-cli-foreman-kubevirt:
   redmine: kubevirt
 theforeman/hammer_cli_foreman_openscap:
@@ -165,8 +172,10 @@ theforeman/smart_proxy_dhcp_infoblox:
   redmine: infoblox
 theforeman/smart_proxy_discovery:
   redmine: discovery
+  link_to_redmine: true
 theforeman/smart_proxy_discovery_image:
   redmine: discovery
+  link_to_redmine: true
 theforeman/smart_proxy_dns_infoblox:
   redmine: infoblox
 theforeman/smart_proxy_dynflow:
@@ -194,17 +203,21 @@ Katello/hammer-cli-katello:
   redmine: katello
   redmine_required: true
   redmine_version_prefix: "Hammer CLI Katello "
+  link_to_redmine: true
 Katello/katello:
   redmine: katello
   redmine_required: true
   redmine_version_prefix: "Katello "
+  link_to_redmine: true
 Katello/katello-host-tools:
   redmine: katello
   redmine_required: true
   redmine_version_prefix: "Katello Host Tools "
+  link_to_redmine: true
 theforeman/katello-selinux:
   redmine: katello
   redmine_version_prefix: "Katello "
 Katello/smart_proxy_container_gateway:
   redmine: katello
   redmine_required: true
+  link_to_redmine: true
