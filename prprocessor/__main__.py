@@ -76,6 +76,7 @@ class Config:
     refs: set = field(default_factory=set)
     version_prefix: Optional[str] = None
     apply_labels: bool = True
+    link_to_redmine: bool = False
 
 
 # This should be handled cleaner
@@ -83,7 +84,8 @@ with open(resource_filename(__name__, 'config/repos.yaml')) as config_fp:
     CONFIG = {
         repo: Config(project=config.get('redmine'), required=config.get('redmine_required', False),
                      refs=set(config.get('refs', [])),
-                     version_prefix=config.get('redmine_version_prefix'))
+                     version_prefix=config.get('redmine_version_prefix'),
+                     link_to_redmine=config.get('link_to_redmine', False))
         for repo, config in yaml.safe_load(config_fp).items()
     }
 
@@ -142,6 +144,15 @@ async def update_pr_labels(pull_request: Mapping, labels_to_add: Iterable[Label]
 
     if tasks:
         await asyncio.gather(*tasks)
+
+
+async def post_pr_comment(pull_request: Mapping, comment: str) -> None:
+    github_api = RUNTIME_CONTEXT.app_installation_client
+
+    url = pull_request['comments_url']
+    data = {'body': comment}
+
+    await github_api.post(url, data=data)
 
 
 async def get_commits_from_pull_request(pull_request: Mapping) -> AsyncGenerator[Commit, None]:
@@ -219,7 +230,7 @@ async def get_issues_from_pr(pull_request: Mapping) -> tuple[IssueValidation, Co
     return verify_issues(config, issue_ids), invalid_commits
 
 
-async def run_pull_request_check(pull_request: Mapping, check_run=None) -> bool:
+async def run_pull_request_check(pull_request: Mapping, check_run=None) -> tuple[bool, IssueValidation, Collection]:
     github_api = RUNTIME_CONTEXT.app_installation_client
 
     check_run = await set_check_in_progress(pull_request, check_run)
@@ -293,7 +304,7 @@ async def run_pull_request_check(pull_request: Mapping, check_run=None) -> bool:
         },
     )
 
-    return conclusion == 'success'
+    return (conclusion == 'success', issue_results, invalid_commits)
 
 
 async def update_redmine_on_issues(pull_request: Mapping, issues: Iterable[Issue]) -> None:
@@ -337,12 +348,18 @@ async def update_redmine_on_issues(pull_request: Mapping, issues: Iterable[Issue
 @process_event_actions('pull_request', {'opened', 'ready_for_review', 'reopened', 'synchronize'})
 @process_webhook_payload
 async def on_pr_modified(*, action: str, pull_request: Mapping, **_kw) -> None:
-    commits_valid_style = await run_pull_request_check(pull_request)
+    commits_valid_style, issue_results, _ = await run_pull_request_check(pull_request)
 
     try:
         config = get_config(pull_request['base']['repo']['full_name'])
     except UnconfiguredRepository:
         return
+
+    if config.link_to_redmine:
+        if action == 'opened' and issue_results.valid_issues and not pr_is_cherry_pick(pull_request):
+            issues = '\n* '.join(format_redmine_issues(issue_results.valid_issues))
+            comment = f'Issues: \n* {issues}'
+            await post_pr_comment(pull_request, comment)
 
     if not config.apply_labels:
         return
