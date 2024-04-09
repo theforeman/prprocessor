@@ -11,9 +11,6 @@ theforeman/foreman_discovery:
 theforeman/foreman-discovery-image:
   redmine: discovery
   link_to_redmine: true
-theforeman/foreman_maintain:
-  redmine: foreman-maintain
-  link_to_redmine: true
 theforeman/foreman_webhooks:
   redmine: webhooks
   link_to_redmine: true
