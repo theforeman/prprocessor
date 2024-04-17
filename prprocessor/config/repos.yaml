@@ -35,9 +35,6 @@ theforeman/foreman-installer:
   redmine: puppet-foreman
 theforeman/foreman_kubevirt:
   redmine: kubevirt
-theforeman/foreman_maintain:
-  redmine: foreman-maintain
-  redmine_required: true
 theforeman/foreman_monitoring: {}
 theforeman/foreman_omaha: {}
 theforeman/foreman_openscap:
