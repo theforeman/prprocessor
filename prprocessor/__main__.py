@@ -396,7 +396,7 @@ async def on_pr_review_assign_labels(*, pull_request: Mapping, review: Mapping, 
         labels.discard(Label.NOT_YET_REVIEWED)
         labels.discard(Label.NEEDS_RE_REVIEW)
         labels.add(Label.WAITING_ON_CONTRIBUTOR)
-    elif state == 'approved':
+    elif state in ('approved', 'commented'):
         labels.discard(Label.NOT_YET_REVIEWED)
         labels.discard(Label.NEEDS_RE_REVIEW)
 
