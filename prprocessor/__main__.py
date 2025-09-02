@@ -26,6 +26,7 @@ COMMIT_VALID_SUMMARY_REGEX = re.compile(
     re.IGNORECASE,
 )
 COMMIT_ISSUES_REGEX = re.compile(r'#(\d+)')
+EXEMPT_COMMIT_REGEX = re.compile(r'^i18n - (extracting new, )?pulling from tx$', re.IGNORECASE)
 CHECK_NAME = 'Redmine issues'
 WHITELISTED_ORGANIZATIONS = ('theforeman', 'Katello')
 
@@ -66,7 +67,12 @@ class Commit:
 
     @property
     def subject(self):
-        return self.message.splitlines()[0]
+        lines = self.message.splitlines()
+        return lines[0] if lines else ""
+
+    def is_exempt(self) -> bool:
+        """Check if commit is exempt from Redmine validation (i18n commits)."""
+        return EXEMPT_COMMIT_REGEX.match(self.subject) is not None
 
 
 @dataclass
@@ -213,7 +219,7 @@ async def get_issues_from_pr(pull_request: Mapping) -> tuple[IssueValidation, Co
     async for commit in get_commits_from_pull_request(pull_request):
         issue_ids.update(commit.fixes)
         issue_ids.update(commit.refs)
-        if config.required and not commit.fixes and not commit.refs:
+        if config.required and not commit.fixes and not commit.refs and not commit.is_exempt():
             invalid_commits.append(commit)
 
     return verify_issues(config, issue_ids), invalid_commits
