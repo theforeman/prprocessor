@@ -13,6 +13,7 @@ ekohl/gh-test-env:
 theforeman/foreman:
   redmine: foreman
   redmine_required: true
+theforeman/foremanctl: {}
 theforeman/foreman_ansible:
   redmine: ansible
   redmine_required: true
