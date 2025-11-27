@@ -119,6 +119,7 @@ theforeman/kafo:
   redmine: kafo
 theforeman/kafo_parsers:
   redmine: kafo
+theforeman/obsah: {}
 theforeman/puppetdb_foreman: {}
 theforeman/puppet-candlepin:
   redmine: puppet-foreman
