@@ -28,6 +28,7 @@ COMMIT_VALID_SUMMARY_REGEX = re.compile(
 COMMIT_ISSUES_REGEX = re.compile(r'#(\d+)')
 CHECK_NAME = 'Redmine issues'
 WHITELISTED_ORGANIZATIONS = ('theforeman', 'Katello')
+MAX_ISSUES = 2
 
 
 class Label(Enum):
@@ -252,7 +253,10 @@ async def run_pull_request_check(pull_request: Mapping, check_run=None) -> bool:
         }
     else:
         try:
-            await update_redmine_on_issues(pull_request, issue_results.valid_issues)
+            if len(issue_results.valid_issues) <= MAX_ISSUES:
+                await update_redmine_on_issues(pull_request, issue_results.valid_issues)
+            else:
+                logger.warn(f'Not updating Redmine as the PR references more than {MAX_ISSUES} issues.')
         except:  # pylint: disable=bare-except
             logger.exception('Failed to update Redmine issues')
 
@@ -261,6 +265,7 @@ async def run_pull_request_check(pull_request: Mapping, check_run=None) -> bool:
             'Invalid project': format_redmine_issues(issue_results.invalid_project_issues),
             'Issues not found in redmine': issue_results.missing_issue_ids,
             'Valid issues': format_redmine_issues(issue_results.valid_issues),
+            'Too many issues': format_redmine_issues(issue_results.valid_issues) if len(issue_results.valid_issues) > MAX_ISSUES else [],
         }
 
         non_empty = [title for title, lines in summary.items() if lines]
