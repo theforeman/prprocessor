@@ -207,3 +207,10 @@ theforeman/katello-selinux:
 Katello/smart_proxy_container_gateway:
   redmine: katello
   redmine_required: true
+theforeman/foreman_leapp:
+  redmine: leapp
+  redmine_required: true
+  redmine_version_prefix: "foreman_leapp-"
+theforeman/hammer-cli-foreman-leapp:
+  redmine: leapp
+  redmine_version_prefix: "hammer-cli-foreman-leapp "
